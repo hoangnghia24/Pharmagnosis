@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "603183283437",
+    "project_id": "pharmagnosis-e01ae",
+    "storage_bucket": "pharmagnosis-e01ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603183283437:android:549d25a9a3dcccf0fd20e4",
+        "android_client_info": {
+          "package_name": "hcmute.edu.vn.pharmagnosis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-IqMINW_QMRB5YVVXsqIEB8uiofEUomg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
