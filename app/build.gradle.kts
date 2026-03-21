@@ -12,6 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "hcmute.edu.vn.pharmagnosis"
+
         minSdk = 24
         targetSdk = 36
         versionCode = 1
