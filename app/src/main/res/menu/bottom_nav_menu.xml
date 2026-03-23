@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Tab 1: Tổng quan -->
+    <item
+        android:id="@+id/nav_overview"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Tổng quan" />
+
+    <!-- Tab 2: Dữ liệu -->
+    <item
+        android:id="@+id/nav_data"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="Dữ liệu" />
+
+    <!-- Tab 3: Yêu cầu -->
+    <item
+        android:id="@+id/nav_requests"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Yêu cầu" />
+
+    <!-- Tab 4: Hệ thống -->
+    <item
+        android:id="@+id/nav_system"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Hệ thống" />
+
+</menu>

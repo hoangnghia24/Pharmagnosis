@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:background="#111827">
+
+    <!-- ================= 1. HEADER ================= -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_sidebar_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1A2232"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_admin_avatar"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardBackgroundColor="#2563EB"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="#3B82F6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_dashboard_admin" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tv_admin_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Quản lý hệ thống"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_admin_avatar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ================= 2. SCROLLABLE MENU ================= -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/layout_sidebar_footer"
+        app:layout_constraintTop_toBottomOf="@+id/layout_sidebar_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HỆ THỐNG"
+                android:textColor="#64748B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="12dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/item_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:cardBackgroundColor="#1E3A5F"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_sidebar"
+                        app:tint="#38BDF8" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Tổng quan Dashboard"
+                        android:textColor="#38BDF8"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Quản lý Thuốc -->
+            <LinearLayout
+                android:id="@+id/item_manage_drugs"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_manage_medicine"
+                    app:tint="#94A3B8" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Quản lý Thuốc"
+                    android:textColor="#94A3B8"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Quản lý Bệnh lý -->
+            <LinearLayout
+                android:id="@+id/item_manage_diseases"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_manage_medicine"
+                    app:tint="#94A3B8" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Quản lý Bệnh lý"
+                    android:textColor="#94A3B8"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Quản lý Tin tức (Có Badge) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/item_manage_news"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="12dp">
+                <ImageView
+                    android:id="@+id/ic_news"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_gallery"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="#94A3B8" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Quản lý Tin tức"
+                    android:textColor="#94A3B8"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_news"
+                    app:layout_constraintTop_toTopOf="parent" />
+                  </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:background="#334155" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TÀI KHOẢN &amp; BẢO MẬT"
+                android:textColor="#64748B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="12dp"/>
+
+            <!-- Quản lý Người dùng -->
+            <LinearLayout
+                android:id="@+id/item_manage_users"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_myplaces"
+                    app:tint="#94A3B8" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Quản lý Người dùng"
+                    android:textColor="#94A3B8"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Cài đặt -->
+            <LinearLayout
+                android:id="@+id/item_settings"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_preferences"
+                    app:tint="#94A3B8" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Cài đặt"
+                    android:textColor="#94A3B8"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ================= 3. FOOTER ================= -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_sidebar_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:cardBackgroundColor="#2D3748"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_lock_power_off"
+                    app:tint="#F87171" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Đăng xuất"
+                    android:textColor="#F87171"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
