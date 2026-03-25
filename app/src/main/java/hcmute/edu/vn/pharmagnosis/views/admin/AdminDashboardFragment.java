@@ -21,6 +21,8 @@ public class AdminDashboardFragment extends AppCompatActivity {
     private View itemDashboard;
     private View itemManageDrugs;
     private BottomNavigationView bottomNavAdmin;
+    private View itemManageDiseases;
+    private View itemManageNews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +77,13 @@ public class AdminDashboardFragment extends AppCompatActivity {
     private void setupSidebarActions() {
         itemDashboard = findViewById(R.id.item_dashboard);
         itemManageDrugs = findViewById(R.id.item_manage_drugs);
+        itemManageDiseases = findViewById(R.id.item_manage_diseases);
+        itemManageNews = findViewById(R.id.item_manage_news);
 
         if (itemDashboard != null) {
             itemDashboard.setOnClickListener(v -> {
                 replaceFragment(new DashboardFragment());
                 highlightSidebarItem(itemDashboard);
-                // Đồng bộ chọn lại tab "Tổng quan" trên Bottom Nav
                 bottomNavAdmin.setSelectedItemId(R.id.nav_overview);
                 closeSidebar();
             });
@@ -90,8 +93,20 @@ public class AdminDashboardFragment extends AppCompatActivity {
             itemManageDrugs.setOnClickListener(v -> {
                 replaceFragment(new ManageMedicinesFragment());
                 highlightSidebarItem(itemManageDrugs);
-                // Bỏ chọn tất cả trên Bottom Nav nếu mục này không có trong Bottom Nav
-                // bottomNavAdmin.setSelectedItemId(R.id.invisible_item); (Tùy chọn)
+                closeSidebar();
+            });
+        }
+        if(itemManageDiseases != null){
+            itemManageDiseases.setOnClickListener(v -> {
+                replaceFragment(new ManageDiseasesFragment());
+                highlightSidebarItem(itemManageDiseases);
+                closeSidebar();
+                });
+        }
+        if(itemManageNews != null) {
+            itemManageNews.setOnClickListener(v -> {
+                replaceFragment(new ManageNewsFragment());
+                highlightSidebarItem(itemManageNews);
                 closeSidebar();
             });
         }
@@ -100,9 +115,10 @@ public class AdminDashboardFragment extends AppCompatActivity {
     private void highlightSidebarItem(View selectedItem) {
         int defaultColor = Color.TRANSPARENT;
         int activeColor = Color.parseColor("#1E3A5F");
-
         resetItemColor(itemDashboard, defaultColor);
         resetItemColor(itemManageDrugs, defaultColor);
+        resetItemColor(itemManageDiseases, defaultColor);
+        resetItemColor(itemManageNews, defaultColor);
         resetItemColor(selectedItem, activeColor);
     }
 
@@ -117,11 +133,20 @@ public class AdminDashboardFragment extends AppCompatActivity {
     }
 
     // ================= CÁC HÀM PHỤ TRỢ CHUNG =================
+    public void replaceFragment(androidx.fragment.app.Fragment fragment, boolean addToBackStack) {
+        androidx.fragment.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+
+        // Nếu là các màn hình con (Thêm, Sửa) thì truyền true để lưu lịch sử
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
+    }
+
+    // Hàm cũ giữ nguyên để dùng cho các mục trên Sidebar (không cần Backstack)
     public void replaceFragment(androidx.fragment.app.Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+        replaceFragment(fragment, false);
     }
 
     public void openSidebar() {
