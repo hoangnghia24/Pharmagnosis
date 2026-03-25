@@ -28,7 +28,7 @@ public class ManageMedicinesFragment extends Fragment { // [cite: 3, 4]
         // Biến viết theo kiểu camelCase [cite: 15]
         ImageView imgMenu = view.findViewById(R.id.img_menu);
         ImageView imgAddMedicine = view.findViewById(R.id.img_add_medicine);
-
+        ImageView imgEdit = view.findViewById(R.id.img_edit);
         // Mở menu sidebar
         if (imgMenu != null) {
             imgMenu.setOnClickListener(v -> {
@@ -40,7 +40,13 @@ public class ManageMedicinesFragment extends Fragment { // [cite: 3, 4]
         if (imgAddMedicine != null) {
             imgAddMedicine.setOnClickListener(v -> {
                 // Gọi hàm điều hướng đã được public ở Bước 1
-                ((AdminDashboardFragment) requireActivity()).replaceFragment(new AddMedicineFragment());
+                ((AdminDashboardFragment) requireActivity()).replaceFragment(new AddMedicineFragment(),true);
+            });
+        }
+
+        if(imgEdit != null) {
+            imgEdit.setOnClickListener(v -> {
+                ((AdminDashboardFragment) requireActivity()).replaceFragment(new EditMedicineFragment(),true);
             });
         }
     }
