@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100.0"
+    android:viewportHeight="100.0">
+
+    <!-- 1. Bóng đổ phía sau tủ (Tạo hiệu ứng nổi lên khỏi mặt phẳng) -->
+    <path
+        android:pathData="M 11,13 C 11,11 13,11 15,11 L 85,11 C 87,11 89,11 89,13 L 89,88 C 89,90 87,92 85,92 L 15,92 C 13,92 11,90 11,88 Z"
+        android:fillColor="#26000000" />
+
+    <!-- 2. Khung tủ ngoài cùng (Màu kim loại xám với đường viền sẫm) -->
+    <path
+        android:pathData="M 10,14 C 10,11.8 11.8,10 14,10 L 86,10 C 88.2,10 90,11.8 90,14 L 90,86 C 90,88.2 88.2,90 86,90 L 14,90 C 11.8,90 10,88.2 10,86 Z"
+        android:strokeColor="#363C41"
+        android:strokeWidth="1.5">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="10.0"
+                android:endX="50.0" android:endY="90.0"
+                android:type="linear">
+                <item android:color="#FF7E8A95" android:offset="0.0" />
+                <item android:color="#FF4F575E" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 3. Viền sáng bắt sáng ở mép trên của khung tủ -->
+    <path
+        android:pathData="M 13,11.5 L 87,11.5"
+        android:strokeColor="#A3B0BC"
+        android:strokeWidth="1.5" />
+
+    <!-- 4. Rãnh tối (Khoảng trống giữa viền tủ và các ngăn kéo) -->
+    <path
+        android:pathData="M 13,14 L 87,14 L 87,86 L 13,86 Z"
+        android:fillColor="#2A2F33" />
+    <!-- Bóng đổ bên trong rãnh tối -->
+    <path
+        android:pathData="M 13,14 L 87,14 L 87,17 L 13,17 Z"
+        android:fillColor="#40000000" />
+
+    <!-- ========================================== -->
+    <!-- NGĂN KÉO SỐ 1 (PHÍA TRÊN)                    -->
+    <!-- ========================================== -->
+
+    <!-- Khối nền của ngăn kéo trên -->
+    <path
+        android:pathData="M 15,16 L 85,16 L 85,49 L 15,49 Z"
+        android:strokeColor="#3C4349"
+        android:strokeWidth="1.0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="16.0"
+                android:endX="50.0" android:endY="49.0"
+                android:type="linear">
+                <item android:color="#FF85919D" android:offset="0.0" />
+                <item android:color="#FF5A636A" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Vát cạnh nổi (Highlight trái/trên & Shadow phải/dưới) của ngăn kéo trên -->
+    <path
+        android:pathData="M 16,48 L 16,17 L 84,17"
+        android:strokeColor="#B0BDC8"
+        android:strokeWidth="1.0" />
+    <path
+        android:pathData="M 16,48 L 84,48 L 84,17"
+        android:strokeColor="#4A5158"
+        android:strokeWidth="1.0" />
+
+    <!-- Khung sắt kẹp thẻ tên (Ngăn trên) -->
+    <path
+        android:pathData="M 32,20 L 68,20 L 68,32 L 32,32 Z"
+        android:strokeColor="#3A4146"
+        android:strokeWidth="0.5">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="20.0"
+                android:endX="50.0" android:endY="32.0"
+                android:type="linear">
+                <item android:color="#FF6A757E" android:offset="0.0" />
+                <item android:color="#FF485057" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Mép sáng của khung sắt thẻ tên -->
+    <path
+        android:pathData="M 32.5,20.5 L 67.5,20.5"
+        android:strokeColor="#A0AEB9"
+        android:strokeWidth="1.0" />
+
+    <!-- Lỗ hở và Thẻ giấy trắng (Ngăn trên) -->
+    <path
+        android:pathData="M 34,22 L 66,22 L 66,30 L 34,30 Z"
+        android:fillColor="#2B3135" />
+    <path
+        android:pathData="M 35,23 L 65,23 L 65,29 L 35,29 Z"
+        android:fillColor="#F8F9FA" />
+    <!-- Bóng đổ làm thẻ giấy có chiều sâu -->
+    <path
+        android:pathData="M 34,22 L 66,22 L 66,24.5 L 34,24.5 Z"
+        android:fillColor="#4D000000" />
+
+    <!-- Tay cầm kim loại (Ngăn trên) -->
+    <path
+        android:pathData="M 37,36 L 63,36 C 64.6,36 66,37.4 66,39 L 66,40 C 66,41.6 64.6,43 63,43 L 37,43 C 35.4,43 34,41.6 34,40 L 34,39 C 34,37.4 35.4,36 37,36 Z"
+        android:strokeColor="#33393E"
+        android:strokeWidth="0.5">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="36.0"
+                android:endX="50.0" android:endY="43.0"
+                android:type="linear">
+                <item android:color="#FF77838E" android:offset="0.0" />
+                <item android:color="#FF4B535A" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Vệt bóng bẩy lóa sáng nửa trên của tay cầm -->
+    <path
+        android:pathData="M 37,36 L 63,36 C 64.6,36 66,37.4 66,39 L 34,39 C 34,37.4 35.4,36 37,36 Z"
+        android:fillColor="#33FFFFFF" />
+
+    <!-- ========================================== -->
+    <!-- NGĂN KÉO SỐ 2 (PHÍA DƯỚI)                    -->
+    <!-- ========================================== -->
+
+    <!-- Khối nền của ngăn kéo dưới -->
+    <path
+        android:pathData="M 15,51 L 85,51 L 85,84 L 15,84 Z"
+        android:strokeColor="#353C41"
+        android:strokeWidth="1.0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="51.0"
+                android:endX="50.0" android:endY="84.0"
+                android:type="linear">
+                <item android:color="#FF7C8792" android:offset="0.0" />
+                <item android:color="#FF525B62" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Vát cạnh nổi (Highlight trái/trên & Shadow phải/dưới) của ngăn kéo dưới -->
+    <path
+        android:pathData="M 16,83 L 16,52 L 84,52"
+        android:strokeColor="#A4B2BE"
+        android:strokeWidth="1.0" />
+    <path
+        android:pathData="M 16,83 L 84,83 L 84,52"
+        android:strokeColor="#434A51"
+        android:strokeWidth="1.0" />
+
+    <!-- Khung sắt kẹp thẻ tên (Ngăn dưới) -->
+    <path
+        android:pathData="M 32,55 L 68,55 L 68,67 L 32,67 Z"
+        android:strokeColor="#353C41"
+        android:strokeWidth="0.5">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="55.0"
+                android:endX="50.0" android:endY="67.0"
+                android:type="linear">
+                <item android:color="#FF656F78" android:offset="0.0" />
+                <item android:color="#FF454D53" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Mép sáng của khung sắt thẻ tên dưới -->
+    <path
+        android:pathData="M 32.5,55.5 L 67.5,55.5"
+        android:strokeColor="#92A0AC"
+        android:strokeWidth="1.0" />
+
+    <!-- Lỗ hở và Thẻ giấy trắng (Ngăn dưới) -->
+    <path
+        android:pathData="M 34,57 L 66,57 L 66,65 L 34,65 Z"
+        android:fillColor="#272C30" />
+    <path
+        android:pathData="M 35,58 L 65,58 L 65,64 L 35,64 Z"
+        android:fillColor="#F0F2F4" />
+    <!-- Bóng đổ làm thẻ giấy có chiều sâu -->
+    <path
+        android:pathData="M 34,57 L 66,57 L 66,59.5 L 34,59.5 Z"
+        android:fillColor="#4D000000" />
+
+    <!-- Tay cầm kim loại (Ngăn dưới) -->
+    <path
+        android:pathData="M 37,71 L 63,71 C 64.6,71 66,72.4 66,74 L 66,75 C 66,76.6 64.6,78 63,78 L 37,78 C 35.4,78 34,76.6 34,75 L 34,74 C 34,72.4 35.4,71 37,71 Z"
+        android:strokeColor="#2F353A"
+        android:strokeWidth="0.5">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="71.0"
+                android:endX="50.0" android:endY="78.0"
+                android:type="linear">
+                <item android:color="#FF727D87" android:offset="0.0" />
+                <item android:color="#FF464D54" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Vệt bóng bẩy lóa sáng nửa trên của tay cầm dưới -->
+    <path
+        android:pathData="M 37,71 L 63,71 C 64.6,71 66,72.4 66,74 L 34,74 C 34,72.4 35.4,71 37,71 Z"
+        android:fillColor="#26FFFFFF" />
+
+</vector>

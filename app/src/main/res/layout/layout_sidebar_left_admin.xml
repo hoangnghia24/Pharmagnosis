@@ -73,17 +73,12 @@
                 android:layout_marginBottom="12dp"
                 android:layout_marginStart="12dp"/>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/item_dashboard"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                app:cardBackgroundColor="#1E3A5F"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp">
+
                 <LinearLayout
+                    android:id="@+id/item_dashboard"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="12dp">
@@ -91,17 +86,16 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_sidebar"
-                        app:tint="#38BDF8" />
+                        app:tint="#94A3B8" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Tổng quan Dashboard"
-                        android:textColor="#38BDF8"
+                        android:textColor="#94A3B8"
                         android:textSize="15sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
             <!-- Quản lý Thuốc -->
             <LinearLayout

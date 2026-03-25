@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100.0"
+    android:viewportHeight="100.0">
+
+    <!-- Màu nền hồng nhạt (giống ảnh gốc) -->
+    <path
+        android:fillColor="#FFF4F4"
+        android:pathData="M0,0h100v100h-100z" />
+
+    <!-- 1. Tay cầm màu đen (Pill shape) -->
+    <path android:pathData="M 55,65 L 77,87 A 7.07,7.07 0 0,0 87,77 L 65,55 A 7.07,7.07 0 0,0 55,65 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="55.0" android:startY="55.0"
+                android:endX="75.0" android:endY="75.0"
+                android:type="linear">
+                <item android:color="#FF404040" android:offset="0.0" />
+                <item android:color="#FF000000" android:offset="0.3" />
+                <item android:color="#FF1A1A1A" android:offset="0.7" />
+                <item android:color="#FF404040" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 2. Vệt sáng chói trên tay cầm đen để tạo độ bóng -->
+    <path android:pathData="M 56.5,63.5 L 77,84 A 5,5 0 0,0 80,82 L 59.5,61.5 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="56.0" android:startY="63.0"
+                android:endX="62.0" android:endY="69.0"
+                android:type="linear">
+                <item android:color="#80FFFFFF" android:offset="0.0" />
+                <item android:color="#00FFFFFF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 3. Chốt nối kim loại giữa tay cầm và kính -->
+    <path android:pathData="M 49,57 L 57,49 L 63,55 L 55,63 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="49.0" android:startY="59.0"
+                android:endX="65.0" android:endY="55.0"
+                android:type="linear">
+                <item android:color="#FF99AAB5" android:offset="0.0" />
+                <item android:color="#FFFFFFFF" android:offset="0.3" />
+                <item android:color="#FF556670" android:offset="0.7" />
+                <item android:color="#FFCCD6DD" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 4. Đáy viền kim loại (Tạo độ sâu cho khung kính) -->
+    <!-- Vẽ vòng tròn lớn trừ đi vòng tròn nhỏ bên trong -->
+    <path
+        android:fillColor="#FF333333"
+        android:pathData="M 38,5 A 33,33 0 1,1 38,71 A 33,33 0 1,1 38,5 M 38,14 A 24,24 0 1,0 38,62 A 24,24 0 1,0 38,14 Z" />
+
+    <!-- 5. Bề mặt khung kim loại sáng bóng (Chrome) -->
+    <path android:pathData="M 38,6 A 32,32 0 1,1 38,70 A 32,32 0 1,1 38,6 M 38,13 A 25,25 0 1,0 38,63 A 25,25 0 1,0 38,13 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="10.0" android:startY="10.0"
+                android:endX="66.0" android:endY="66.0"
+                android:type="linear">
+                <item android:color="#FFFFFFFF" android:offset="0.0" />
+                <item android:color="#FFAABBC7" android:offset="0.25" />
+                <item android:color="#FF445566" android:offset="0.5" />
+                <item android:color="#FFDDE5ED" android:offset="0.8" />
+                <item android:color="#FF778899" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 6. Cạnh vát bên trong của khung (Tạo chiều sâu cho thấu kính) -->
+    <path android:pathData="M 38,13 A 25,25 0 1,1 38,63 A 25,25 0 1,1 38,13 M 38,16 A 22,22 0 1,0 38,60 A 22,22 0 1,0 38,16 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="13.0" android:startY="13.0"
+                android:endX="63.0" android:endY="63.0"
+                android:type="linear">
+                <item android:color="#FF334455" android:offset="0.0" />
+                <item android:color="#FFBCC9D4" android:offset="0.5" />
+                <item android:color="#FFFFFFFF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 7. Mặt thấu kính thủy tinh (Gradient tỏa tròn) -->
+    <path android:pathData="M 38,16 A 22,22 0 1,1 38,60 A 22,22 0 1,1 38,16 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="38.0" android:centerY="38.0"
+                android:gradientRadius="22.0"
+                android:type="radial">
+                <item android:color="#FFFFFFFF" android:offset="0.0" />
+                <item android:color="#FFF0F5FA" android:offset="0.6" />
+                <item android:color="#FFD0E0EE" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 8. Vệt phản chiếu ánh sáng trên mặt kính (Tạo hiệu ứng cong thủy tinh) -->
+    <path android:pathData="M 22,40 C 18,25 28,18 44,20 C 32,24 26,32 22,40 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="20.0" android:startY="20.0"
+                android:endX="40.0" android:endY="40.0"
+                android:type="linear">
+                <item android:color="#EEFFFFFF" android:offset="0.0" />
+                <item android:color="#00FFFFFF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+</vector>

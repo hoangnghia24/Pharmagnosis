@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100.0"
+    android:viewportHeight="100.0">
+
+    <!-- 1. Bóng đổ dưới đáy khay (Shadow) -->
+    <path
+        android:pathData="M 10,93 C 25,100 75,100 90,93 C 90,96 70,102 50,102 C 30,102 10,96 10,93 Z"
+        android:fillColor="#1A000000" />
+
+    <!-- ========================================== -->
+    <!-- PHẦN THÂN KHAY (Mặt ngoài & Viền)           -->
+    <!-- ========================================== -->
+
+    <!-- Viền trên cùng phía sau (Back Top Rim) -->
+    <path
+        android:pathData="M 15,38 L 85,38 L 82,41 L 18,41 Z"
+        android:fillColor="#E6E9EC" />
+
+    <!-- Viền trên cùng bên trái (Left Top Rim) -->
+    <path
+        android:pathData="M 5,75 L 15,38 L 18,41 L 10,75 Z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Viền trên cùng bên phải (Right Top Rim) -->
+    <path
+        android:pathData="M 95,75 L 85,38 L 82,41 L 90,75 Z"
+        android:fillColor="#D4D8DC" />
+
+    <!-- ========================================== -->
+    <!-- BÊN TRONG KHAY (Lòng khay màu xanh dương)   -->
+    <!-- ========================================== -->
+
+    <!-- Tường bên trong phía sau (Dark Blue) -->
+    <path android:pathData="M 18,41 L 82,41 L 82,65 L 18,65 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="41.0"
+                android:endX="50.0" android:endY="65.0"
+                android:type="linear">
+                <item android:color="#FF246AC3" android:offset="0.0" />
+                <item android:color="#FF154580" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Tường bên trong bên trái (Lighter Blue - Hứng sáng) -->
+    <path android:pathData="M 10,75 L 18,41 L 18,65 L 10,85 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="18.0" android:startY="53.0"
+                android:endX="10.0" android:endY="63.0"
+                android:type="linear">
+                <item android:color="#FF4FA0FA" android:offset="0.0" />
+                <item android:color="#FF297BE0" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Tường bên trong bên phải (Darker Blue - Khuất sáng) -->
+    <path android:pathData="M 90,75 L 82,41 L 82,65 L 90,85 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="82.0" android:startY="53.0"
+                android:endX="90.0" android:endY="63.0"
+                android:type="linear">
+                <item android:color="#FF1F69C4" android:offset="0.0" />
+                <item android:color="#FF114587" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Đáy khay (Floor) -->
+    <path android:pathData="M 18,65 L 82,65 L 90,85 L 10,85 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="65.0"
+                android:endX="50.0" android:endY="85.0"
+                android:type="linear">
+                <item android:color="#FF3185E8" android:offset="0.0" />
+                <item android:color="#FF124A91" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Bóng đổ của mũi tên in lên đáy khay -->
+    <path
+        android:pathData="M 35,72 C 35,68 65,68 65,72 C 65,76 35,76 35,72 Z"
+        android:fillColor="#33000000" />
+
+    <!-- ========================================== -->
+    <!-- MẶT TRƯỚC CỦA KHAY (Front Panel Trắng)      -->
+    <!-- ========================================== -->
+
+    <!-- Mặt phẳng trắng phía trước với viền bo góc -->
+    <path android:pathData="M 5,75 L 25,75 C 35,75 35,90 50,90 C 65,90 65,75 75,75 L 95,75 L 95,91 C 95,94 92,95 89,95 L 11,95 C 8,95 5,94 5,91 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="75.0"
+                android:endX="50.0" android:endY="95.0"
+                android:type="linear">
+                <item android:color="#FFFFFFFF" android:offset="0.0" />
+                <item android:color="#FFE2E6EA" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Độ dày viền trên cùng bên trái của mặt trước -->
+    <path
+        android:pathData="M 5,75 L 10,75 L 30,75 L 25,75 Z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Độ dày viền trên cùng bên phải của mặt trước -->
+    <path
+        android:pathData="M 95,75 L 90,75 L 70,75 L 75,75 Z"
+        android:fillColor="#DFE3E8" />
+
+    <!-- Độ dày viền của đường cắt võng xuống (Cutout Rim) -->
+    <path android:pathData="M 25,75 C 35,75 35,90 50,90 C 65,90 65,75 75,75 L 70,75 C 63,75 63,86 50,86 C 37,86 37,75 30,75 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="25.0" android:startY="75.0"
+                android:endX="75.0" android:endY="90.0"
+                android:type="linear">
+                <item android:color="#FFF0F2F5" android:offset="0.0" />
+                <item android:color="#FFB0B8C1" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- ========================================== -->
+    <!-- MŨI TÊN ĐỎ 3D (Đang thả xuống)               -->
+    <!-- ========================================== -->
+
+    <!-- Độ dày 3D (Mặt dưới tối màu của mũi tên) -->
+    <path
+        android:pathData="M 42,10 L 58,10 L 58,24 L 70,24 L 50,44 L 30,24 L 42,24 Z"
+        android:fillColor="#991111" />
+
+    <!-- Mặt phẳng chính của mũi tên (Gradient đỏ) -->
+    <path android:pathData="M 42,8 L 58,8 L 58,22 L 70,22 L 50,42 L 30,22 L 42,22 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="30.0" android:startY="8.0"
+                android:endX="70.0" android:endY="42.0"
+                android:type="linear">
+                <item android:color="#FFFF5B5B" android:offset="0.0" />
+                <item android:color="#FFD92626" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Đường Highlight trắng làm mũi tên trông sắc nét, bóng bẩy -->
+    <path
+        android:pathData="M 42,8 L 58,8 L 58,9.5 L 42,9.5 Z"
+        android:fillColor="#80FFFFFF" />
+    <path
+        android:pathData="M 31,22 L 42,22 L 42,23.5 L 33,23.5 Z"
+        android:fillColor="#80FFFFFF" />
+
+</vector>

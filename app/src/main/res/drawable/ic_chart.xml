@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100.0"
+    android:viewportHeight="100.0">
+
+    <!-- 1. Nền Gradient nhẹ từ trắng sang xanh nhạt -->
+    <path android:pathData="M 0,0 L 100,0 L 100,100 L 0,100 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="50.0" android:startY="0.0"
+                android:endX="50.0" android:endY="100.0"
+                android:type="linear">
+                <item android:color="#FFFFFFFF" android:offset="0.0" />
+                <item android:color="#FFF0F5FA" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 2. Họa tiết sọc dọc mờ trên nền -->
+    <path
+        android:pathData="M 4,0 V 100 M 12,0 V 100 M 20,0 V 100 M 28,0 V 100 M 36,0 V 100 M 44,0 V 100 M 52,0 V 100 M 60,0 V 100 M 68,0 V 100 M 76,0 V 100 M 84,0 V 100 M 92,0 V 100"
+        android:strokeColor="#E1EBF5"
+        android:strokeWidth="3.0" />
+
+    <!-- 3. Đổ bóng mờ dưới chân các cột -->
+    <path
+        android:pathData="M 9,95 L 91,95 L 91,97 L 9,97 Z"
+        android:fillColor="#1A000000" />
+
+    <!-- 4. Cột Xanh Lá (Bên trái, cao trung bình) -->
+    <path android:pathData="M 9,35 L 31,35 L 31,95 L 9,95 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="9.0" android:startY="65.0"
+                android:endX="31.0" android:endY="65.0"
+                android:type="linear">
+                <item android:color="#FF1AD31A" android:offset="0.0" />
+                <item android:color="#FF00A300" android:offset="0.7" />
+                <item android:color="#FF008000" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 5. Cột Đỏ (Ở giữa, thấp nhất) -->
+    <path android:pathData="M 39,55 L 61,55 L 61,95 L 39,95 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="39.0" android:startY="75.0"
+                android:endX="61.0" android:endY="75.0"
+                android:type="linear">
+                <item android:color="#FFE62E2E" android:offset="0.0" />
+                <item android:color="#FFB30000" android:offset="0.7" />
+                <item android:color="#FF990000" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 6. Cột Xanh Dương (Bên phải, cao nhất) -->
+    <path android:pathData="M 69,15 L 91,15 L 91,95 L 69,95 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="69.0" android:startY="55.0"
+                android:endX="91.0" android:endY="55.0"
+                android:type="linear">
+                <item android:color="#FF3388FF" android:offset="0.0" />
+                <item android:color="#FF004CBE" android:offset="0.7" />
+                <item android:color="#FF003399" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- ============================================== -->
+    <!-- Các hiệu ứng lóa sáng (Highlight) trên đỉnh cột -->
+    <!-- ============================================== -->
+
+    <!-- Highlight đỉnh cột Xanh Lá -->
+    <path
+        android:pathData="M 9,35 L 31,35 L 31,37 L 9,37 Z"
+        android:fillColor="#80FFFFFF" />
+
+    <!-- Highlight đỉnh cột Đỏ -->
+    <path
+        android:pathData="M 39,55 L 61,55 L 61,57 L 39,57 Z"
+        android:fillColor="#80FFFFFF" />
+
+    <!-- Highlight đỉnh cột Xanh Dương -->
+    <path
+        android:pathData="M 69,15 L 91,15 L 91,17 L 69,17 Z"
+        android:fillColor="#80FFFFFF" />
+
+</vector>

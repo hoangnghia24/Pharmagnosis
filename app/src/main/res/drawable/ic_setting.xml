@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100.0"
+    android:viewportHeight="100.0">
+
+    <!-- ======================================================== -->
+    <!-- NHÓM TỔNG: Áp dụng phối cảnh 3D (Xoay và nghiêng trục Y) -->
+    <!-- ======================================================== -->
+    <group
+        android:pivotX="50"
+        android:pivotY="50"
+        android:rotation="-15"
+        android:scaleY="0.85">
+
+        <!-- 1. Bóng đổ dưới mặt đất (Mờ và tối) -->
+        <group
+            android:translateX="6"
+            android:translateY="14">
+            <path
+                android:pathData="M 45,8 L 55,8 L 58,20 L 68,23 L 79,14 L 86,21 L 77,32 L 80,42 L 92,45 L 92,55 L 80,58 L 77,68 L 86,79 L 79,86 L 68,77 L 58,80 L 55,92 L 45,92 L 42,80 L 32,77 L 21,86 L 14,79 L 23,68 L 20,58 L 8,55 L 8,45 L 20,42 L 23,32 L 14,21 L 21,14 L 32,23 L 42,20 Z"
+                android:fillColor="#33000000" />
+        </group>
+
+        <!-- ======================================================== -->
+        <!-- CÁC LỚP ĐỘ DÀY CỦA BÁNH RĂNG (Tạo khối 3D đùn xuống dưới)-->
+        <!-- ======================================================== -->
+
+        <!-- Lớp đáy cùng (Tối nhất) -->
+        <group
+            android:translateX="3.0"
+            android:translateY="6.0">
+            <path
+                android:pathData="M 45,8 L 55,8 L 58,20 L 68,23 L 79,14 L 86,21 L 77,32 L 80,42 L 92,45 L 92,55 L 80,58 L 77,68 L 86,79 L 79,86 L 68,77 L 58,80 L 55,92 L 45,92 L 42,80 L 32,77 L 21,86 L 14,79 L 23,68 L 20,58 L 8,55 L 8,45 L 20,42 L 23,32 L 14,21 L 21,14 L 32,23 L 42,20 Z"
+                android:fillColor="#3A4856" />
+        </group>
+
+        <!-- Lớp độ dày giữa -->
+        <group
+            android:translateX="2.0"
+            android:translateY="4.0">
+            <path
+                android:pathData="M 45,8 L 55,8 L 58,20 L 68,23 L 79,14 L 86,21 L 77,32 L 80,42 L 92,45 L 92,55 L 80,58 L 77,68 L 86,79 L 79,86 L 68,77 L 58,80 L 55,92 L 45,92 L 42,80 L 32,77 L 21,86 L 14,79 L 23,68 L 20,58 L 8,55 L 8,45 L 20,42 L 23,32 L 14,21 L 21,14 L 32,23 L 42,20 Z"
+                android:fillColor="#526477" />
+        </group>
+
+        <!-- Lớp độ dày sát mặt (Sáng hơn) -->
+        <group
+            android:translateX="1.0"
+            android:translateY="2.0">
+            <path
+                android:pathData="M 45,8 L 55,8 L 58,20 L 68,23 L 79,14 L 86,21 L 77,32 L 80,42 L 92,45 L 92,55 L 80,58 L 77,68 L 86,79 L 79,86 L 68,77 L 58,80 L 55,92 L 45,92 L 42,80 L 32,77 L 21,86 L 14,79 L 23,68 L 20,58 L 8,55 L 8,45 L 20,42 L 23,32 L 14,21 L 21,14 L 32,23 L 42,20 Z"
+                android:fillColor="#708499" />
+        </group>
+
+        <!-- ======================================================== -->
+        <!-- MẶT CHÍNH TRÊN CÙNG CỦA BÁNH RĂNG (Sáng bóng kim loại)   -->
+        <!-- ======================================================== -->
+        <group
+            android:translateX="0"
+            android:translateY="0">
+
+            <!-- Viền ngoài cùng của bánh răng -->
+            <path
+                android:pathData="M 45,8 L 55,8 L 58,20 L 68,23 L 79,14 L 86,21 L 77,32 L 80,42 L 92,45 L 92,55 L 80,58 L 77,68 L 86,79 L 79,86 L 68,77 L 58,80 L 55,92 L 45,92 L 42,80 L 32,77 L 21,86 L 14,79 L 23,68 L 20,58 L 8,55 L 8,45 L 20,42 L 23,32 L 14,21 L 21,14 L 32,23 L 42,20 Z"
+                android:strokeWidth="1.5"
+                android:strokeLineJoin="round"
+                android:strokeColor="#FFFFFF">
+                <aapt:attr name="android:fillColor">
+                    <gradient
+                        android:startX="10.0" android:startY="10.0"
+                        android:endX="90.0" android:endY="90.0"
+                        android:type="linear">
+                        <item android:color="#FFFFFF" android:offset="0.0" />
+                        <item android:color="#D6E3F0" android:offset="0.25" />
+                        <item android:color="#8FA5BA" android:offset="0.5" />
+                        <item android:color="#C9D9E8" android:offset="0.75" />
+                        <item android:color="#62788F" android:offset="1.0" />
+                    </gradient>
+                </aapt:attr>
+            </path>
+
+            <!-- Vòng rãnh lõm xuống (Gradient lật ngược để tạo chiều sâu) -->
+            <path android:pathData="M 50,22 A 28,28 0 1,1 50,78 A 28,28 0 1,1 50,22 Z">
+                <aapt:attr name="android:fillColor">
+                    <gradient
+                        android:startX="22.0" android:startY="22.0"
+                        android:endX="78.0" android:endY="78.0"
+                        android:type="linear">
+                        <item android:color="#586C82" android:offset="0.0" />
+                        <item android:color="#A0B5C9" android:offset="0.5" />
+                        <item android:color="#F0F5FA" android:offset="1.0" />
+                    </gradient>
+                </aapt:attr>
+            </path>
+
+            <!-- Trục trung tâm nổi lên (Bắt sáng như mặt phẳng ngoài) -->
+            <path
+                android:pathData="M 50,28 A 22,22 0 1,1 50,72 A 22,22 0 1,1 50,28 Z"
+                android:strokeWidth="1.0"
+                android:strokeColor="#AABDD0">
+                <aapt:attr name="android:fillColor">
+                    <gradient
+                        android:startX="28.0" android:startY="28.0"
+                        android:endX="72.0" android:endY="72.0"
+                        android:type="linear">
+                        <item android:color="#FFFFFF" android:offset="0.0" />
+                        <item android:color="#C1D4E6" android:offset="0.4" />
+                        <item android:color="#778D9F" android:offset="1.0" />
+                    </gradient>
+                </aapt:attr>
+            </path>
+
+            <!-- ======================================================== -->
+            <!-- LỖ TRỤC Ở GIỮA (Tạo hiệu ứng lỗ sâu đục xuyên qua khối)  -->
+            <!-- ======================================================== -->
+
+            <!-- Vách sau của lỗ (Hứng ánh sáng, lệch xuống dưới bên phải) -->
+            <path
+                android:pathData="M 52,42 A 10,10 0 1,1 52,62 A 10,10 0 1,1 52,42 Z"
+                android:fillColor="#D8E4F0" />
+
+            <!-- Phần hố sâu và đổ bóng (Tối màu, lệch lên trên bên trái) -->
+            <path
+                android:pathData="M 49,39 A 11,11 0 1,1 49,61 A 11,11 0 1,1 49,39 Z"
+                android:fillColor="#242E38" />
+
+        </group>
+    </group>
+</vector>
