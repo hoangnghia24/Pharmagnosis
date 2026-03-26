@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerViewModel.getIsRegisterSuccess().observe(this, isSuccess -> {
             if (isSuccess != null && isSuccess) {
-                Toast.makeText(this, "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.", Toast.LENGTH_SHORT).show();
                 // Quay về trang đăng nhập hoặc vào thẳng App
                 finish();
             }
