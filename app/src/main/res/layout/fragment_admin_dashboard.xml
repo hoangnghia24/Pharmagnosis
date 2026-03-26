@@ -205,12 +205,13 @@
                             app:cardElevation="0dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
+
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="16dp"
+                                android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@android:drawable/ic_menu_search"
-                                app:tint="#9333EA"/>
+                                app:tint="#9333EA" />
                         </com.google.android.material.card.MaterialCardView>
 
                         <TextView
