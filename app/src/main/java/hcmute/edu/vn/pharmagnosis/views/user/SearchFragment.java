@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.adapters.MedicineSearchAdapter;
-import hcmute.edu.vn.pharmagnosis.viewmodels.SearchViewModel;
+import hcmute.edu.vn.pharmagnosis.viewmodels.user.SearchViewModel;
 
 public class SearchFragment extends Fragment {
 

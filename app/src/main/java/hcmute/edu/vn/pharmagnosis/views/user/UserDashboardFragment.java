@@ -17,13 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.adapters.NewsAdapter;
 import hcmute.edu.vn.pharmagnosis.models.HealthNews;
+import hcmute.edu.vn.pharmagnosis.viewmodels.user.UserDashboardViewModel;
 
 public class UserDashboardFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
@@ -114,7 +113,7 @@ public class UserDashboardFragment extends Fragment {
         recyclerNews.setLayoutManager(layoutManager);
 
         // Khởi tạo Bếp trưởng (ViewModel)
-        hcmute.edu.vn.pharmagnosis.viewmodels.admin.UserDashboardViewModel viewModel = new androidx.lifecycle.ViewModelProvider(this).get(hcmute.edu.vn.pharmagnosis.viewmodels.admin.UserDashboardViewModel.class);
+        UserDashboardViewModel viewModel = new androidx.lifecycle.ViewModelProvider(this).get(UserDashboardViewModel.class);
 
         // "Lắng nghe" dữ liệu từ Firebase
         viewModel.getNewsLiveData().observe(getViewLifecycleOwner(), newsList -> {

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.pharmagnosis.viewmodels.admin; // Sửa đường dẫn nếu bạn để trong thư mục con
+package hcmute.edu.vn.pharmagnosis.viewmodels.user; // Sửa đường dẫn nếu bạn để trong thư mục con
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.pharmagnosis.viewmodels;
+package hcmute.edu.vn.pharmagnosis.viewmodels.user;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
