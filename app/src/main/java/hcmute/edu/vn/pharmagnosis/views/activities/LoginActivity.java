@@ -1,5 +1,6 @@
 package hcmute.edu.vn.pharmagnosis.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -51,9 +52,10 @@ public class LoginActivity extends AppCompatActivity {
             loginViewModel.handleLogin(email, password);
         });
 
-        binding.tvRegister.setOnClickListener(v ->
-                Toast.makeText(this, "Chuyển sang trang Đăng ký", Toast.LENGTH_SHORT).show()
-        );
+        binding.tvRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void observeViewModel() {

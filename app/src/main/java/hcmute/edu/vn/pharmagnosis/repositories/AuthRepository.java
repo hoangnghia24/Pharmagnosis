@@ -29,4 +29,16 @@ public class AuthRepository {
                     callback.onFailure(e.getMessage());
                 });
     }
+
+    public void registerUser(String email, String password, AuthCallback callback) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(authResult -> {
+                    // Firebase báo tạo tài khoản thành công
+                    callback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    // Lỗi (email đã tồn tại, pass quá ngắn...)
+                    callback.onFailure(e.getMessage());
+                });
+    }
 }
