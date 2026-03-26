@@ -1,7 +1,6 @@
 package hcmute.edu.vn.pharmagnosis.repositories;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import hcmute.edu.vn.pharmagnosis.di.FirebaseModule;
 
 public class AuthRepository {
@@ -9,9 +8,11 @@ public class AuthRepository {
     private final FirebaseAuth firebaseAuth;
 
     public AuthRepository() {
+        // Lấy instance từ thư mục di theo đúng quy ước
         this.firebaseAuth = FirebaseModule.provideFirebaseAuth();
     }
 
+    // Interface để trả kết quả về cho ViewModel
     public interface AuthCallback {
         void onSuccess();
         void onFailure(String errorMessage);
@@ -20,18 +21,11 @@ public class AuthRepository {
     public void loginUser(String email, String password, AuthCallback callback) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                    // Kiểm tra xem user có null không và đã xác thực email chưa
-                    if (user != null && user.isEmailVerified()) {
-                        callback.onSuccess(); // Cho phép đăng nhập
-                    } else {
-                        // Nếu chưa xác thực, ép đăng xuất để bảo mật và báo lỗi
-                        firebaseAuth.signOut();
-                        callback.onFailure("Vui lòng kiểm tra hộp thư và xác thực email trước khi đăng nhập!");
-                    }
+                    // Firebase báo đăng nhập thành công
+                    callback.onSuccess();
                 })
                 .addOnFailureListener(e -> {
+                    // Firebase báo lỗi (sai pass, tài khoản không tồn tại...)
                     callback.onFailure(e.getMessage());
                 });
     }
@@ -39,28 +33,24 @@ public class AuthRepository {
     public void registerUser(String email, String password, AuthCallback callback) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                    if (user != null) {
-                        // Gửi email xác thực
-                        user.sendEmailVerification()
-                                .addOnSuccessListener(aVoid -> {
-                                    // Gửi thành công -> Ép đăng xuất để họ không lọt vào app -> Báo ViewModel thành công
-                                    firebaseAuth.signOut();
-                                    callback.onSuccess();
-                                })
-                                .addOnFailureListener(e -> {
-                                    callback.onFailure("Tạo tài khoản thành công nhưng không thể gửi email xác thực.");
-                                });
-                    }
+                    // Firebase báo tạo tài khoản thành công
+                    callback.onSuccess();
                 })
                 .addOnFailureListener(e -> {
+                    // Lỗi (email đã tồn tại, pass quá ngắn...)
                     callback.onFailure(e.getMessage());
                 });
     }
 
     public void resetPassword(String email, AuthCallback callback) {
         firebaseAuth.sendPasswordResetEmail(email)
-                .addOnSuccessListener(aVoid -> callback.onSuccess())
-                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+                .addOnSuccessListener(aVoid -> {
+                    // Đã gửi email thành công
+                    callback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    // Thất bại (ví dụ email không tồn tại)
+                    callback.onFailure(e.getMessage());
+                });
     }
 }
