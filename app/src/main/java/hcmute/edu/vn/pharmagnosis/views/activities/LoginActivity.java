@@ -75,7 +75,9 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.getIsLoginSuccess().observe(this, isSuccess -> {
             if (isSuccess != null && isSuccess) {
                 Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                // TODO: Chuyển sang MainActivity/DashboardActivity
+                Intent intent = new Intent(LoginActivity.this, hcmute.edu.vn.pharmagnosis.MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

@@ -43,18 +43,26 @@ public class UserDashboardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Nạp giao diện fragment_home.xml
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        
+
         initViews(view);
-        
+
         // Sửa lỗi: Phải gọi dòng này sau khi đã findViewById (trong initViews)
         if (bottomNavigationView != null) {
             bottomNavigationView.setItemIconTintList(null);
         }
-        
+
+        // Trả View cho hệ thống trước để nó kịp tạo ra LifecycleOwner
+        return view;
+    }
+
+    // CẬP NHẬT QUAN TRỌNG: Thêm hàm onViewCreated để xử lý logic sau khi giao diện đã sẵn sàng
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Lúc này ViewLifecycleOwner đã sẵn sàng 100%, gọi observe và setup thoải mái!
         setupListeners();
         setupRecyclerView();
-
-        return view;
     }
 
     // Ánh xạ View

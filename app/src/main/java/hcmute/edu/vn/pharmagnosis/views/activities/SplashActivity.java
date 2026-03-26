@@ -3,9 +3,12 @@ package hcmute.edu.vn.pharmagnosis.views.activities;
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.animation.DecelerateInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,11 +49,11 @@ public class SplashActivity extends AppCompatActivity {
                 .translationY(0f)
                 .alpha(1f)
                 .setDuration(1000)
-                .setInterpolator(new DecelerateInterpolator()) // Hiệu ứng giảm tốc mượt mà ở điểm dừng
+                .setInterpolator(new DecelerateInterpolator())
                 .setStartDelay(200)
                 .start();
 
-        // Hiệu ứng Tên App xuất hiện (Trễ hơn logo 400ms)
+        // Hiệu ứng Tên App xuất hiện
         binding.tvAppNameSplash.animate()
                 .translationY(0f)
                 .alpha(1f)
@@ -59,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
                 .setStartDelay(600)
                 .start();
 
-        // Hiệu ứng Slogan xuất hiện (Trễ hơn Tên App 200ms)
+        // Hiệu ứng Slogan xuất hiện
         binding.tvSloganSplash.animate()
                 .translationY(0f)
                 .alpha(1f)
@@ -96,23 +99,35 @@ public class SplashActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseModule.provideFirebaseAuth();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-        // Kiểm tra xem đã đăng nhập và đã xác thực email chưa
+        // Chuẩn bị sẵn Intent chuyển sang Login (Dành cho trường hợp chưa đăng nhập)
+        Intent loginIntent = new Intent(SplashActivity.this, LoginActivity.class);
+
+        // KIỂM TRA ĐĂNG NHẬP
         if (currentUser != null && currentUser.isEmailVerified()) {
-            // TODO: Đổi thành MainActivity / DashboardActivity sau này
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
+
+            // CẬP NHẬT: ĐÃ ĐĂNG NHẬP & XÁC THỰC -> CHUYỂN THẲNG VÀO TRANG CHỦ (MainActivity)
+            Intent homeIntent = new Intent(SplashActivity.this, hcmute.edu.vn.pharmagnosis.MainActivity.class);
+            startActivity(homeIntent);
+            finish();
+
         } else {
-            // Chưa đăng nhập hoặc chưa xác thực email -> Trục xuất & về Login
+            // Chưa đăng nhập hoặc chưa xác thực email -> Ép đăng xuất & về Login
             if (currentUser != null && !currentUser.isEmailVerified()) {
                 firebaseAuth.signOut();
             }
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
 
-        // Đóng Splash Screen lại
-        // Thêm overridePendingTransition để tắt hiệu ứng chớp đen mặc định của Android khi chuyển trang
-        finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            // CẬP NHẬT: KÍCH HOẠT HIỆU ỨNG LOGO BAY (Shared Element Transition)
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    SplashActivity.this,
+                    binding.cvLogoSplash, // View hiện tại ở Splash
+                    "logo_transition"     // Sợi dây tàng hình đã đặt trong XML
+            );
+
+            // Bắt đầu chuyển sang Login kèm theo hiệu ứng bay
+            startActivity(loginIntent, options.toBundle());
+
+            // Lưu ý: Dùng Handler chờ 1 giây (để logo bay xong) rồi mới đóng màn hình Splash
+            new Handler(Looper.getMainLooper()).postDelayed(this::finish, 1000);
+        }
     }
 }
