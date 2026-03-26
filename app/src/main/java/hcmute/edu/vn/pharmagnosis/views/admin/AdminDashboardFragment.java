@@ -14,6 +14,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 
 import hcmute.edu.vn.pharmagnosis.R;
+import hcmute.edu.vn.pharmagnosis.views.admin.diseases.ManageDiseasesFragment;
+import hcmute.edu.vn.pharmagnosis.views.admin.medicines.ManageMedicinesFragment;
+import hcmute.edu.vn.pharmagnosis.views.admin.news.ManageNewsFragment;
 
 public class AdminDashboardFragment extends AppCompatActivity {
 

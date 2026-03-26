@@ -1,4 +1,4 @@
-package hcmute.edu.vn.pharmagnosis.views.admin;
+package hcmute.edu.vn.pharmagnosis.views.admin.medicines;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import hcmute.edu.vn.pharmagnosis.R;
+import hcmute.edu.vn.pharmagnosis.views.admin.AdminDashboardFragment;
 
 // Tên class viết theo kiểu PascalCase, là Cụm danh từ theo quy chuẩn
 public class ManageMedicinesFragment extends Fragment { // [cite: 3, 4]

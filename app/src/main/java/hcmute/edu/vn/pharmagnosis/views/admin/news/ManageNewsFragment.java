@@ -1,4 +1,4 @@
-package hcmute.edu.vn.pharmagnosis.views.admin;
+package hcmute.edu.vn.pharmagnosis.views.admin.news;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import hcmute.edu.vn.pharmagnosis.R;
+import hcmute.edu.vn.pharmagnosis.views.admin.AdminDashboardFragment;
 
 public class ManageNewsFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.pharmagnosis.views.admin;
+package hcmute.edu.vn.pharmagnosis.views.admin.diseases;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,21 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import hcmute.edu.vn.pharmagnosis.R;
+import hcmute.edu.vn.pharmagnosis.views.admin.AdminDashboardFragment;
 
-public class AddNewsFragment extends Fragment {
+public class AddDiseaseFragment extends Fragment { // Đổi tên class cho EditDiseaseFragment
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_news, container, false);
+        return inflater.inflate(R.layout.fragment_add_disease, container, false); // Trỏ đúng file layout tương ứng
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         Button btnCancel = view.findViewById(R.id.btn_cancel);
         ImageView imgMenu = view.findViewById(R.id.img_menu);
-        // Logic quay lại màn hình trước đó
         View.OnClickListener goBack = v -> requireActivity().getOnBackPressedDispatcher().onBackPressed();
 
 

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.pharmagnosis.views.admin;
+package hcmute.edu.vn.pharmagnosis.views.admin.medicines;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
