@@ -11,16 +11,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pharmagnosis">
+
         <activity
-            android:name=".views.admin.AdminDashboardFragment"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity
+            android:name=".views.user.NewsDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.admin.AdminDashboardFragment"
+            android:exported="false" />
+        <activity
+            android:name=".views.user.MedicineDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
