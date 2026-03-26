@@ -23,42 +23,45 @@
             android:layout_height="32dp"
             android:padding="6dp"
             android:src="@drawable/ic_arrow_back"
-            app:tint="#212121" /> <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="12dp"
-        android:layout_weight="1"
-        android:background="@drawable/bg_search_active"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp">
+            app:tint="#212121" />
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_search"
-            app:tint="#1976D2" />
-
-        <EditText
-            android:id="@+id/edtSearchInput"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:hint="Para"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="#212121"
-            android:textSize="14sp" />
+            android:background="@drawable/bg_search_active"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
 
-        <ImageView
-            android:id="@+id/imgClearSearch"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_close"
-            app:tint="#1976D2" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_search"
+                app:tint="#1976D2" />
+
+            <EditText
+                android:id="@+id/edtSearchInput"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Tìm kiếm..."
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="#212121"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/imgClearSearch"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_close"
+                app:tint="#1976D2" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -139,45 +142,53 @@
                 app:chipSpacingHorizontal="8dp"
                 app:chipSpacingVertical="8dp">
 
-                <TextView
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipParacetamol"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chip_outline"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
                     android:text="Paracetamol"
                     android:textColor="#424242"
-                    android:textSize="13sp" />
+                    app:chipBackgroundColor="@android:color/white"
+                    app:chipCornerRadius="16dp"
+                    app:chipStrokeColor="#E0E0E0"
+                    app:chipStrokeWidth="1dp" />
 
-                <TextView
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipIbuprofen"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chip_outline"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
                     android:text="Ibuprofen"
                     android:textColor="#424242"
-                    android:textSize="13sp" />
+                    app:chipBackgroundColor="@android:color/white"
+                    app:chipCornerRadius="16dp"
+                    app:chipStrokeColor="#E0E0E0"
+                    app:chipStrokeWidth="1dp" />
 
-                <TextView
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipMenTieuHoa"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chip_outline"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
                     android:text="Men tiêu hóa"
                     android:textColor="#424242"
-                    android:textSize="13sp" />
+                    app:chipBackgroundColor="@android:color/white"
+                    app:chipCornerRadius="16dp"
+                    app:chipStrokeColor="#E0E0E0"
+                    app:chipStrokeWidth="1dp" />
 
-                <TextView
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipOresol"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chip_outline"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
                     android:text="Oresol"
                     android:textColor="#424242"
-                    android:textSize="13sp" />
+                    app:chipBackgroundColor="@android:color/white"
+                    app:chipCornerRadius="16dp"
+                    app:chipStrokeColor="#E0E0E0"
+                    app:chipStrokeWidth="1dp" />
 
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>

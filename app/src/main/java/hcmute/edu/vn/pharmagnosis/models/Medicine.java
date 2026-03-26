@@ -4,7 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.List;
 @IgnoreExtraProperties
-public class Medicine {
+public class Medicine implements java.io.Serializable {
     private String medicineId;
     private String medicineName;
     private String tradeName;
@@ -13,10 +13,12 @@ public class Medicine {
     private List<String> contraindications;
     private List<String> sideEffects;
 
+    private String image;
+
     public Medicine() {
     }
 
-    public Medicine(String medicineId, String medicineName, String tradeName, List<String> activeIngredient, String indications, List<String> contraindications, List<String> sideEffects) {
+    public Medicine(String medicineId, String medicineName, String tradeName, List<String> activeIngredient, String indications, List<String> contraindications, List<String> sideEffects, String image, String manufacturer) {
         this.medicineId = medicineId;
         this.medicineName = medicineName;
         this.tradeName = tradeName;
@@ -24,8 +26,15 @@ public class Medicine {
         this.indications = indications;
         this.contraindications = contraindications;
         this.sideEffects = sideEffects;
+        this.image = image;
     }
 
+    public String getImage() {
+        return image;
+    }
+    public void setImage(String image) {
+        this.image = image;
+    }
     public String getMedicineId() {
         return medicineId;
     }
