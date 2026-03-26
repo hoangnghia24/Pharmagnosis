@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+        // Xử lý sự kiện nhấn nút Đăng nhập
         binding.btnLogin.setOnClickListener(v -> {
             String email = binding.etEmail.getText().toString().trim();
             String password = binding.etPassword.getText().toString().trim();
@@ -52,8 +53,15 @@ public class LoginActivity extends AppCompatActivity {
             loginViewModel.handleLogin(email, password);
         });
 
+        // Chuyển sang màn hình Đăng ký
         binding.tvRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
+        // Quên mật khẩu
+        binding.tvForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
     }

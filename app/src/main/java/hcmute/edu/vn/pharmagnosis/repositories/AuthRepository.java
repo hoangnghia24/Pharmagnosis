@@ -41,4 +41,16 @@ public class AuthRepository {
                     callback.onFailure(e.getMessage());
                 });
     }
+
+    public void resetPassword(String email, AuthCallback callback) {
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener(aVoid -> {
+                    // Đã gửi email thành công
+                    callback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    // Thất bại (ví dụ email không tồn tại)
+                    callback.onFailure(e.getMessage());
+                });
+    }
 }
