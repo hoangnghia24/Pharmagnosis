@@ -75,7 +75,7 @@ public class EditMedicineFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Nếu bạn chưa tạo EditMedicineViewModel, bạn có thể comment dòng dưới lại tạm thời
+        // Khởi tạo ViewModel
         viewModel = new ViewModelProvider(this).get(EditMedicineViewModel.class);
 
         initializeViews(view);
@@ -91,6 +91,9 @@ public class EditMedicineFragment extends Fragment {
                 fillDataToUI(); // Đổ dữ liệu lên giao diện
             }
         }
+
+        // Lắng nghe trạng thái từ ViewModel
+        observeViewModel();
     }
 
     private void initializeViews(View view) {
@@ -238,10 +241,32 @@ public class EditMedicineFragment extends Fragment {
         // Gọi ViewModel để lưu lên Firebase
         if (viewModel != null) {
             viewModel.updateMedicineToFirebase(newImageUri, currentMedicine);
-        } else {
-            Toast.makeText(requireContext(), "Dữ liệu đã sẵn sàng để cập nhật!", Toast.LENGTH_SHORT).show();
-            // Nếu chưa có viewmodel, tạm thời tự back về
-            // requireActivity().getOnBackPressedDispatcher().onBackPressed();
         }
+    }
+
+    // --- HÀM MỚI BỔ SUNG: Lắng nghe trạng thái từ ViewModel ---
+    private void observeViewModel() {
+        if (viewModel == null) return;
+
+        // Lắng nghe trạng thái loading để vô hiệu hóa nút bấm
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            btnSave.setEnabled(!isLoading);
+            btnSave.setText(isLoading ? "Đang cập nhật..." : "Cập nhật");
+        });
+
+        // Lắng nghe trạng thái thành công
+        viewModel.getIsSuccess().observe(getViewLifecycleOwner(), isSuccess -> {
+            if (isSuccess) {
+                Toast.makeText(requireContext(), "Cập nhật thuốc thành công!", Toast.LENGTH_SHORT).show();
+                requireActivity().getOnBackPressedDispatcher().onBackPressed(); // Trở về danh sách
+            }
+        });
+
+        // Lắng nghe trạng thái lỗi
+        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
+            if (error != null && !error.isEmpty()) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
