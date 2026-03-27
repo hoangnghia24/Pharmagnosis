@@ -20,18 +20,52 @@ import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.models.Medicine;
 import hcmute.edu.vn.pharmagnosis.views.user.MedicineDetailActivity;
 
-// Thêm "implements Filterable" để cấp phép cho Adapter này khả năng tìm kiếm
 public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAdapter.MedicineViewHolder> implements Filterable {
 
     private List<Medicine> medicineListFull; // Kho chứa toàn bộ thuốc kéo từ Firebase về
     private List<Medicine> medicineListFiltered; // Danh sách thuốc đang hiển thị (sau khi lọc)
+    private String currentKeyword = "";
+    private String currentDosageFilter = "";
+    private String currentTargetFilter = "";
+    public void applyAdvancedFilter(String keyword, String dosage, String target) {
+        this.currentKeyword = keyword != null ? keyword.toLowerCase().trim() : "";
+        this.currentDosageFilter = dosage != null ? dosage : "";
+        this.currentTargetFilter = target != null ? target : "";
 
+        List<Medicine> filteredList = new java.util.ArrayList<>();
+
+        // Nếu cả 3 đều rỗng (chưa gõ tìm kiếm, chưa chọn lọc) -> Trả về danh sách rỗng (hoặc full tùy bạn)
+        if (currentKeyword.isEmpty() && currentDosageFilter.isEmpty() && currentTargetFilter.isEmpty()) {
+            this.medicineListFiltered = new java.util.ArrayList<>(); // Để trống màn hình
+            notifyDataSetChanged();
+            return;
+        }
+
+        // Duyệt qua toàn bộ kho thuốc
+        for (Medicine m : medicineListFull) {
+            boolean matchKeyword = currentKeyword.isEmpty() ||
+                    m.getMedicineName().toLowerCase().contains(currentKeyword) ||
+                    (m.getTradeName() != null && m.getTradeName().toLowerCase().contains(currentKeyword));
+
+            boolean matchDosage = currentDosageFilter.isEmpty() ||
+                    (m.getDosageForm() != null && m.getDosageForm().equals(currentDosageFilter));
+
+            boolean matchTarget = currentTargetFilter.isEmpty() ||
+                    (m.getTargetUsers() != null && m.getTargetUsers().equals(currentTargetFilter));
+
+            if (matchKeyword && matchDosage && matchTarget) {
+                filteredList.add(m);
+            }
+        }
+
+        this.medicineListFiltered = filteredList;
+        notifyDataSetChanged();
+    }
     public MedicineSearchAdapter(List<Medicine> medicineList) {
         this.medicineListFull = new ArrayList<>(medicineList);
         this.medicineListFiltered = new ArrayList<>(medicineList); // Ban đầu chưa gõ gì thì hiển thị tất cả
     }
 
-    // Cập nhật lại kho dữ liệu khi Firebase tải xong
     public void setMedicines(List<Medicine> medicines) {
         this.medicineListFull = new ArrayList<>(medicines);
         this.medicineListFiltered = new ArrayList<>();
@@ -41,7 +75,6 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
     @NonNull
     @Override
     public MedicineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Nạp file giao diện XML của bạn vào đây
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_result, parent, false);
         return new MedicineViewHolder(view);
     }
@@ -50,26 +83,44 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
     public void onBindViewHolder(@NonNull MedicineViewHolder holder, int position) {
         Medicine medicine = medicineListFiltered.get(position);
         if (medicine == null) return;
-
-        // 1. Gán Tên thuốc
         holder.txtMedicineName.setText(medicine.getMedicineName());
 
+        if (medicine.getTradeName() != null && !medicine.getTradeName().isEmpty()) {
+            holder.txttradeName.setText("NSX: " + medicine.getTradeName());
+        } else {
+            holder.txttradeName.setText("NSX: Đang cập nhật");
+        }
 
-        // 3. Dùng Glide tải ảnh thuốc từ link URL trên Firebase
+        if (medicine.getActiveIngredient() != null && !medicine.getActiveIngredient().isEmpty()) {
+            holder.txtTag1.setText(medicine.getActiveIngredient().get(0));
+            holder.txtTag1.setVisibility(View.VISIBLE);
+        } else {
+            holder.txtTag1.setVisibility(View.GONE);
+        }
+
+        if (medicine.getIndications() != null && !medicine.getIndications().isEmpty()) {
+            holder.txtTag2.setText(medicine.getIndications());
+            holder.txtTag2.setVisibility(View.VISIBLE);
+        } else {
+
+            if (medicine.getTradeName() != null && !medicine.getTradeName().isEmpty()) {
+                holder.txtTag2.setText(medicine.getTradeName());
+                holder.txtTag2.setVisibility(View.VISIBLE);
+            } else {
+                holder.txtTag2.setVisibility(View.GONE);
+            }
+        }
+
         if (medicine.getImage() != null && !medicine.getImage().isEmpty()) {
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                     .load(medicine.getImage())
                     .into(holder.imgMedicine);
         }
 
-        // 4. Bắt sự kiện click để nhảy sang màn hình Chi tiết thuốc
         holder.itemView.setOnClickListener(v -> {
             android.content.Context context = v.getContext();
             android.content.Intent intent = new android.content.Intent(context, hcmute.edu.vn.pharmagnosis.views.user.MedicineDetailActivity.class);
-
-            // Gói hành lý mang sang trang chi tiết (Sau này mình sẽ bắt bên kia)
             intent.putExtra("MEDICINE_OBJ", (java.io.Serializable) medicine);
-
             context.startActivity(intent);
         });
     }
@@ -79,7 +130,6 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
         return medicineListFiltered != null ? medicineListFiltered.size() : 0;
     }
 
-    // BỘ LỌC TÌM KIẾM THẦN THÁNH Ở ĐÂY
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -90,10 +140,8 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
                 if (constraint == null || constraint.length() == 0) {
 
                 } else {
-                    // Chuyển chữ gõ thành chữ thường để không phân biệt hoa/thường
                     String filterPattern = constraint.toString().toLowerCase().trim();
 
-                    // Duyệt qua kho thuốc, ai có tên khớp thì bỏ vào giỏ hàngPa
                     for (Medicine item : medicineListFull) {
                         if (item.getMedicineName().toLowerCase().contains(filterPattern) ||
                                 (item.getTradeName() != null && item.getTradeName().toLowerCase().contains(filterPattern))) {
@@ -111,7 +159,6 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 medicineListFiltered.clear();
                 medicineListFiltered.addAll((List) results.values);
-                // Lệnh quan trọng nhất: Yêu cầu Adapter in lại danh sách mới lên màn hình
                 notifyDataSetChanged();
             }
         };
@@ -120,14 +167,19 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
     public static class MedicineViewHolder extends RecyclerView.ViewHolder {
         ImageView imgMedicine;
         TextView txtMedicineName;
-        TextView txtManufacturer;
+        TextView txttradeName;
+        TextView txtTag1;
+        TextView txtTag2;
+
 
         public MedicineViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Ánh xạ khớp với ID trong file XML của bạn
+            // Ánh xạ khớp với ID
             imgMedicine = itemView.findViewById(R.id.imgMedicine);
             txtMedicineName = itemView.findViewById(R.id.txtMedicineName);
-            txtManufacturer = itemView.findViewById(R.id.txtManufacturer);
+            txttradeName = itemView.findViewById(R.id.txttradeName);
+            txtTag1 = itemView.findViewById(R.id.txtTag1);
+            txtTag2 = itemView.findViewById(R.id.txtTag2);
         }
     }
 }

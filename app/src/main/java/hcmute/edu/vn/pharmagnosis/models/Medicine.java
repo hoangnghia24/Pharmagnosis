@@ -15,10 +15,13 @@ public class Medicine implements java.io.Serializable {
 
     private String image;
 
+    private String dosageForm; // Dạng thuốc bào chế
+    private String targetUsers; // Đối tượng độ tuổi sử dụng thuốc
+
     public Medicine() {
     }
 
-    public Medicine(String medicineId, String medicineName, String tradeName, List<String> activeIngredient, String indications, List<String> contraindications, List<String> sideEffects, String image, String manufacturer) {
+    public Medicine(String medicineId, String medicineName, String tradeName, List<String> activeIngredient, String indications, List<String> contraindications, List<String> sideEffects, String image, String targetUsers, String dosageForm) {
         this.medicineId = medicineId;
         this.medicineName = medicineName;
         this.tradeName = tradeName;
@@ -27,8 +30,14 @@ public class Medicine implements java.io.Serializable {
         this.contraindications = contraindications;
         this.sideEffects = sideEffects;
         this.image = image;
+        this.targetUsers = targetUsers;
+        this.dosageForm = dosageForm;
     }
+    public String getDosageForm() { return dosageForm; }
+    public void setDosageForm(String dosageForm) { this.dosageForm = dosageForm; }
 
+    public String getTargetUsers() { return targetUsers; }
+    public void setTargetUsers(String targetUsers) { this.targetUsers = targetUsers; }
     public String getImage() {
         return image;
     }

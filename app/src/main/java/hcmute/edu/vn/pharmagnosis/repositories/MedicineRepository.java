@@ -2,6 +2,8 @@ package hcmute.edu.vn.pharmagnosis.repositories;
 
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -39,5 +41,23 @@ public class MedicineRepository {
                 });
 
         return medicineLiveData;
+    }
+    public void addMedicine(Medicine medicine, OnCompleteListener<Void> listener) {
+        // Tạo một Document ID mới tự động từ Firestore
+        String docId = db.collection("medicines").document().getId();
+        medicine.setMedicineId(docId); // Gán ID vào model
+
+        db.collection("medicines").document(docId)
+                .set(medicine)
+                .addOnCompleteListener(listener);
+    }
+
+    // Hàm cập nhật thuốc đã có
+    public void updateMedicine(Medicine medicine, OnCompleteListener<Void> listener) {
+        if (medicine.getMedicineId() != null) {
+            db.collection("medicines").document(medicine.getMedicineId())
+                    .set(medicine)
+                    .addOnCompleteListener(listener);
+        }
     }
 }

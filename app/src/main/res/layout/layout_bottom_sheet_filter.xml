@@ -79,6 +79,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="24dp"
                 app:chipSpacingHorizontal="8dp"
+                app:singleSelection="true"
                 app:chipSpacingVertical="8dp">
 
                 <com.google.android.material.chip.Chip
@@ -169,6 +170,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="24dp"
                 app:chipSpacingHorizontal="8dp"
+                app:singleSelection="true"
                 app:chipSpacingVertical="8dp">
 
                 <com.google.android.material.chip.Chip
@@ -221,47 +223,6 @@
                     app:chipStrokeWidth="1dp" />
             </com.google.android.material.chip.ChipGroup>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phân loại thuốc"
-                android:textColor="#212121"
-                android:textStyle="bold" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="16dp"
-                app:chipSpacingHorizontal="8dp"
-                app:chipSpacingVertical="8dp"
-                app:singleSelection="true"> <com.google.android.material.chip.Chip
-                android:id="@+id/chipCategoryOtc"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Không kê đơn (OTC)"
-                android:textColor="@color/color_chip_text"
-                app:checkedIconVisible="false"
-                app:chipBackgroundColor="@color/color_chip_bg"
-                app:chipStrokeColor="@color/color_chip_stroke"
-                app:chipStrokeWidth="1dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipCategoryEtc"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cần kê đơn (ETC)"
-                    android:textColor="@color/color_chip_text"
-                    app:checkedIconVisible="false"
-                    app:chipBackgroundColor="@color/color_chip_bg"
-                    app:chipStrokeColor="@color/color_chip_stroke"
-                    app:chipStrokeWidth="1dp" />
-            </com.google.android.material.chip.ChipGroup>
-
         </LinearLayout>
     </ScrollView>
 
@@ -270,7 +231,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
-        android:text="Áp dụng (12 kết quả)"
+        android:text="Áp dụng"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"

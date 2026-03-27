@@ -58,6 +58,7 @@
             app:layout_constraintTop_toBottomOf="@id/txtMedicineName">
 
             <TextView
+                android:id="@+id/txtTag1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_chip_outline"
@@ -65,9 +66,10 @@
                 android:paddingVertical="2dp"
                 android:text="Viên nén"
                 android:textColor="#757575"
-                android:textSize="11sp"/>
+                android:textSize="11sp" />
 
             <TextView
+                android:id="@+id/txtTag2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -76,11 +78,11 @@
                 android:paddingVertical="2dp"
                 android:text="Giảm đau - Hạ sốt"
                 android:textColor="#757575"
-                android:textSize="11sp"/>
+                android:textSize="11sp" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtManufacturer"
+            android:id="@+id/txttradeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
