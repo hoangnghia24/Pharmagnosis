@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <!-- Ảnh thuốc ở trên cùng -->
     <ImageView
         android:id="@+id/imgMedicine"
         android:layout_width="match_parent"
@@ -15,7 +14,6 @@
         android:scaleType="centerInside"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Thanh công cụ đè lên ảnh -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutTopBar"
         android:layout_width="match_parent"
@@ -117,6 +115,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutWarningBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -133,6 +132,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtWarningText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -181,6 +181,7 @@
                 android:background="#EEEEEE" />
 
             <TextView
+                android:id="@+id/txtSectionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

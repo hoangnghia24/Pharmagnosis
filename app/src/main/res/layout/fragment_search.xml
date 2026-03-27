@@ -62,6 +62,17 @@
                 android:src="@drawable/ic_close"
                 app:tint="#1976D2" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgFilter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_white"
+            android:padding="12dp"
+            android:src="@drawable/ic_sidebar"
+            app:tint="#1976D2" />
+
     </LinearLayout>
 
     <View
@@ -83,36 +94,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="40dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="24dp"
-                android:paddingTop="24dp">
-
-                <TextView
-                    android:id="@+id/txtHistoryTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lịch sử tìm kiếm"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txtClearHistory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Xóa"
-                    android:textColor="#1976D2"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/txtHistoryTitle"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/txtHistoryTitle" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerSearchHistory"
