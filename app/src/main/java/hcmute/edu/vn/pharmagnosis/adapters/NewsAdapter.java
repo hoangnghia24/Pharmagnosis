@@ -33,19 +33,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         HealthNews news = newsList.get(position);
         if (news == null) return;
 
-        // 1. ĐÃ SỬA: Gắn dữ liệu vào đúng các View mà XML của bạn đang có
         holder.txtNewsTitle.setText(news.getTitle());
         holder.txtNewsDate.setText("Tin tức Y tế"); // Tạm gán chữ này vào vị trí ngày đăng
 
-        // 2. ĐÃ SỬA: Tạm vô hiệu hóa tính năng load ảnh bằng Glide.
-        // Vì trong file item_news.xml của bạn không có ImageView (ảnh bìa) nên gọi lệnh này app sẽ văng.
-        /*
-        com.bumptech.glide.Glide.with(holder.itemView.getContext())
-                .load(news.getImage())
-                .into(holder.imgNews);
-        */
 
-        // Bắt sự kiện Click vào thẻ tin tức (Giữ nguyên của bạn)
         holder.itemView.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(context, hcmute.edu.vn.pharmagnosis.views.user.NewsDetailActivity.class);
@@ -62,7 +53,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
-        // ĐÃ SỬA: Khai báo đúng các thành phần có trong file item_news.xml của bạn
         private TextView txtNewsTitle;
         private TextView txtNewsDate;
         private ImageView imgEdit;
