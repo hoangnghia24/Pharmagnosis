@@ -37,31 +37,35 @@ android {
 }
 
 dependencies {
+    // Các thư viện UI và Core cơ bản của Android
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    // Thư viện Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // Firebase BoM (Bill of Materials) - Quản lý phiên bản chung cho mọi dịch vụ Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.11.0"))
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
-    implementation("com.google.firebase:firebase-analytics")
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
 
-    implementation(platform("com.google.firebase:firebase-bom:34.11.0"))
+    // Các dịch vụ Firebase (Khi đã có BoM thì không cần ghi version ở đây nữa)
     implementation("com.google.firebase:firebase-analytics")
-
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
-
     implementation("com.google.firebase:firebase-database")
+    implementation(libs.firebase.storage)
 
+    // Kiến trúc MVVM (ViewModel & LiveData)
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
+
+    // Thư viện Glide để tải ảnh từ mạng (Network Image Loading)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Thư viện GSON để đóng gói/mở gói dữ liệu JSON
+    implementation("com.google.code.gson:gson:2.10.1")
 }
