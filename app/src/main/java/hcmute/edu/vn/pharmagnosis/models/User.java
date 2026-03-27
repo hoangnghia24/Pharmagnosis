@@ -21,10 +21,13 @@ public class User {
     private ERole role;
     private String phone;
     private float bmi;
+    private String avatar;
 
     private List<Allergy> allergies;
     private List<SearchRecord> searchRecords;
     private List<Prescription> prescriptions;
+    private java.util.Map<String, BmiRecord> bmiHistory;
+
     public User() {
     }
 
@@ -179,4 +182,13 @@ public class User {
     public void setBmi(float bmi) {
         this.bmi = bmi;
     }
+
+    public java.util.Map<String, BmiRecord> getBmiHistory() {
+        return bmiHistory;
+    }
+    public void setBmiHistory(java.util.Map<String, BmiRecord> bmiHistory) {
+        this.bmiHistory = bmiHistory;
+    }
+    public String getAvatar() { return avatar; }
+    public void setAvatar(String avatar) { this.avatar = avatar; }
 }

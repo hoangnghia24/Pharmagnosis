@@ -96,7 +96,7 @@ public class UserDashboardFragment extends Fragment {
             transaction.commit();
         });
 
-        // --- XỬ LÝ CÁC NÚT KHÁC (Để sẵn khung chờ bạn code sau) ---
+        // --- XỬ LÝ CÁC NÚT KHÁC ---
         cardPharmacy.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Mở bản đồ Nhà thuốc", Toast.LENGTH_SHORT).show();
         });
@@ -105,13 +105,42 @@ public class UserDashboardFragment extends Fragment {
             Toast.makeText(getContext(), "Mở danh sách Bệnh lý", Toast.LENGTH_SHORT).show();
         });
 
+        // ĐÃ NÂNG CẤP: Chuyển sang màn hình Tính BMI (Màn 2) thay vì hiện Toast
         cardBmi.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Mở máy tính BMI", Toast.LENGTH_SHORT).show();
+            BmiCalculatorFragment bmiFragment = new BmiCalculatorFragment();
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, bmiFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         txtViewAllNews.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Xem tất cả tin tức", Toast.LENGTH_SHORT).show();
         });
+
+        // --- CODE THÊM MỚI: XỬ LÝ CHUYỂN TRANG BOTTOM NAVIGATION ---
+        if (bottomNavigationView != null) {
+            // Đặt mặc định icon Trang chủ đang được chọn khi ở Fragment này
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                int itemId = item.getItemId();
+
+                if (itemId == R.id.nav_profile) {
+                    // CHUYỂN SANG MÀN HÌNH HỒ SƠ
+                    UserProfileFragment profileFragment = new UserProfileFragment();
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, profileFragment)
+                            .addToBackStack(null) // Lưu lịch sử để ấn nút Back quay về
+                            .commit();
+                    return true;
+                } else if (itemId == R.id.nav_home) {
+                    return true; // Đang ở Home rồi thì bỏ qua
+                }
+
+                return false;
+            });
+        }
     }
 
     // Cài đặt danh sách Tin tức
