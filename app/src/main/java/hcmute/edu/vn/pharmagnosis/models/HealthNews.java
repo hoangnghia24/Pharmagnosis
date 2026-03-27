@@ -4,7 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
 @IgnoreExtraProperties
-public class HealthNews {
+public class HealthNews implements java.io.Serializable{
     private String newId;
     private String title;
     private String content;

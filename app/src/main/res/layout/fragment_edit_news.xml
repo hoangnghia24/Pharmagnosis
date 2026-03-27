@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/img_back"
+            android:id="@+id/img_menu"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
@@ -25,6 +25,7 @@
             app:tint="#FFFFFF" />
 
         <TextView
+            android:id="@+id/tv_app_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chỉnh sửa bài đăng"
@@ -40,64 +41,103 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@id/layout_header"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/layout_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:elevation="2dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:layout_margin="16dp"
+            android:background="@android:color/white"
+            android:elevation="2dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thêm bài đăng:"
+                android:layout_marginBottom="8dp"
+                android:text="Tạo bài viết mới"
                 android:textColor="#000000"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:background="#EEEEEE"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ảnh bìa bài viết"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <ImageView
+                android:id="@+id/iv_news_image_preview"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="16dp"
+                android:background="#EEEEEE"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_camera"
+                android:contentDescription="Chọn ảnh bài viết" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiêu đề tin tức"
+                android:textColor="#333333"
+                android:textSize="14sp" />
+            <EditText
+                android:id="@+id/et_news_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="#EEEEEE" />
+                android:background="@drawable/bg_rounded_edittext"
+                android:hint="Nhập tiêu đề bài viết..."
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textSize="15sp" />
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tiêu đề" android:textColor="#333333" android:textSize="14sp" />
-            <EditText android:layout_width="match_parent" android:layout_height="45dp" android:layout_marginTop="4dp" android:layout_marginBottom="12dp" android:background="@drawable/bg_rounded_edittext" android:paddingHorizontal="12dp" android:inputType="text" />
-
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nội dung" android:textColor="#333333" android:textSize="14sp" />
-            <EditText android:layout_width="match_parent" android:layout_height="100dp" android:gravity="top|start" android:layout_marginTop="4dp" android:layout_marginBottom="16dp" android:background="@drawable/bg_rounded_edittext" android:padding="12dp" android:inputType="textMultiLine" />
-
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ảnh/Video" android:textColor="#333333" android:textSize="14sp" />
-
-            <com.google.android.material.card.MaterialCardView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nội dung"
+                android:textColor="#333333"
+                android:textSize="14sp" />
+            <EditText
+                android:id="@+id/et_news_content"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="2dp"
-                app:strokeColor="#DDDDDD">
+                android:background="@drawable/bg_rounded_edittext"
+                android:gravity="top"
+                android:hint="Viết nội dung bài viết ở đây..."
+                android:inputType="textMultiLine"
+                android:minLines="10"
+                android:padding="16dp"
+                android:textSize="15sp" />
 
-                <ImageView
-                    android:id="@+id/img_upload_media"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:src="@android:drawable/ic_menu_gallery"
-                    app:tint="#AAAAAA"/>
-            </com.google.android.material.card.MaterialCardView>
+            <Button
+                android:id="@+id/btn_save_news"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/bg_rounded_button_dark"
+                android:text="Sửa bài viết"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null" />
 
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="2">
-                <Button android:id="@+id/btn_cancel" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:background="@drawable/bg_rounded_button_dark" android:text="Hủy" android:textColor="@android:color/white" android:textAllCaps="false" app:backgroundTint="@null"/>
-                <Button android:id="@+id/btn_save" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="16dp" android:background="@drawable/bg_rounded_button_dark" android:text="Lưu" android:textColor="@android:color/white" android:textAllCaps="false" app:backgroundTint="@null"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

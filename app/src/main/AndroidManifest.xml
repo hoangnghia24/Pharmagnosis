@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+
         <activity
             android:name=".views.admin.AdminDashboardFragment"
             android:exported="true">
@@ -17,6 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".views.user.NewsDetailActivity" />
+
     </application>
 </manifest>
 <!--<?xml version="1.0" encoding="utf-8"?>-->
