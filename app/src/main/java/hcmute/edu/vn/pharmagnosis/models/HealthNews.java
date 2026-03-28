@@ -9,6 +9,8 @@ public class HealthNews implements java.io.Serializable{
     private String title;
     private String content;
     private String image;
+//    private Date publishedDate;
+    @com.google.firebase.firestore.PropertyName("pulishedDate")
     private Date publishedDate;
 
     public HealthNews() {

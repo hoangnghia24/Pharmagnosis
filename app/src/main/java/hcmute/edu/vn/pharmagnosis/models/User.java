@@ -7,6 +7,7 @@ import java.util.List;
 
 import hcmute.edu.vn.pharmagnosis.ENUM.EGender;
 import hcmute.edu.vn.pharmagnosis.ENUM.ERole;
+import com.google.firebase.database.Exclude;
 @IgnoreExtraProperties
 public class User {
     private String id;
@@ -79,10 +80,12 @@ public class User {
         this.fullNAme = fullNAme;
     }
 
+    @Exclude
     public Date getDob() {
         return dob;
     }
 
+    @Exclude
     public void setDob(Date dob) {
         this.dob = dob;
     }
@@ -191,4 +194,16 @@ public class User {
     }
     public String getAvatar() { return avatar; }
     public void setAvatar(String avatar) { this.avatar = avatar; }
+
+    public long getDobTimestamp() {
+        // Đổi Date thành con số (Milliseconds) để lưu lên Firebase
+        return dob != null ? dob.getTime() : 0;
+    }
+
+    public void setDobTimestamp(long timestamp) {
+        // Đổi con số từ Firebase trả về thành kiểu Date cho Android dùng
+        if (timestamp > 0) {
+            this.dob = new Date(timestamp);
+        }
+    }
 }

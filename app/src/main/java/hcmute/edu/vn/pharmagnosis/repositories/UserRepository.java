@@ -130,7 +130,10 @@ public class UserRepository {
         updates.put("fullNAme", fullName);
         updates.put("gender", gender);
         updates.put("bloodType", bloodType);
-        if (dob != null) updates.put("dob", dob);
+        if (dob != null) {
+            updates.put("dobTimestamp", dob.getTime()); // Lưu dạng số Long an toàn
+            updates.put("dob", null); // Xóa cái object lỗi cũ trên DB đi cho sạch
+        }
         if (avatarBase64 != null) updates.put("avatar", avatarBase64); // Lưu ảnh
 
         userRef.child(uid).updateChildren(updates)
