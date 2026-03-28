@@ -17,50 +17,109 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp">
+            android:paddingBottom="32dp">
 
-            <View
-                android:id="@+id/viewHeaderBackground"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutHeader"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/bg_header_curved"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txtGreeting"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="40dp"
-                android:text="Xin chào,"
-                android:textColor="#E0E0E0"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/bg_header_gradient"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="48dp"
+                android:paddingBottom="80dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/txtUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Le Duy Hung"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/txtGreeting"
-                app:layout_constraintTop_toBottomOf="@id/txtGreeting" />
+                <!-- Logo Image inserted here -->
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/img_logo"
+                    android:alpha="0.15"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imgAvatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/bg_circle_white"
-                android:contentDescription="User Avatar"
-                android:padding="8dp"
-                android:src="@drawable/ic_profile"
-                app:layout_constraintBottom_toBottomOf="@id/txtUserName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/txtGreeting" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAvatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
+                        app:cardCornerRadius="22dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imgAvatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="Avatar"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_profile" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/layoutGreetingContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@id/cardAvatar"
+                    app:layout_constraintEnd_toStartOf="@+id/cardNotificationContainer"
+                    app:layout_constraintStart_toEndOf="@id/cardAvatar"
+                    app:layout_constraintTop_toTopOf="@id/cardAvatar">
+
+                    <TextView
+                        android:id="@+id/txtGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Xin chào,"
+                        android:textColor="#E0F2FE"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Le Duy Hung"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardNotificationContainer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:cardBackgroundColor="#33FFFFFF"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="@id/cardAvatar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/cardAvatar">
+
+                    <ImageView
+                        android:id="@+id/imgNotification"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Notifications"
+                        android:src="@android:drawable/ic_popup_reminder"
+                        app:tint="@android:color/white" />
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardSearch"
@@ -68,37 +127,42 @@
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="24dp"
                 app:cardCornerRadius="28dp"
-                app:cardElevation="4dp"
-                app:layout_constraintBottom_toBottomOf="@id/viewHeaderBackground"
-                app:layout_constraintTop_toBottomOf="@id/viewHeaderBackground">
+                app:cardElevation="8dp"
+                app:layout_constraintTop_toBottomOf="@id/layoutHeader"
+                app:layout_constraintBottom_toBottomOf="@id/layoutHeader"
+                android:layout_marginTop="-28dp">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <EditText
                         android:id="@+id/edtSearch"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_toStartOf="@id/btnSearch"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginEnd="116dp"
                         android:background="@android:color/transparent"
                         android:hint="Tìm tên thuốc, hoạt chất..."
                         android:importantForAutofill="no"
                         android:inputType="text"
-                        android:paddingHorizontal="20dp"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/btnSearch"
+                        tools:layout_editor_absoluteY="5dp" />
 
                     <ImageButton
                         android:id="@+id/btnSearch"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
                         android:layout_marginEnd="4dp"
                         android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Search button"
-                        android:src="@drawable/ic_search" />
-                </RelativeLayout>
+                        android:src="@drawable/ic_search36"
+                        android:contentDescription="Search"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="#1A73E8" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -108,8 +172,9 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardBackgroundColor="#1A73E8"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
                 app:layout_constraintEnd_toStartOf="@+id/cardDisease"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardSearch">
@@ -117,39 +182,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:background="@drawable/bg_tag_red"
-                        android:contentDescription="Icon Pharmacy"
-                        android:padding="6dp"
-                        android:src="@drawable/ic_location_pin" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_location_pin"
+                        android:contentDescription="Pharmacy"
+                        app:tint="@android:color/white" />
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
+                        android:layout_marginTop="16dp"
+                        android:text="Nhà thuốc"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nhà thuốc"
-                            android:textColor="#212121"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Gần bạn nhất"
-                            android:textColor="#757575"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mua thuốc online"
+                        android:textColor="#E0E7FF"
+                        android:textSize="11sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -160,7 +217,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardPharmacy"
@@ -169,39 +227,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:background="#F5F5F5"
-                        android:contentDescription="Icon Disease"
-                        android:padding="6dp"
-                        android:src="@drawable/ic_stethoscope" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_stethoscope"
+                        android:contentDescription="Disease"
+                        app:tint="#1A73E8" />
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
+                        android:layout_marginTop="16dp"
+                        android:text="Bệnh lý"
+                        android:textColor="#1E293B"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Bệnh lý"
-                            android:textColor="#212121"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tra cứu nhanh"
-                            android:textColor="#757575"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tra cứu triệu chứng"
+                        android:textColor="#64748B"
+                        android:textSize="11sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -212,184 +262,189 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="32dp"
                 android:text="Tổng quan hôm nay"
-                android:textColor="#212121"
-                android:textSize="18sp"
+                android:textColor="#1E293B"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardPharmacy" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardBmi"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:layout_constraintEnd_toStartOf="@+id/cardSchedule"
-                app:layout_constraintStart_toStartOf="parent"
+                app:cardBackgroundColor="#F1F5F9"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
                 app:layout_constraintTop_toBottomOf="@id/txtOverviewTitle">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="24dp">
 
                     <TextView
+                        android:id="@+id/lblBmi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Chỉ số BMI"
-                        android:textColor="#757575"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/txtBmiValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="22.5"
-                        android:textColor="#4CAF50"
-                        android:textSize="28sp"
-                        android:textStyle="bold" />
+                        android:textColor="#64748B"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txtBmiStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_status_green"
-                        android:paddingHorizontal="8dp"
+                        android:background="#86F898"
+                        android:paddingHorizontal="12dp"
                         android:paddingVertical="4dp"
                         android:text="Bình thường"
-                        android:textColor="#4CAF50"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:textColor="#00722F"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardSchedule"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardBmi"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cardBmi"
-                app:layout_constraintTop_toBottomOf="@id/txtOverviewTitle">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    <TextView
+                        android:id="@+id/txtBmiValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="22.5"
+                        android:textColor="#1A73E8"
+                        android:textSize="48sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lblBmi" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lịch uống thuốc"
-                        android:textColor="#757575"
-                        android:textSize="13sp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:text="kg/m²"
+                        android:textColor="#64748B"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@id/txtBmiValue"
+                        app:layout_constraintStart_toEndOf="@id/txtBmiValue" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:layout_constraintTop_toBottomOf="@id/cardBmi">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <ProgressBar
+                        android:id="@+id/progressSchedule"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:indeterminate="false"
+                        android:max="3"
+                        android:progress="2"
+                        android:progressDrawable="@drawable/circular_progress_bar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
+                        android:text="2/3"
+                        android:textColor="#1E293B"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/progressSchedule"
+                        app:layout_constraintEnd_toEndOf="@id/progressSchedule"
+                        app:layout_constraintStart_toStartOf="@id/progressSchedule"
+                        app:layout_constraintTop_toTopOf="@id/progressSchedule" />
 
-                        <ProgressBar
-                            android:id="@+id/progressSchedule"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:indeterminate="false"
-                            android:max="3"
-                            android:progress="2"
-                            android:progressDrawable="@drawable/circular_progress_bar"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/progressSchedule"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2/3"
-                            android:textColor="#212121"
-                            android:textSize="14sp"
+                            android:text="Lịch uống thuốc"
+                            android:textColor="#1E293B"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@id/progressSchedule"
-                            app:layout_constraintEnd_toEndOf="@id/progressSchedule"
-                            app:layout_constraintStart_toStartOf="@id/progressSchedule"
-                            app:layout_constraintTop_toTopOf="@id/progressSchedule" />
+                            android:textSize="16sp" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/progressSchedule"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Đã uống"
-                                android:textColor="#212121"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Còn 1 liều"
-                                android:textColor="#757575"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
+                            android:layout_marginTop="4dp"
+                            android:text="Đã uống 2 liều hôm nay"
+                            android:textColor="#006E2C"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/txtNewsTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
-                android:text="Tin tức &amp; Cảnh báo"
-                android:textColor="#212121"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardBmi" />
-
-            <TextView
-                android:id="@+id/txtViewAllNews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:text="Xem tất cả"
-                android:textColor="#1976D2"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/txtNewsTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/txtNewsTitle" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerNews"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/txtNewsTitle"
-                tools:listitem="@layout/item_news" />
+                android:layout_marginTop="32dp"
+                app:layout_constraintTop_toBottomOf="@id/cardSchedule">
+
+                <TextView
+                    android:id="@+id/txtNewsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:text="Tin tức &amp; Cảnh báo"
+                    android:textColor="#1E293B"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtViewAllNews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:text="Xem tất cả"
+                    android:textColor="#1A73E8"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/txtNewsTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtNewsTitle" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="16dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/txtNewsTitle"
+                    tools:listitem="@layout/item_news" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

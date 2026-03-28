@@ -1,5 +1,7 @@
 package hcmute.edu.vn.pharmagnosis.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,34 +9,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.text.SimpleDateFormat;
+import com.bumptech.glide.Glide;
 import java.util.List;
-import java.util.Locale;
-
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.models.HealthNews;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
     private List<HealthNews> newsList;
-    private OnNewsItemClickListener listener;
 
-    // 1. Tạo Interface để Fragment bên ngoài lắng nghe sự kiện click
-    public interface OnNewsItemClickListener {
-        void onEditClick(HealthNews news);
-        void onDeleteClick(HealthNews news);
-        void onItemClick(HealthNews news); // Dành cho việc xem chi tiết
-    }
-
-    // 2. Cập nhật Constructor để nhận Listener
-    public NewsAdapter(List<HealthNews> newsList, OnNewsItemClickListener listener) {
-        this.newsList = newsList;
-        this.listener = listener;
-    }
     public NewsAdapter(List<HealthNews> newsList) {
         this.newsList = newsList;
     }
+
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,31 +34,24 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         HealthNews news = newsList.get(position);
         if (news == null) return;
 
-        // Gắn dữ liệu Text
         holder.txtNewsTitle.setText(news.getTitle());
+        holder.txtNewsDate.setText("Tin tức Y tế");
 
-        // Gắn ngày tháng (nếu có)
-        if (news.getPublishedDate() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            holder.txtNewsDate.setText(sdf.format(news.getPublishedDate()));
-        } else {
-            holder.txtNewsDate.setText("Tin tức Y tế");
-        }
+        // Load ảnh bằng Glide
+        Glide.with(holder.itemView.getContext())
+                .load(news.getImage())
+                .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh mặc định khi đang load
+                .error(android.R.drawable.stat_notify_error)      // Ảnh khi lỗi
+                .into(holder.imgNews);
 
-        // 3. Gắn sự kiện Click cho từng thành phần
-        // Click vào Nút Sửa
-        holder.imgEdit.setOnClickListener(v -> {
-            if (listener != null) listener.onEditClick(news);
-        });
-
-        // Click vào Nút Xóa
-        holder.imgDelete.setOnClickListener(v -> {
-            if (listener != null) listener.onDeleteClick(news);
-        });
-
-        // Click vào toàn bộ item (Để xem chi tiết)
+        // Bắt sự kiện Click vào thẻ tin tức
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) listener.onItemClick(news);
+            Context context = v.getContext();
+            Intent intent = new Intent(context, hcmute.edu.vn.pharmagnosis.views.user.NewsDetailActivity.class);
+            intent.putExtra("NEWS_TITLE", news.getTitle());
+            intent.putExtra("NEWS_CONTENT", news.getContent());
+            intent.putExtra("NEWS_IMAGE", news.getImage());
+            context.startActivity(intent);
         });
     }
 
@@ -83,27 +63,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
         private TextView txtNewsTitle;
         private TextView txtNewsDate;
+        private ImageView imgNews;
         private ImageView imgEdit;
-        private ImageView imgDelete;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNewsTitle = itemView.findViewById(R.id.tv_news_title);
             txtNewsDate = itemView.findViewById(R.id.tv_news_date);
+            imgNews = itemView.findViewById(R.id.img_news);
             imgEdit = itemView.findViewById(R.id.img_edit);
-            imgDelete = itemView.findViewById(R.id.img_delete);
-        }
-    }
-    public void removeNews(HealthNews newsToRemove) {
-        for (int i = 0; i < newsList.size(); i++) {
-            // Tìm bài viết có ID trùng với bài viết vừa xóa
-            if (newsList.get(i).getNewId() != null &&
-                    newsList.get(i).getNewId().equals(newsToRemove.getNewId())) {
-
-                newsList.remove(i); // Xóa khỏi danh sách dữ liệu
-                notifyItemRemoved(i); // Hiệu ứng thu gọn item biến mất
-                break;
-            }
         }
     }
 }

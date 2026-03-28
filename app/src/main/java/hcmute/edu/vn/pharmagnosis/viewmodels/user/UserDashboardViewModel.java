@@ -1,4 +1,4 @@
-package hcmute.edu.vn.pharmagnosis.viewmodels.user; // Sửa đường dẫn nếu bạn để trong thư mục con
+package hcmute.edu.vn.pharmagnosis.viewmodels.user;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,11 +13,9 @@ public class UserDashboardViewModel extends ViewModel {
 
     public UserDashboardViewModel() {
         newsRepository = new NewsRepository();
-        // Ngay khi màn hình Trang chủ vừa mở lên, nó sẽ tự động chạy lệnh đi lấy tin tức
         newsLiveData = newsRepository.getNewsFromFirebase();
     }
 
-    // Giao diện (Fragment) sẽ gọi hàm này để lấy danh sách bài báo
     public LiveData<List<HealthNews>> getNewsLiveData() {
         return newsLiveData;
     }
