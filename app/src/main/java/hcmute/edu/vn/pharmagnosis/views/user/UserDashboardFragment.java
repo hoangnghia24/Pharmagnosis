@@ -15,8 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.List;
 
 import hcmute.edu.vn.pharmagnosis.R;
@@ -25,8 +23,7 @@ import hcmute.edu.vn.pharmagnosis.models.HealthNews;
 import hcmute.edu.vn.pharmagnosis.viewmodels.user.UserDashboardViewModel;
 
 public class UserDashboardFragment extends Fragment {
-    private BottomNavigationView bottomNavigationView;
-    // 1. Khai báo các thành phần giao diện
+
     private EditText edtSearch;
     private CardView cardPharmacy;
     private CardView cardDisease;
@@ -41,33 +38,19 @@ public class UserDashboardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Nạp giao diện fragment_home.xml
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
         initViews(view);
-
-        // Sửa lỗi: Phải gọi dòng này sau khi đã findViewById (trong initViews)
-        if (bottomNavigationView != null) {
-            bottomNavigationView.setItemIconTintList(null);
-        }
-
-        // Trả View cho hệ thống trước để nó kịp tạo ra LifecycleOwner
         return view;
     }
 
-    // CẬP NHẬT QUAN TRỌNG: Thêm hàm onViewCreated để xử lý logic sau khi giao diện đã sẵn sàng
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Lúc này ViewLifecycleOwner đã sẵn sàng 100%, gọi observe và setup thoải mái!
         setupListeners();
         setupRecyclerView();
     }
 
-    // Ánh xạ View
     private void initViews(View view) {
-        bottomNavigationView = view.findViewById(R.id.bottom_navigation);
         edtSearch = view.findViewById(R.id.edtSearch);
         cardPharmacy = view.findViewById(R.id.cardPharmacy);
         cardDisease = view.findViewById(R.id.cardDisease);
@@ -77,35 +60,21 @@ public class UserDashboardFragment extends Fragment {
         recyclerNews = view.findViewById(R.id.recyclerNews);
     }
 
-    // Cài đặt sự kiện Click
     private void setupListeners() {
-        // --- XỬ LÝ THANH TÌM KIẾM ---
-        // Ngăn bàn phím tự động bật lên ở màn hình Trang chủ
         edtSearch.setFocusable(false);
         edtSearch.setClickable(true);
 
-        // Chuyển sang SearchFragment khi bấm vào ô tìm kiếm
         edtSearch.setOnClickListener(v -> {
             SearchFragment searchFragment = new SearchFragment();
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-
-            // LƯU Ý: R.id.fragment_container là ID của thẻ FrameLayout chứa Fragment trong activity_main.xml
-            // Nếu bạn đặt tên khác, hãy sửa lại chỗ này nhé!
             transaction.replace(R.id.fragment_container, searchFragment);
-            transaction.addToBackStack(null); // Cho phép bấm nút Back để quay lại trang chủ
+            transaction.addToBackStack(null);
             transaction.commit();
         });
 
-        // --- XỬ LÝ CÁC NÚT KHÁC ---
-        cardPharmacy.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Mở bản đồ Nhà thuốc", Toast.LENGTH_SHORT).show();
-        });
+        cardPharmacy.setOnClickListener(v -> Toast.makeText(getContext(), "Mở bản đồ Nhà thuốc", Toast.LENGTH_SHORT).show());
+        cardDisease.setOnClickListener(v -> Toast.makeText(getContext(), "Mở danh sách Bệnh lý", Toast.LENGTH_SHORT).show());
 
-        cardDisease.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Mở danh sách Bệnh lý", Toast.LENGTH_SHORT).show();
-        });
-
-        // ĐÃ NÂNG CẤP: Chuyển sang màn hình Tính BMI (Màn 2) thay vì hiện Toast
         cardBmi.setOnClickListener(v -> {
             BmiCalculatorFragment bmiFragment = new BmiCalculatorFragment();
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
@@ -114,48 +83,16 @@ public class UserDashboardFragment extends Fragment {
             transaction.commit();
         });
 
-        txtViewAllNews.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Xem tất cả tin tức", Toast.LENGTH_SHORT).show();
-        });
-
-        // --- CODE THÊM MỚI: XỬ LÝ CHUYỂN TRANG BOTTOM NAVIGATION ---
-        if (bottomNavigationView != null) {
-            // Đặt mặc định icon Trang chủ đang được chọn khi ở Fragment này
-            bottomNavigationView.setSelectedItemId(R.id.nav_home);
-
-            bottomNavigationView.setOnItemSelectedListener(item -> {
-                int itemId = item.getItemId();
-
-                if (itemId == R.id.nav_profile) {
-                    // CHUYỂN SANG MÀN HÌNH HỒ SƠ
-                    UserProfileFragment profileFragment = new UserProfileFragment();
-                    requireActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, profileFragment)
-                            .addToBackStack(null) // Lưu lịch sử để ấn nút Back quay về
-                            .commit();
-                    return true;
-                } else if (itemId == R.id.nav_home) {
-                    return true; // Đang ở Home rồi thì bỏ qua
-                }
-
-                return false;
-            });
-        }
+        txtViewAllNews.setOnClickListener(v -> Toast.makeText(getContext(), "Xem tất cả tin tức", Toast.LENGTH_SHORT).show());
     }
 
-    // Cài đặt danh sách Tin tức
     private void setupRecyclerView() {
-        // Cài đặt chiều lướt ngang cho RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerNews.setLayoutManager(layoutManager);
 
-        // Khởi tạo Bếp trưởng (ViewModel)
         UserDashboardViewModel viewModel = new androidx.lifecycle.ViewModelProvider(this).get(UserDashboardViewModel.class);
 
-        // "Lắng nghe" dữ liệu từ Firebase
         viewModel.getNewsLiveData().observe(getViewLifecycleOwner(), newsList -> {
-            // Bất cứ khi nào Firebase có dữ liệu (hoặc bạn vừa thêm bài báo mới trên web),
-            // đoạn code này sẽ tự động chạy để cập nhật lại giao diện ngay lập tức!
             if (newsList != null && !newsList.isEmpty()) {
                 newsAdapter = new NewsAdapter(newsList);
                 recyclerNews.setAdapter(newsAdapter);
