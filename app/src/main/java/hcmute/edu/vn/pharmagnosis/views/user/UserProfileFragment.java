@@ -17,8 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -46,28 +44,20 @@ public class UserProfileFragment extends Fragment {
 
         profileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
-                // Ánh xạ UI thông tin cơ bản
                 TextView tvName = view.findViewById(R.id.tv_name);
                 TextView tvAgeGender = view.findViewById(R.id.tv_age_gender);
                 TextView tvBlood = view.findViewById(R.id.tv_blood);
                 TextView tvAllergy = view.findViewById(R.id.tv_allergy);
                 ImageView imgAvatarDisplay = view.findViewById(R.id.img_avatar_display);
 
-                // --- ÁNH XẠ UI CHỈ SỐ BMI ---
                 TextView tvProfileHeight = view.findViewById(R.id.tv_profile_height);
                 TextView tvProfileWeight = view.findViewById(R.id.tv_profile_weight);
                 TextView tvBmiScore = view.findViewById(R.id.tv_bmi_score);
                 TextView tvBmiStatus = view.findViewById(R.id.tv_bmi_status);
                 ImageView icPointer = view.findViewById(R.id.ic_pointer);
 
-                // Cập nhật thông tin cơ bản
-                if (tvName != null && user.getFullNAme() != null) {
-                    tvName.setText(user.getFullNAme());
-                }
-
-                if (tvBlood != null && user.getBloodType() != null) {
-                    tvBlood.setText("Nhóm máu: " + user.getBloodType());
-                }
+                if (tvName != null && user.getFullNAme() != null) tvName.setText(user.getFullNAme());
+                if (tvBlood != null && user.getBloodType() != null) tvBlood.setText("Nhóm máu: " + user.getBloodType());
 
                 if (tvAgeGender != null) {
                     String genderStr = (user.getGender() != null && user.getGender().name().equals("MALE")) ? "Nam" : "Nữ";
@@ -92,9 +82,7 @@ public class UserProfileFragment extends Fragment {
                         StringBuilder allergyText = new StringBuilder("Dị ứng: ");
                         for (int i = 0; i < user.getAllergies().size(); i++) {
                             allergyText.append(user.getAllergies().get(i).getAllergenName());
-                            if (i < user.getAllergies().size() - 1) {
-                                allergyText.append(", ");
-                            }
+                            if (i < user.getAllergies().size() - 1) allergyText.append(", ");
                         }
                         tvAllergy.setText(allergyText.toString());
                     } else {
@@ -112,13 +100,8 @@ public class UserProfileFragment extends Fragment {
                     }
                 }
 
-                // --- CẬP NHẬT UI CHỈ SỐ BMI MỚI NHẤT ---
-                if (tvProfileHeight != null && user.getHeight() > 0) {
-                    tvProfileHeight.setText(String.format(Locale.getDefault(), "%.0f", user.getHeight()));
-                }
-                if (tvProfileWeight != null && user.getWeight() > 0) {
-                    tvProfileWeight.setText(String.format(Locale.getDefault(), "%.1f", user.getWeight()));
-                }
+                if (tvProfileHeight != null && user.getHeight() > 0) tvProfileHeight.setText(String.format(Locale.getDefault(), "%.0f", user.getHeight()));
+                if (tvProfileWeight != null && user.getWeight() > 0) tvProfileWeight.setText(String.format(Locale.getDefault(), "%.1f", user.getWeight()));
 
                 if (tvBmiScore != null && tvBmiStatus != null && icPointer != null && user.getBmi() > 0) {
                     float bmi = user.getBmi();
@@ -138,7 +121,6 @@ public class UserProfileFragment extends Fragment {
                     tvBmiStatus.setText(status);
                     tvBmiStatus.setTextColor(color);
 
-                    // Hiệu ứng dịch chuyển mũi tên
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) icPointer.getLayoutParams();
                     params.horizontalBias = bias;
                     icPointer.setLayoutParams(params);
@@ -148,37 +130,14 @@ public class UserProfileFragment extends Fragment {
             View btnLogout = view.findViewById(R.id.btn_logout);
             if (btnLogout != null) {
                 btnLogout.setOnClickListener(v -> {
-                    // 1. Gọi lệnh xóa phiên đăng nhập của Firebase
                     FirebaseAuth.getInstance().signOut();
-
-                    // 2. Chuyển hướng người dùng về lại màn hình Đăng nhập
                     Intent intent = new Intent(requireActivity(), LoginActivity.class);
-
-                    // 3. Xóa toàn bộ lịch sử trang (để user không bấm nút Back quay lại app được)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     requireActivity().finish();
                 });
             }
         });
-
-
-        BottomNavigationView bottomNav = view.findViewById(R.id.bottom_navigation);
-        if (bottomNav != null) {
-            bottomNav.setItemIconTintList(null);
-            bottomNav.setSelectedItemId(R.id.nav_profile);
-
-            bottomNav.setOnItemSelectedListener(item -> {
-                if (item.getItemId() == R.id.nav_home) {
-                    requireActivity().getSupportFragmentManager().popBackStack();
-                    return true;
-                }
-                if (item.getItemId() == R.id.nav_profile) {
-                    return true;
-                }
-                return false;
-            });
-        }
 
         View cvBmi = view.findViewById(R.id.cv_bmi);
         if (cvBmi != null) {
