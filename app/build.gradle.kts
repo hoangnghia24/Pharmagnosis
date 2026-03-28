@@ -68,4 +68,12 @@ dependencies {
 
     // Thư viện GSON để đóng gói/mở gói dữ liệu JSON
     implementation("com.google.code.gson:gson:2.10.1")
+    // Thư viện OpenStreetMap (Bản đồ miễn phí)
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
+
+    // Vẫn giữ lại thư viện này để lấy vị trí GPS hiện tại của User
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+    // Thư viện Retrofit để gọi API và Gson để đọc dữ liệu JSON
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

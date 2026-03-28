@@ -2,43 +2,28 @@ package hcmute.edu.vn.pharmagnosis.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.List;
 @IgnoreExtraProperties
 public class Pharmacy {
     private String pharmacyId;
     private String name;
-    private List<Address> addresses;
+    private double latitude;
+    private double longitude;
+    private String addressText;
 
-    public Pharmacy() {
-    }
+    public Pharmacy() {}
 
-    public Pharmacy(String pharmacyId, String name, List<Address> addresses) {
-        this.pharmacyId = pharmacyId;
-        this.name = name;
-        this.addresses = addresses;
-    }
+    public String getPharmacyId() { return pharmacyId; }
+    public void setPharmacyId(String pharmacyId) { this.pharmacyId = pharmacyId; }
 
-    public String getPharmacyId() {
-        return pharmacyId;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setPharmacyId(String pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
+    public double getLatitude() { return latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    public String getName() {
-        return name;
-    }
+    public double getLongitude() { return longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
+    public String getAddressText() { return addressText; }
+    public void setAddressText(String addressText) { this.addressText = addressText; }
 }
