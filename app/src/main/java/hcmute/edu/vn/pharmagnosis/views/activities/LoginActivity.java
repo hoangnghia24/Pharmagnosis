@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import hcmute.edu.vn.pharmagnosis.databinding.ActivityLoginBinding;
 import hcmute.edu.vn.pharmagnosis.viewmodels.LoginViewModel;
+import hcmute.edu.vn.pharmagnosis.ENUM.ERole; // Import Enum phân quyền
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,12 +73,32 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // 1. Khi Đăng nhập Email/Password thành công -> Đi lấy phân quyền (Role)
         loginViewModel.getIsLoginSuccess().observe(this, isSuccess -> {
             if (isSuccess != null && isSuccess) {
-                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, hcmute.edu.vn.pharmagnosis.MainActivity.class);
+                Toast.makeText(this, "Đăng nhập thành công! Đang tải dữ liệu...", Toast.LENGTH_SHORT).show();
+                // Gọi ViewModel để chọc lên Firebase hỏi Role
+                loginViewModel.fetchRoleAfterLogin();
+            }
+        });
+
+        // 2. Lắng nghe kết quả Role trả về -> Bẻ lái luồng chuyển trang
+        loginViewModel.getUserRole().observe(this, role -> {
+            if (role != null) {
+                Intent intent;
+
+                // Nếu là ADMIN -> Chuyển vào luồng quản trị
+                if (role.equals(ERole.ADMIN.name())) {
+                    // Lưu ý: Đảm bảo bạn đã tạo file AdminMainActivity nhé. Nếu tên khác thì sửa lại ở đây.
+                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                }
+                // Nếu là USER hoặc không có quyền đặc biệt -> Chuyển vào ứng dụng chính
+                else {
+                    intent = new Intent(LoginActivity.this, hcmute.edu.vn.pharmagnosis.MainActivity.class);
+                }
+
                 startActivity(intent);
-                finish();
+                finish(); // Đóng màn hình Login lại để user không back lại được
             }
         });
     }

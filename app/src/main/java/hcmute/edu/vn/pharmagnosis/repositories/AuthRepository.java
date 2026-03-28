@@ -2,6 +2,12 @@ package hcmute.edu.vn.pharmagnosis.repositories;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import androidx.annotation.NonNull;
 
 import hcmute.edu.vn.pharmagnosis.di.FirebaseModule;
 
@@ -55,5 +61,41 @@ public class AuthRepository {
         firebaseAuth.sendPasswordResetEmail(email)
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    // Thêm hàm Callback để trả về Role
+    public interface RoleCallback {
+        void onRoleFetched(String role);
+        void onFailure(String errorMessage);
+    }
+
+    // Hàm lấy Role từ Realtime Database
+    public void fetchUserRole(RoleCallback callback) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser == null) {
+            callback.onFailure("Không tìm thấy thông tin đăng nhập");
+            return;
+        }
+
+        String uid = currentUser.getUid();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+
+        userRef.child("role").addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String roleStr = snapshot.getValue(String.class);
+                    callback.onRoleFetched(roleStr); // Trả về "ADMIN" hoặc "USER"
+                } else {
+                    // Nếu user mới tạo chưa kịp có role, mặc định cho là USER
+                    callback.onRoleFetched("USER");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {
+                callback.onFailure(error.getMessage());
+            }
+        });
     }
 }
