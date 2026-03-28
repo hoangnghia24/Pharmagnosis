@@ -23,6 +23,8 @@
         <activity android:name=".views.activities.RegisterActivity" />
         <activity android:name=".views.activities.ForgotPasswordActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".views.user.NewsDetailActivity" />
+        <activity android:name=".views.user.MedicineDetailActivity" />
 
     </application>
 

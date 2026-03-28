@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import java.util.List;
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.models.HealthNews;
@@ -33,19 +34,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         HealthNews news = newsList.get(position);
         if (news == null) return;
 
-        // 1. ĐÃ SỬA: Gắn dữ liệu vào đúng các View mà XML của bạn đang có
         holder.txtNewsTitle.setText(news.getTitle());
-        holder.txtNewsDate.setText("Tin tức Y tế"); // Tạm gán chữ này vào vị trí ngày đăng
+        holder.txtNewsDate.setText("Tin tức Y tế");
 
-        // 2. ĐÃ SỬA: Tạm vô hiệu hóa tính năng load ảnh bằng Glide.
-        // Vì trong file item_news.xml của bạn không có ImageView (ảnh bìa) nên gọi lệnh này app sẽ văng.
-        /*
-        com.bumptech.glide.Glide.with(holder.itemView.getContext())
+        // Load ảnh bằng Glide
+        Glide.with(holder.itemView.getContext())
                 .load(news.getImage())
+                .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh mặc định khi đang load
+                .error(android.R.drawable.stat_notify_error)      // Ảnh khi lỗi
                 .into(holder.imgNews);
-        */
 
-        // Bắt sự kiện Click vào thẻ tin tức (Giữ nguyên của bạn)
+        // Bắt sự kiện Click vào thẻ tin tức
         holder.itemView.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(context, hcmute.edu.vn.pharmagnosis.views.user.NewsDetailActivity.class);
@@ -62,16 +61,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
-        // ĐÃ SỬA: Khai báo đúng các thành phần có trong file item_news.xml của bạn
         private TextView txtNewsTitle;
         private TextView txtNewsDate;
+        private ImageView imgNews;
         private ImageView imgEdit;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
-            // ĐÃ SỬA: Ánh xạ khớp 100% với ID trong file XML để hết bị văng app
             txtNewsTitle = itemView.findViewById(R.id.tv_news_title);
             txtNewsDate = itemView.findViewById(R.id.tv_news_date);
+            imgNews = itemView.findViewById(R.id.img_news);
             imgEdit = itemView.findViewById(R.id.img_edit);
         }
     }
