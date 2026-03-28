@@ -76,6 +76,10 @@ dependencies {
     // Thư viện Retrofit để gọi API và Gson để đọc dữ liệu JSON
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+<<<<<<< Updated upstream
 
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+=======
+    implementation("com.github.MKergall:osmbonuspack:6.9.0")
+>>>>>>> Stashed changes
 }

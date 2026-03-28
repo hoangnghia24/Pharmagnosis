@@ -37,5 +37,16 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_hideable="true"
         app:behavior_peekHeight="0dp" />
-
+    <Button
+        android:id="@+id/btnRadius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bán kính: 2km"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@android:color/white"
+        android:textColor="@android:color/black"
+        app:cornerRadius="20dp"
+        app:icon="@android:drawable/ic_menu_compass"
+        app:iconTint="@android:color/black" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,10 +3,14 @@ package hcmute.edu.vn.pharmagnosis.repositories;
 import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 import hcmute.edu.vn.pharmagnosis.models.Pharmacy;
+import hcmute.edu.vn.pharmagnosis.models.SearchRecord;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,9 +52,11 @@ public class PharmacyRepository {
         api = retrofit.create(OverpassApi.class);
     }
 
-    public LiveData<List<Pharmacy>> getPharmacies(double centerLat, double centerLon) {
+    public LiveData<List<Pharmacy>> getPharmacies(double centerLat, double centerLon, int radius) {
         MutableLiveData<List<Pharmacy>> pharmacyLiveData = new MutableLiveData<>();
-        String query = "[out:json];node[\"amenity\"=\"pharmacy\"](around:2000," + centerLat + "," + centerLon + ");out;";
+
+        // Đưa biến radius vào câu lệnh (thay cho số 2000 cố định lúc trước)
+        String query = "[out:json];node[\"amenity\"=\"pharmacy\"](around:" + radius + "," + centerLat + "," + centerLon + ");out;";
 
         api.getPharmacies(query).enqueue(new Callback<OverpassResponse>() {
             @Override
@@ -77,5 +83,20 @@ public class PharmacyRepository {
         });
 
         return pharmacyLiveData;
+    }
+    public void saveSearchRecord(SearchRecord record) {
+        // Trỏ tới bảng "SearchRecords" trên Firebase
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("SearchRecords");
+
+        // Tạo một ID ngẫu nhiên không trùng lặp cho record này
+        String key = databaseReference.push().getKey();
+        if (key != null) {
+            record.setSearchId(key); // Gán ID vừa tạo vào object
+
+            // Đẩy dữ liệu lên Firebase
+            databaseReference.child(key).setValue(record)
+                    .addOnSuccessListener(aVoid -> Log.d("Firebase", "Lưu lịch sử chỉ đường thành công!"))
+                    .addOnFailureListener(e -> Log.e("Firebase", "Lỗi lưu lịch sử: ", e));
+        }
     }
 }
