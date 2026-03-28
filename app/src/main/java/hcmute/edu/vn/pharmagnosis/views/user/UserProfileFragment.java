@@ -17,15 +17,31 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
-
-import com.google.firebase.auth.FirebaseAuth;
-import android.content.Intent;
 import hcmute.edu.vn.pharmagnosis.views.activities.LoginActivity;
+
+import android.content.Intent;
+
+// --- CÁC THƯ VIỆN ĐƯỢC THÊM VÀO ---
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+// ----------------------------------
 
 public class UserProfileFragment extends Fragment {
 
@@ -100,8 +116,16 @@ public class UserProfileFragment extends Fragment {
                     }
                 }
 
-                if (tvProfileHeight != null && user.getHeight() > 0) tvProfileHeight.setText(String.format(Locale.getDefault(), "%.0f", user.getHeight()));
-                if (tvProfileWeight != null && user.getWeight() > 0) tvProfileWeight.setText(String.format(Locale.getDefault(), "%.1f", user.getWeight()));
+                if (tvProfileHeight != null && user.getHeight() > 0) {
+                    tvProfileHeight.setText(String.format(Locale.getDefault(), "%.0f", user.getHeight()));
+                }
+
+                if (tvProfileWeight != null && user.getWeight() > 0) {
+                    tvProfileWeight.setText(String.format(Locale.getDefault(), "%.1f", user.getWeight()));
+
+                    // --- GỌI HÀM VẼ BIỂU ĐỒ LỊCH SỬ CÂN NẶNG TỪ FIREBASE Ở ĐÂY ---
+                    loadRealWeightHistory(view);
+                }
 
                 if (tvBmiScore != null && tvBmiStatus != null && icPointer != null && user.getBmi() > 0) {
                     float bmi = user.getBmi();
@@ -160,5 +184,94 @@ public class UserProfileFragment extends Fragment {
                 transaction.commit();
             });
         }
+    }
+
+
+    // 1. Hàm kết nối Firebase lấy lịch sử Cân nặng từ nhánh BmiHistory
+    private void loadRealWeightHistory(View view) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(uid).child("bmiHistory");
+
+        // Lấy 6 lần đo gần nhất
+        historyRef.orderByKey().limitToLast(6).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Entry> entries = new ArrayList<>();
+                final ArrayList<String> dateLabels = new ArrayList<>();
+                int index = 0;
+
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM", Locale.getDefault());
+
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    try {
+                        Long timestamp = data.child("timestamp").getValue(Long.class);
+                        Double weightDouble = data.child("weight").getValue(Double.class);
+
+                        if (timestamp != null && weightDouble != null) {
+                            float weight = weightDouble.floatValue();
+                            entries.add(new Entry(index, weight));
+                            dateLabels.add(sdf.format(new java.util.Date(timestamp)));
+                            index++;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Nếu có từ 1 điểm dữ liệu trở lên thì tiến hành vẽ
+                if (!entries.isEmpty()) {
+                    drawChart(view, entries, dateLabels);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý khi lỗi mạng
+            }
+        });
+    }
+
+    // 2. Hàm thực thi vẽ biểu đồ
+    private void drawChart(View view, ArrayList<Entry> entries, ArrayList<String> dateLabels) {
+        LineChart weightChart = view.findViewById(R.id.weight_chart);
+        if (weightChart == null) return;
+
+        LineDataSet dataSet = new LineDataSet(entries, "Cân nặng (kg)");
+        dataSet.setColor(android.graphics.Color.parseColor("#1976D2")); // Đường màu xanh dương
+        dataSet.setCircleColor(android.graphics.Color.parseColor("#1976D2")); // Dấu chấm màu xanh
+        dataSet.setLineWidth(2f);
+        dataSet.setCircleRadius(4f);
+        dataSet.setDrawValues(true); // Hiện con số
+        dataSet.setValueTextSize(10f);
+        dataSet.setValueTextColor(android.graphics.Color.parseColor("#64748B"));
+
+        LineData lineData = new LineData(dataSet);
+        weightChart.setData(lineData);
+
+        // Cài đặt trục X (Ngày/Tháng)
+        XAxis xAxis = weightChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(dateLabels));
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Đẩy trục X xuống dưới
+        xAxis.setGranularity(1f);
+        xAxis.setDrawGridLines(false); // Ẩn các sọc dọc
+        xAxis.setDrawLabels(true); // Ép buộc phải vẽ chữ
+        xAxis.setTextColor(android.graphics.Color.parseColor("#64748B")); // Set màu chữ xám
+        xAxis.setLabelCount(dateLabels.size(), false); // Ép biểu đồ phải chia ĐỦ số cột bằng số ngày có thật
+        xAxis.setAvoidFirstLastClipping(true); // Ngăn không cho chữ ở mép trái/phải bị cắt lẹm
+
+        weightChart.setExtraBottomOffset(25f); // Nâng đáy lên 25f (thay vì 15f) cho không gian rộng rãi hẳn
+
+        // Dọn dẹp giao diện tổng thể
+        weightChart.getAxisRight().setEnabled(false); // Ẩn trục Y bên phải
+        weightChart.getDescription().setEnabled(false); // Ẩn chữ góc phải
+        weightChart.setTouchEnabled(true);
+        weightChart.setDragEnabled(true);
+        weightChart.setScaleEnabled(false); // Khóa zoom tránh vỡ layout
+
+        weightChart.animateX(1000); // Hiệu ứng chạy từ trái sang phải
+        weightChart.invalidate(); // Vẽ lại biểu đồ
     }
 }
