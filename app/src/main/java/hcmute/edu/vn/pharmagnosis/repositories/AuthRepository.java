@@ -29,14 +29,44 @@ public class AuthRepository {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    if (user != null && user.isEmailVerified()) {
-                        callback.onSuccess(); // Hợp lệ, cho phép vào App
+
+                    if (user != null) {
+                        String uid = user.getUid();
+                        // Chọc vào Database để lấy Role trước khi quyết định
+                        DatabaseReference roleRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("role");
+
+                        roleRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // Nếu không có role (tài khoản mới), mặc định coi là USER
+                                String role = snapshot.exists() ? snapshot.getValue(String.class) : "USER";
+
+                                if ("ADMIN".equals(role)) {
+                                    // 1. LÀ ADMIN: Đặc quyền VIP, cho vào thẳng ứng dụng không cần check mail
+                                    callback.onSuccess();
+                                } else {
+                                    // 2. LÀ USER BÌNH THƯỜNG: Bắt buộc phải xác thực Email
+                                    if (user.isEmailVerified()) {
+                                        callback.onSuccess(); // Đã xác thực -> Cho vào
+                                    } else {
+                                        firebaseAuth.signOut(); // Chưa xác thực -> Đuổi ra
+                                        callback.onFailure("Vui lòng kiểm tra hộp thư và xác thực email trước khi đăng nhập!");
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                firebaseAuth.signOut();
+                                callback.onFailure("Lỗi hệ thống khi kiểm tra quyền: " + error.getMessage());
+                            }
+                        });
+
                     } else {
-                        firebaseAuth.signOut(); // Ép đăng xuất
-                        callback.onFailure("Vui lòng kiểm tra hộp thư và xác thực email trước khi đăng nhập!");
+                        callback.onFailure("Lỗi: Không lấy được thông tin phiên đăng nhập!");
                     }
                 })
-                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+                .addOnFailureListener(e -> callback.onFailure("Đăng nhập thất bại: Sai email hoặc mật khẩu!"));
     }
 
     // NÂNG CẤP: Gửi Email xác thực sau khi tạo tài khoản thành công

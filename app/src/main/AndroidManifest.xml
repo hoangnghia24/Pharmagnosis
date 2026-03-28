@@ -22,7 +22,9 @@
         <activity android:name=".views.activities.RegisterActivity" />
         <activity android:name=".views.activities.ForgotPasswordActivity" />
         <activity android:name=".MainActivity" />
-
+        <activity
+            android:name=".views.admin.AdminDashboardFragment"
+            android:exported="false" />
     </application>
 
 </manifest>

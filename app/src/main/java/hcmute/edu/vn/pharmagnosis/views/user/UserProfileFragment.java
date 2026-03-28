@@ -25,6 +25,10 @@ import java.util.Locale;
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
 
+import com.google.firebase.auth.FirebaseAuth;
+import android.content.Intent;
+import hcmute.edu.vn.pharmagnosis.views.activities.LoginActivity;
+
 public class UserProfileFragment extends Fragment {
 
     @Nullable
@@ -139,6 +143,22 @@ public class UserProfileFragment extends Fragment {
                     params.horizontalBias = bias;
                     icPointer.setLayoutParams(params);
                 }
+            }
+
+            View btnLogout = view.findViewById(R.id.btn_logout);
+            if (btnLogout != null) {
+                btnLogout.setOnClickListener(v -> {
+                    // 1. Gọi lệnh xóa phiên đăng nhập của Firebase
+                    FirebaseAuth.getInstance().signOut();
+
+                    // 2. Chuyển hướng người dùng về lại màn hình Đăng nhập
+                    Intent intent = new Intent(requireActivity(), LoginActivity.class);
+
+                    // 3. Xóa toàn bộ lịch sử trang (để user không bấm nút Back quay lại app được)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    requireActivity().finish();
+                });
             }
         });
 

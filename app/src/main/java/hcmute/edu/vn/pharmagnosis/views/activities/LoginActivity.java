@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Nếu là ADMIN -> Chuyển vào luồng quản trị
                 if (role.equals(ERole.ADMIN.name())) {
                     // Lưu ý: Đảm bảo bạn đã tạo file AdminMainActivity nhé. Nếu tên khác thì sửa lại ở đây.
-                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                    intent = new Intent(LoginActivity.this, hcmute.edu.vn.pharmagnosis.views.admin.AdminDashboardFragment.class);
                 }
                 // Nếu là USER hoặc không có quyền đặc biệt -> Chuyển vào ứng dụng chính
                 else {
