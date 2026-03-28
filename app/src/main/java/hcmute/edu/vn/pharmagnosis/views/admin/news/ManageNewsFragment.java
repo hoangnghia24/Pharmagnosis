@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import hcmute.edu.vn.pharmagnosis.R;
-import hcmute.edu.vn.pharmagnosis.adapters.NewsAdapter;
+import hcmute.edu.vn.pharmagnosis.adapters.admin.news.NewsAdapterAdmin;
 import hcmute.edu.vn.pharmagnosis.models.HealthNews;
 import hcmute.edu.vn.pharmagnosis.repositories.NewsRepository;
 import hcmute.edu.vn.pharmagnosis.views.admin.AdminDashboardFragment;
@@ -57,7 +57,7 @@ public class ManageNewsFragment extends Fragment {
     private void loadNewsData() {
         repository.getNewsFromFirebase().observe(getViewLifecycleOwner(), newsList -> {
             if (newsList != null) {
-                NewsAdapter adapter = new NewsAdapter(newsList, new NewsAdapter.OnNewsItemClickListener() {
+                NewsAdapterAdmin adapter = new NewsAdapterAdmin(newsList, new NewsAdapterAdmin.OnNewsItemClickListener() {
                     @Override
                     public void onEditClick(HealthNews news) {
                         // 1. Khởi tạo Fragment Sửa
@@ -88,7 +88,7 @@ public class ManageNewsFragment extends Fragment {
 
                                             // CÁCH SỬA: Lấy Adapter trực tiếp từ rvNews và ép kiểu về NewsAdapter
                                             if (rvNews.getAdapter() != null) {
-                                                ((NewsAdapter) rvNews.getAdapter()).removeNews(news);
+                                                ((NewsAdapterAdmin) rvNews.getAdapter()).removeNews(news);
                                             }
 
                                         } else {

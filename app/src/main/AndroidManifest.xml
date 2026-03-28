@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,7 +28,9 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".views.user.NewsDetailActivity" />
         <activity android:name=".views.user.MedicineDetailActivity" />
-
+        <activity
+            android:name=".views.admin.AdminDashboardFragment"
+            android:exported="false" />
     </application>
 
 </manifest>
