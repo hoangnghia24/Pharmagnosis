@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item        android:id="@+id/nav_home"
+    <item
+        android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
         android:title="Trang chủ" />
     <item
         android:id="@+id/nav_search"
-        android:icon="@drawable/ic_search"
-        android:title="Tra cứu" />
+        android:icon="@drawable/ic_location_pin"
+        android:title="Chỉ đường" />
     <item
         android:id="@+id/nav_schedule"
         android:icon="@drawable/ic_alarm_clock"
