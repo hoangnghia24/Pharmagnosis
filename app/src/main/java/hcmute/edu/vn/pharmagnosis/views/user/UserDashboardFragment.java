@@ -30,6 +30,7 @@ import hcmute.edu.vn.pharmagnosis.models.HealthNews;
 import hcmute.edu.vn.pharmagnosis.models.Prescription;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
 import hcmute.edu.vn.pharmagnosis.viewmodels.user.UserDashboardViewModel;
+import hcmute.edu.vn.pharmagnosis.views.activities.PharmacyMapActivity;
 
 public class UserDashboardFragment extends Fragment {
 
@@ -101,7 +102,10 @@ public class UserDashboardFragment extends Fragment {
             transaction.commit();
         });
 
-        cardPharmacy.setOnClickListener(v -> Toast.makeText(getContext(), "Mở bản đồ Nhà thuốc", Toast.LENGTH_SHORT).show());
+        cardPharmacy.setOnClickListener(v ->{
+                android.content.Intent intent = new android.content.Intent(getActivity(), PharmacyMapActivity.class);
+                startActivity(intent);
+        });
         cardDisease.setOnClickListener(v -> Toast.makeText(getContext(), "Mở danh sách Bệnh lý", Toast.LENGTH_SHORT).show());
 
         cardBmi.setOnClickListener(v -> {
@@ -111,11 +115,14 @@ public class UserDashboardFragment extends Fragment {
             transaction.addToBackStack(null);
             transaction.commit();
         });
-
-        cardSchedule.setOnClickListener(v -> {
-             android.content.Intent intent = new android.content.Intent(getActivity(), ScheduleActivity.class);
-             startActivity(intent);
-        });
+        cardPharmacy.setOnClickListener(v -> {
+                    android.content.Intent intent = new android.content.Intent(getActivity(), PharmacyMapActivity.class);
+                    startActivity(intent);
+                });
+//        cardSchedule.setOnClickListener(v -> {
+//             android.content.Intent intent = new android.content.Intent(getActivity(), ScheduleActivity.class);
+//             startActivity(intent);
+//        });
 
         txtViewAllNews.setOnClickListener(v -> Toast.makeText(getContext(), "Xem tất cả tin tức", Toast.LENGTH_SHORT).show());
     }

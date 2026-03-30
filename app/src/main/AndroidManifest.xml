@@ -14,7 +14,7 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 
             <activity
-                android:name=".views.user.ScheduleActivity"
+                android:name=".views.activities.SplashActivity"
                 android:exported="true">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
@@ -28,6 +28,7 @@
             <activity android:name=".MainActivity" />
             <activity android:name=".views.user.NewsDetailActivity" />
             <activity android:name=".views.user.MedicineDetailActivity" />
+            <activity android:name=".views.activities.PharmacyMapActivity" />
             <activity
                 android:name=".views.admin.AdminDashboardFragment"
                 android:exported="false" />

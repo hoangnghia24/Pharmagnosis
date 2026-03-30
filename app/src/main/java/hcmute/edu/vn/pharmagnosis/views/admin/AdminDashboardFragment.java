@@ -1,8 +1,11 @@
 package hcmute.edu.vn.pharmagnosis.views.admin;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -12,9 +15,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 
+import hcmute.edu.vn.pharmagnosis.MainActivity;
 import hcmute.edu.vn.pharmagnosis.R;
-import hcmute.edu.vn.pharmagnosis.views.admin.diseases.ManageDiseasesFragment;
+import hcmute.edu.vn.pharmagnosis.views.activities.LoginActivity;
+import hcmute.edu.vn.pharmagnosis.views.activities.PharmacyMapActivity;
 import hcmute.edu.vn.pharmagnosis.views.admin.medicines.ManageMedicinesFragment;
 import hcmute.edu.vn.pharmagnosis.views.admin.news.ManageNewsFragment;
 
@@ -24,8 +30,8 @@ public class AdminDashboardFragment extends AppCompatActivity {
     private View itemDashboard;
     private View itemManageDrugs;
     private BottomNavigationView bottomNavAdmin;
-    private View itemManageDiseases;
     private View itemManageNews;
+    private MaterialCardView btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +62,23 @@ public class AdminDashboardFragment extends AppCompatActivity {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_overview) {
-                replaceFragment(new DashboardFragment());
-                highlightSidebarItem(itemDashboard); // Đồng bộ độ sáng với Sidebar
-                return true;
-            } else if (itemId == R.id.nav_data) {
-                // TODO: Tạo DataFragment và gọi ở đây
-                Toast.makeText(this, "Chuyển đến Dữ liệu", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (itemId == R.id.nav_requests) {
-                // TODO: Tạo RequestFragment và gọi ở đây
-                Toast.makeText(this, "Chuyển đến Yêu cầu", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (itemId == R.id.nav_system) {
-                // TODO: Tạo SystemFragment và gọi ở đây
-                Toast.makeText(this, "Chuyển đến Hệ thống", Toast.LENGTH_SHORT).show();
+                android.content.Intent intent = new android.content.Intent(this, MainActivity.class);
+                startActivity(intent);
                 return true;
             }
+//            else if (itemId == R.id.nav_data) {
+//                // TODO: Tạo DataFragment và gọi ở đây
+//                Toast.makeText(this, "Chuyển đến Dữ liệu", Toast.LENGTH_SHORT).show();
+//                return true;
+//            } else if (itemId == R.id.nav_requests) {
+//                // TODO: Tạo RequestFragment và gọi ở đây
+//                Toast.makeText(this, "Chuyển đến Yêu cầu", Toast.LENGTH_SHORT).show();
+//                return true;
+//            } else if (itemId == R.id.nav_system) {
+//                // TODO: Tạo SystemFragment và gọi ở đây
+//                Toast.makeText(this, "Chuyển đến Hệ thống", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
             return false;
         });
     }
@@ -80,9 +87,8 @@ public class AdminDashboardFragment extends AppCompatActivity {
     private void setupSidebarActions() {
         itemDashboard = findViewById(R.id.item_dashboard);
         itemManageDrugs = findViewById(R.id.item_manage_drugs);
-        itemManageDiseases = findViewById(R.id.item_manage_diseases);
         itemManageNews = findViewById(R.id.item_manage_news);
-
+        btnLogout = findViewById(R.id.btn_logout);
         if (itemDashboard != null) {
             itemDashboard.setOnClickListener(v -> {
                 replaceFragment(new DashboardFragment());
@@ -99,13 +105,6 @@ public class AdminDashboardFragment extends AppCompatActivity {
                 closeSidebar();
             });
         }
-        if(itemManageDiseases != null){
-            itemManageDiseases.setOnClickListener(v -> {
-                replaceFragment(new ManageDiseasesFragment());
-                highlightSidebarItem(itemManageDiseases);
-                closeSidebar();
-                });
-        }
         if(itemManageNews != null) {
             itemManageNews.setOnClickListener(v -> {
                 replaceFragment(new ManageNewsFragment());
@@ -113,6 +112,15 @@ public class AdminDashboardFragment extends AppCompatActivity {
                 closeSidebar();
             });
         }
+        if(btnLogout != null){
+            btnLogout.setOnClickListener(v -> {
+                FirebaseAuth.getInstance().signOut();
+                android.content.Intent intent = new android.content.Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            });
+        }
+
     }
 
     private void highlightSidebarItem(View selectedItem) {
@@ -120,7 +128,6 @@ public class AdminDashboardFragment extends AppCompatActivity {
         int activeColor = Color.parseColor("#1E3A5F");
         resetItemColor(itemDashboard, defaultColor);
         resetItemColor(itemManageDrugs, defaultColor);
-        resetItemColor(itemManageDiseases, defaultColor);
         resetItemColor(itemManageNews, defaultColor);
         resetItemColor(selectedItem, activeColor);
     }

@@ -55,8 +55,12 @@ public class PharmacyRepository {
     public LiveData<List<Pharmacy>> getPharmacies(double centerLat, double centerLon, int radius) {
         MutableLiveData<List<Pharmacy>> pharmacyLiveData = new MutableLiveData<>();
 
-        // Đưa biến radius vào câu lệnh (thay cho số 2000 cố định lúc trước)
-        String query = "[out:json];node[\"amenity\"=\"pharmacy\"](around:" + radius + "," + centerLat + "," + centerLon + ");out;";
+        String query = "[out:json];" +
+                "(" +
+                "nwr[\"amenity\"=\"pharmacy\"](around:" + radius + "," + centerLat + "," + centerLon + ");" +
+                "nwr[\"healthcare\"=\"pharmacy\"](around:" + radius + "," + centerLat + "," + centerLon + ");" +
+                ");" +
+                "out center;";
 
         api.getPharmacies(query).enqueue(new Callback<OverpassResponse>() {
             @Override

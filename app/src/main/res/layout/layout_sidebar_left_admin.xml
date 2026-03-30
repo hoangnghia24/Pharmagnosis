@@ -122,28 +122,6 @@
             </LinearLayout>
 
             <!-- Quản lý Bệnh lý -->
-            <LinearLayout
-                android:id="@+id/item_manage_diseases"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_manage_medicine"
-                    app:tint="#94A3B8" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Quản lý Bệnh lý"
-                    android:textColor="#94A3B8"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
             <!-- Quản lý Tin tức (Có Badge) -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -180,62 +158,9 @@
                 android:layout_marginVertical="16dp"
                 android:background="#334155" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TÀI KHOẢN &amp; BẢO MẬT"
-                android:textColor="#64748B"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:layout_marginStart="12dp"/>
-
             <!-- Quản lý Người dùng -->
-            <LinearLayout
-                android:id="@+id/item_manage_users"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_myplaces"
-                    app:tint="#94A3B8" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Quản lý Người dùng"
-                    android:textColor="#94A3B8"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
             <!-- Cài đặt -->
-            <LinearLayout
-                android:id="@+id/item_settings"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_preferences"
-                    app:tint="#94A3B8" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Cài đặt"
-                    android:textColor="#94A3B8"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

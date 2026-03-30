@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import hcmute.edu.vn.pharmagnosis.views.activities.PharmacyMapActivity;
 import hcmute.edu.vn.pharmagnosis.views.user.UserDashboardFragment;
 import hcmute.edu.vn.pharmagnosis.views.user.UserProfileFragment;
 
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 activeFragment = homeFragment;
                 return true;
 
+            } else if (itemId == R.id.nav_search) {
+                android.content.Intent intent = new android.content.Intent(this, PharmacyMapActivity.class);
+                startActivity(intent);
+                return true;
             } else if (itemId == R.id.nav_profile) {
                 fragmentManager.beginTransaction().hide(activeFragment).show(profileFragment).commit();
                 activeFragment = profileFragment;
