@@ -103,7 +103,13 @@ public class UserDashboardFragment extends Fragment {
             transaction.commit();
         });
 
-        txtViewAllNews.setOnClickListener(v -> Toast.makeText(getContext(), "Xem tất cả tin tức", Toast.LENGTH_SHORT).show());
+        txtViewAllNews.setOnClickListener(v -> {
+            AllNewsFragment allNewsFragment = new AllNewsFragment();
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, allNewsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
     }
 
     private void observeUserData() {
