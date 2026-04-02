@@ -1,12 +1,9 @@
 package hcmute.edu.vn.pharmagnosis.views.admin;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +18,9 @@ import hcmute.edu.vn.pharmagnosis.MainActivity;
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.views.activities.LoginActivity;
 import hcmute.edu.vn.pharmagnosis.views.activities.PharmacyMapActivity;
+import hcmute.edu.vn.pharmagnosis.views.admin.medicines.AddMedicineFragment;
 import hcmute.edu.vn.pharmagnosis.views.admin.medicines.ManageMedicinesFragment;
+import hcmute.edu.vn.pharmagnosis.views.admin.news.AddNewsFragment;
 import hcmute.edu.vn.pharmagnosis.views.admin.news.ManageNewsFragment;
 
 public class AdminDashboardFragment extends AppCompatActivity {
@@ -33,6 +32,7 @@ public class AdminDashboardFragment extends AppCompatActivity {
     private View itemManageNews;
     private MaterialCardView btnLogout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +42,7 @@ public class AdminDashboardFragment extends AppCompatActivity {
         drawerLayoutAdmin = findViewById(R.id.drawer_layout_admin);
         bottomNavAdmin = findViewById(R.id.bottom_nav_admin);
         bottomNavAdmin.setItemIconTintList(null); // Mặc định chọn "Tổng quan"
+
 
         // 2. Thiết lập sự kiện cho Sidebar và Bottom Nav
         setupSidebarActions();
@@ -66,19 +67,6 @@ public class AdminDashboardFragment extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             }
-//            else if (itemId == R.id.nav_data) {
-//                // TODO: Tạo DataFragment và gọi ở đây
-//                Toast.makeText(this, "Chuyển đến Dữ liệu", Toast.LENGTH_SHORT).show();
-//                return true;
-//            } else if (itemId == R.id.nav_requests) {
-//                // TODO: Tạo RequestFragment và gọi ở đây
-//                Toast.makeText(this, "Chuyển đến Yêu cầu", Toast.LENGTH_SHORT).show();
-//                return true;
-//            } else if (itemId == R.id.nav_system) {
-//                // TODO: Tạo SystemFragment và gọi ở đây
-//                Toast.makeText(this, "Chuyển đến Hệ thống", Toast.LENGTH_SHORT).show();
-//                return true;
-//            }
             return false;
         });
     }
@@ -93,7 +81,6 @@ public class AdminDashboardFragment extends AppCompatActivity {
             itemDashboard.setOnClickListener(v -> {
                 replaceFragment(new DashboardFragment());
                 highlightSidebarItem(itemDashboard);
-                bottomNavAdmin.setSelectedItemId(R.id.nav_overview);
                 closeSidebar();
             });
         }

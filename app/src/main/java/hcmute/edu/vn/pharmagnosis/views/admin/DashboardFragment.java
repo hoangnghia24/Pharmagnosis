@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
+import androidx.fragment.app.FragmentTransaction;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,6 +27,8 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import hcmute.edu.vn.pharmagnosis.ENUM.ESearchType;
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.viewmodels.admin.AdminDashboardViewmodels;
+import hcmute.edu.vn.pharmagnosis.views.admin.medicines.AddMedicineFragment;
+import hcmute.edu.vn.pharmagnosis.views.admin.news.AddNewsFragment;
 
 public class DashboardFragment extends Fragment {
 
@@ -34,7 +36,6 @@ public class DashboardFragment extends Fragment {
     private BarChart chart;
     private AutoCompleteTextView spinnerMonths;
     private MaterialButtonToggleGroup toggleTypeGroup;
-
     private int currentMonthIndex = 0; // Mặc định là 0 (Tất cả các tháng)
     private ESearchType currentSearchType = ESearchType.MEDICINE; // Mặc định là xem Top Thuốc
 
@@ -60,8 +61,41 @@ public class DashboardFragment extends Fragment {
 
         // Khởi chạy tính năng biểu đồ Top 10
         setupChartFeature(view);
+        setupQuickActions(view);
+    }
+    private void setupQuickActions(View view) {
+        View btnAddDrug = view.findViewById(R.id.btn_add_drug);
+        View btnWritePost = view.findViewById(R.id.btn_write_post);
+
+        if (btnAddDrug != null) {
+            btnAddDrug.setOnClickListener(v -> {
+                // Mở AddMedicineFragment
+                openFragment(new AddMedicineFragment()); // Đảm bảo bạn đã import AddMedicineFragment
+            });
+        }
+
+        if (btnWritePost != null) {
+            btnWritePost.setOnClickListener(v -> {
+                // Mở AddNewFragment
+                openFragment(new AddNewsFragment()); // Đảm bảo bạn đã import AddNewFragment
+            });
+        }
     }
 
+    // THÊM HÀM TIỆN ÍCH CHUYỂN FRAGMENT
+    private void openFragment(Fragment fragment) {
+        // Lấy FragmentManager từ Activity chứa Fragment này
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+
+        // Thay thế nội dung của container bằng Fragment mới
+        // LƯU Ý QUAN TRỌNG: Thay R.id.fragment_container bằng ID của FrameLayout chứa Fragment trong layout của Activity (ví dụ: AdminDashboardActivity)
+        transaction.replace(R.id.fragment_container, fragment);
+
+        // Thêm vào BackStack để khi ấn nút Back của điện thoại, nó quay lại Dashboard thay vì thoát app
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
     private void setupChartFeature(View view) {
         chart = view.findViewById(R.id.top_search_bar_chart);
         spinnerMonths = view.findViewById(R.id.spinner_months);

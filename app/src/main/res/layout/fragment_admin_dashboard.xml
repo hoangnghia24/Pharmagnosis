@@ -189,13 +189,14 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/btn_add_drug"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_marginEnd="24dp">
                         <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/btn_add_drug"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             app:cardBackgroundColor="#DBEAFE"
@@ -218,13 +219,14 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/btn_write_post"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_marginEnd="24dp">
                         <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/btn_write_post"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             app:cardBackgroundColor="#FFEDD5"
