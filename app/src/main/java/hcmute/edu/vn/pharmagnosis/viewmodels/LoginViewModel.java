@@ -4,10 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import hcmute.edu.vn.pharmagnosis.repositories.AuthRepository;
-import hcmute.edu.vn.pharmagnosis.repositories.repository;
-
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.LiveData;
 
 public class LoginViewModel extends ViewModel {
 

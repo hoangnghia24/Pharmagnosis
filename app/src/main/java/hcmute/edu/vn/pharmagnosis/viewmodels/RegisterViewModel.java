@@ -23,6 +23,11 @@ public class RegisterViewModel extends ViewModel {
 
     public void handleRegister(String name, String email, String password, String confirmPassword, boolean isTermsAccepted) {
         // Validation logic
+        if (name == null || name.trim().isEmpty()) {
+            errorMessage.setValue("Vui lòng nhập họ tên!");
+            return;
+        }
+
         if (!password.equals(confirmPassword)) {
             errorMessage.setValue("Mật khẩu xác nhận không khớp!");
             return;
@@ -35,7 +40,8 @@ public class RegisterViewModel extends ViewModel {
 
         isLoading.setValue(true);
 
-        authRepository.registerUser(email, password, new AuthRepository.AuthCallback() {
+        // CẬP NHẬT: Truyền name vào hàm registerUser
+        authRepository.registerUser(name, email, password, new AuthRepository.AuthCallback() {
             @Override
             public void onSuccess() {
                 isLoading.setValue(false);
