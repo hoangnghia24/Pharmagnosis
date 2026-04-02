@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -27,7 +26,6 @@ import java.util.Locale;
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.adapters.NewsAdapter;
 import hcmute.edu.vn.pharmagnosis.models.HealthNews;
-import hcmute.edu.vn.pharmagnosis.models.Prescription;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
 import hcmute.edu.vn.pharmagnosis.viewmodels.user.UserDashboardViewModel;
 import hcmute.edu.vn.pharmagnosis.views.activities.PharmacyMapActivity;
@@ -35,7 +33,7 @@ import hcmute.edu.vn.pharmagnosis.views.activities.PharmacyMapActivity;
 public class UserDashboardFragment extends Fragment {
 
     private EditText edtSearch;
-    private CardView cardPharmacy, cardDisease, cardBmi, cardSchedule;
+    private CardView cardPharmacy, cardBmi;
     private TextView txtViewAllNews;
     private RecyclerView recyclerNews;
     
@@ -45,10 +43,6 @@ public class UserDashboardFragment extends Fragment {
     
     // BMI Views
     private TextView txtBmiValue, txtBmiStatus;
-    
-    // Schedule Views
-    private ProgressBar progressSchedule;
-    private TextView txtScheduleCount, txtScheduleDesc;
 
     private NewsAdapter newsAdapter;
     private ProfileViewModel profileViewModel;
@@ -73,9 +67,7 @@ public class UserDashboardFragment extends Fragment {
     private void initViews(View view) {
         edtSearch = view.findViewById(R.id.edtSearch);
         cardPharmacy = view.findViewById(R.id.cardPharmacy);
-        cardDisease = view.findViewById(R.id.cardDisease);
         cardBmi = view.findViewById(R.id.cardBmi);
-        cardSchedule = view.findViewById(R.id.cardSchedule);
         txtViewAllNews = view.findViewById(R.id.txtViewAllNews);
         recyclerNews = view.findViewById(R.id.recyclerNews);
         
@@ -85,10 +77,6 @@ public class UserDashboardFragment extends Fragment {
         
         txtBmiValue = view.findViewById(R.id.txtBmiValue);
         txtBmiStatus = view.findViewById(R.id.txtBmiStatus);
-        
-        progressSchedule = view.findViewById(R.id.progressSchedule);
-        txtScheduleCount = view.findViewById(R.id.txtScheduleCount);
-        txtScheduleDesc = view.findViewById(R.id.txtScheduleDesc);
     }
 
     private void setupListeners() {
@@ -102,11 +90,10 @@ public class UserDashboardFragment extends Fragment {
             transaction.commit();
         });
 
-        cardPharmacy.setOnClickListener(v ->{
-                android.content.Intent intent = new android.content.Intent(getActivity(), PharmacyMapActivity.class);
-                startActivity(intent);
+        cardPharmacy.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(getActivity(), PharmacyMapActivity.class);
+            startActivity(intent);
         });
-        cardDisease.setOnClickListener(v -> Toast.makeText(getContext(), "Mở danh sách Bệnh lý", Toast.LENGTH_SHORT).show());
 
         cardBmi.setOnClickListener(v -> {
             BmiCalculatorFragment bmiFragment = new BmiCalculatorFragment();
@@ -115,14 +102,6 @@ public class UserDashboardFragment extends Fragment {
             transaction.addToBackStack(null);
             transaction.commit();
         });
-        cardPharmacy.setOnClickListener(v -> {
-                    android.content.Intent intent = new android.content.Intent(getActivity(), PharmacyMapActivity.class);
-                    startActivity(intent);
-                });
-//        cardSchedule.setOnClickListener(v -> {
-//             android.content.Intent intent = new android.content.Intent(getActivity(), ScheduleActivity.class);
-//             startActivity(intent);
-//        });
 
         txtViewAllNews.setOnClickListener(v -> Toast.makeText(getContext(), "Xem tất cả tin tức", Toast.LENGTH_SHORT).show());
     }
@@ -142,9 +121,6 @@ public class UserDashboardFragment extends Fragment {
 
                 // Cập nhật BMI
                 if (user.getBmi() > 0) updateBmiDisplay(user.getBmi());
-                
-                // Cập nhật lịch thuốc
-                updateScheduleDisplay(user.getPrescriptions());
             }
         });
     }
@@ -159,26 +135,6 @@ public class UserDashboardFragment extends Fragment {
         txtBmiStatus.setText(status);
         txtBmiStatus.setTextColor(color);
         txtBmiStatus.setBackgroundTintList(ColorStateList.valueOf(bgColor));
-    }
-
-    private void updateScheduleDisplay(List<Prescription> prescriptions) {
-        int totalReminders = 0;
-        int takenReminders = 0;
-        if (prescriptions != null) {
-            for (Prescription p : prescriptions) {
-                if (p.getReminders() != null) totalReminders += p.getReminders().size();
-            }
-        }
-        if (totalReminders > 0) {
-            progressSchedule.setMax(totalReminders);
-            progressSchedule.setProgress(takenReminders);
-            txtScheduleCount.setText(String.format(Locale.getDefault(), "%d/%d", takenReminders, totalReminders));
-            txtScheduleDesc.setText(String.format(Locale.getDefault(), "Hôm nay có %d liều thuốc", totalReminders));
-        } else {
-            progressSchedule.setMax(100); progressSchedule.setProgress(0);
-            txtScheduleCount.setText("0/0");
-            txtScheduleDesc.setText("Không có lịch hẹn hôm nay");
-        }
     }
 
     private void setupRecyclerView() {

@@ -9,6 +9,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import hcmute.edu.vn.pharmagnosis.di.FirebaseModule;
 
 public class AuthRepository {
@@ -69,18 +72,33 @@ public class AuthRepository {
                 .addOnFailureListener(e -> callback.onFailure("Đăng nhập thất bại: Sai email hoặc mật khẩu!"));
     }
 
-    // NÂNG CẤP: Gửi Email xác thực sau khi tạo tài khoản thành công
-    public void registerUser(String email, String password, AuthCallback callback) {
+    // CẬP NHẬT: Thêm tham số name để lưu vào Database
+    public void registerUser(String name, String email, String password, AuthCallback callback) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     if (user != null) {
-                        user.sendEmailVerification()
-                                .addOnSuccessListener(aVoid -> {
-                                    firebaseAuth.signOut(); // Ép đăng xuất ngay lập tức
-                                    callback.onSuccess();
-                                })
-                                .addOnFailureListener(e -> callback.onFailure("Tạo tài khoản thành công nhưng lỗi gửi email xác thực."));
+                        String uid = user.getUid();
+                        // Lưu thông tin cơ bản vào Realtime Database
+                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+                        
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("fullNAme", name); // Lưu đúng tên field trong Model User là "fullNAme"
+                        userData.put("email", email);
+                        userData.put("role", "USER");
+
+                        userRef.setValue(userData).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                user.sendEmailVerification()
+                                        .addOnSuccessListener(aVoid -> {
+                                            firebaseAuth.signOut();
+                                            callback.onSuccess();
+                                        })
+                                        .addOnFailureListener(e -> callback.onFailure("Tạo tài khoản thành công nhưng lỗi gửi email xác thực."));
+                            } else {
+                                callback.onFailure("Lỗi lưu thông tin: " + task.getException().getMessage());
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
