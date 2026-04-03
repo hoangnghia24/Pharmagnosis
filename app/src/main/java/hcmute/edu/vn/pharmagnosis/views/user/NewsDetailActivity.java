@@ -1,7 +1,10 @@
 package hcmute.edu.vn.pharmagnosis.views.user;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,10 +73,35 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             // Gọi Shipper Glide tải tấm ảnh bìa cực xịn từ URL nhét vào imgNewsCover
-            if (imageUrl != null && !imageUrl.isEmpty()) {
+            if (imageUrl == null && imageUrl.isEmpty()) {
+                return;
+            }
+            if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")){
                 Glide.with(this)
                         .load(imageUrl)
                         .into(imgNewsCover);
+            }else{
+                try {
+                    String base64String = imageUrl;
+
+                    // Lọc bỏ tiền tố data URI nếu Firebase trả về (VD: data:image/jpeg;base64,...)
+                    if (base64String.contains(",")) {
+                        base64String = base64String.split(",")[1];
+                    }
+
+                    // Giải mã thành mảng byte
+                    byte[] imageBytes = Base64.decode(base64String, Base64.DEFAULT);
+
+                    // Giao mảng byte cho Glide xử lý để tránh giật lag và OOM
+                    Glide.with(imgNewsCover.getContext())
+                            .asBitmap()
+                            .load(imageBytes)
+                            .into(imgNewsCover);
+
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                    // imgNewsCover.setImageResource(android.R.drawable.stat_notify_error);
+                }
             }
         }
     }

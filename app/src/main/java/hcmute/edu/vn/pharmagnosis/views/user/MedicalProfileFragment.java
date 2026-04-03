@@ -150,7 +150,7 @@ public class MedicalProfileFragment extends Fragment {
     private void observeViewModel() {
         profileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
-                if (user.getFullNAme() != null) edtFullName.setText(user.getFullNAme());
+                if (user.getFullName() != null) edtFullName.setText(user.getFullName());
                 if (user.getGender() != null) {
                     selectedGenderEnum = user.getGender().name();
                     tvGenderVal.setText(selectedGenderEnum.equals("MALE") ? "Nam" : "Nữ");

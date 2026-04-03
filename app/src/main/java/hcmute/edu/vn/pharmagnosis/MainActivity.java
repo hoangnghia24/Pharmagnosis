@@ -1,5 +1,6 @@
 package hcmute.edu.vn.pharmagnosis;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -9,10 +10,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import hcmute.edu.vn.pharmagnosis.ENUM.ERole;
+import hcmute.edu.vn.pharmagnosis.viewmodels.LoginViewModel;
 import hcmute.edu.vn.pharmagnosis.views.activities.PharmacyMapActivity;
+import hcmute.edu.vn.pharmagnosis.views.admin.AdminDashboardFragment;
 import hcmute.edu.vn.pharmagnosis.views.user.UserDashboardFragment;
 import hcmute.edu.vn.pharmagnosis.views.user.UserProfileFragment;
 
@@ -22,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private Fragment homeFragment;
     private Fragment profileFragment;
     private Fragment activeFragment;
+
+    private LoginViewModel loginViewModel;
+    private BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(R.id.fragment_container, profileFragment, "2").hide(profileFragment).commit();
         fragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment, "1").commit();
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setItemIconTintList(null);
 
         // Xử lý sự kiện click trên thanh Nav
@@ -51,15 +59,19 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             } else if (itemId == R.id.nav_search) {
-                android.content.Intent intent = new android.content.Intent(this, PharmacyMapActivity.class);
+                Intent intent = new Intent(this, PharmacyMapActivity.class);
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 fragmentManager.beginTransaction().hide(activeFragment).show(profileFragment).commit();
                 activeFragment = profileFragment;
                 return true;
+            } else if (itemId == R.id.nav_admin) {
+                // CHUYỂN QUA MÀN HÌNH ADMIN
+                Intent intent = new Intent(this, AdminDashboardFragment.class);
+                startActivity(intent);
+                return true;
             }
-
             return false;
         });
 
@@ -68,5 +80,24 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // PHÂN QUYỀN: Ẩn/Hiện nút nav_admin dựa trên Role
+        setupAdminRoleCheck();
+    }
+
+    private void setupAdminRoleCheck() {
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+        // Mặc định ẩn nút Admin khi chưa xác định được quyền
+        bottomNav.getMenu().findItem(R.id.nav_admin).setVisible(false);
+
+        loginViewModel.getUserRole().observe(this, role -> {
+            if (role != null && role.equals(ERole.ADMIN.name())) {
+                // Nếu là Admin thì mới cho hiển thị nút
+                bottomNav.getMenu().findItem(R.id.nav_admin).setVisible(true);
+            }
+        });
+
+        loginViewModel.fetchRoleAfterLogin();
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="280dp"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -15,6 +16,8 @@
         android:paddingBottom="16dp">
 
         <!-- News Image at top -->
+
+        <!-- Tag label (Using tv_news_date ID) -->
         <ImageView
             android:id="@+id/img_news"
             android:layout_width="match_parent"
@@ -22,9 +25,9 @@
             android:background="#F1F5F9"
             android:scaleType="centerCrop"
             android:src="@android:drawable/ic_menu_gallery"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
 
-        <!-- Tag label (Using tv_news_date ID) -->
         <TextView
             android:id="@+id/tv_news_date"
             android:layout_width="wrap_content"

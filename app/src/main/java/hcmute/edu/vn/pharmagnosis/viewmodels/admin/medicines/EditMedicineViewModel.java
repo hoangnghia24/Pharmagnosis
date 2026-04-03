@@ -1,8 +1,5 @@
 package hcmute.edu.vn.pharmagnosis.viewmodels.admin.medicines;
 
-
-import android.net.Uri;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -25,8 +22,14 @@ public class EditMedicineViewModel extends ViewModel {
     public LiveData<Boolean> getIsSuccess() { return isSuccess; }
     public LiveData<String> getErrorMessage() { return errorMessage; }
 
-    public void updateMedicineToFirebase(Uri newImageUri, Medicine medicine) {
+    // Xóa bỏ tham số Uri imageUri, chỉ nhận object Medicine (đã chứa chuỗi ảnh Base64)
+    public void updateMedicineToFirebase(Medicine medicine) {
         // Validate cơ bản
+        if (medicine == null || medicine.getMedicineId() == null) {
+            errorMessage.setValue("Dữ liệu thuốc không hợp lệ!");
+            return;
+        }
+
         if (medicine.getMedicineName() == null || medicine.getMedicineName().trim().isEmpty()) {
             errorMessage.setValue("Tên thuốc không được để trống!");
             return;
@@ -34,26 +37,14 @@ public class EditMedicineViewModel extends ViewModel {
 
         isLoading.setValue(true);
 
-        if (newImageUri != null) {
-            // Trường hợp 1: Có chọn ảnh mới -> Upload ảnh mới lên Storage rồi mới cập nhật Firestore
-            repository.uploadImageAndUpdateMedicine(newImageUri, medicine, task -> {
-                isLoading.setValue(false);
-                if (task != null && task.isSuccessful()) {
-                    isSuccess.setValue(true);
-                } else {
-                    errorMessage.setValue("Cập nhật thất bại. Vui lòng thử lại!");
-                }
-            });
-        } else {
-            // Trường hợp 2: Không chọn ảnh mới -> Giữ nguyên link ảnh cũ, chỉ cập nhật Text lên Firestore
-            repository.updateMedicine(medicine, task -> {
-                isLoading.setValue(false);
-                if (task != null && task.isSuccessful()) {
-                    isSuccess.setValue(true);
-                } else {
-                    errorMessage.setValue("Cập nhật thất bại. Vui lòng thử lại!");
-                }
-            });
-        }
+        // Gọi thẳng hàm updateMedicine trong Repository để lưu lên Firestore
+        repository.updateMedicine(medicine, task -> {
+            isLoading.setValue(false);
+            if (task != null && task.isSuccessful()) {
+                isSuccess.setValue(true); // Cập nhật thành công
+            } else {
+                errorMessage.setValue("Cập nhật thuốc thất bại. Vui lòng thử lại!");
+            }
+        });
     }
 }

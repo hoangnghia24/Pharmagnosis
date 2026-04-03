@@ -11,7 +11,7 @@ import com.google.firebase.database.Exclude;
 @IgnoreExtraProperties
 public class User {
     private String id;
-    private String fullNAme;
+    private String fullName;
     private Date dob;
     private EGender gender;
     private float height;
@@ -26,15 +26,14 @@ public class User {
 
     private List<Allergy> allergies;
     private List<SearchRecord> searchRecords;
-    private List<Prescription> prescriptions;
     private java.util.Map<String, BmiRecord> bmiHistory;
 
     public User() {
     }
 
-    public User(String id, String fullNAme, Date dob, EGender gender, float height, float weight, String email, String password, ERole role, String phone, float bmi) {
+    public User(String id, String fullName, Date dob, EGender gender, float height, float weight, String email, String password, ERole role, String phone, float bmi) {
         this.id = id;
-        this.fullNAme = fullNAme;
+        this.fullName = fullName;
         this.dob = dob;
         this.gender = gender;
         this.height = height;
@@ -46,9 +45,9 @@ public class User {
         this.bmi = bmi;
     }
 
-    public User(String id, String fullNAme, Date dob, EGender gender, float height, float weight, String bloodType, String email, String password, ERole role, String phone, float bmi, List<Allergy> allergies, List<SearchRecord> searchRecords, List<Prescription> prescriptions) {
+    public User(String id, String fullName, Date dob, EGender gender, float height, float weight, String bloodType, String email, String password, ERole role, String phone, float bmi, List<Allergy> allergies, List<SearchRecord> searchRecords) {
         this.id = id;
-        this.fullNAme = fullNAme;
+        this.fullName = fullName;
         this.dob = dob;
         this.gender = gender;
         this.height = height;
@@ -61,7 +60,6 @@ public class User {
         this.bmi = bmi;
         this.allergies = allergies;
         this.searchRecords = searchRecords;
-        this.prescriptions = prescriptions;
     }
 
     public String getId() {
@@ -72,12 +70,12 @@ public class User {
         this.id = id;
     }
 
-    public String getFullNAme() {
-        return fullNAme;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullNAme(String fullNAme) {
-        this.fullNAme = fullNAme;
+    public void setFullName(String fullNAme) {
+        this.fullName = fullNAme;
     }
 
     @Exclude
@@ -108,14 +106,6 @@ public class User {
 
     public void setSearchRecords(List<SearchRecord> searchRecords) {
         this.searchRecords = searchRecords;
-    }
-
-    public List<Prescription> getPrescriptions() {
-        return prescriptions;
-    }
-
-    public void setPrescriptions(List<Prescription> prescriptions) {
-        this.prescriptions = prescriptions;
     }
 
     public void setGender(EGender gender) {

@@ -2,6 +2,9 @@ package hcmute.edu.vn.pharmagnosis.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,7 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
     private String currentKeyword = "";
     private String currentDosageFilter = "";
     private String currentTargetFilter = "";
+
     public void applyAdvancedFilter(String keyword, String dosage, String target) {
         this.currentKeyword = keyword != null ? keyword.toLowerCase().trim() : "";
         this.currentDosageFilter = dosage != null ? dosage : "";
@@ -61,6 +67,7 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
         this.medicineListFiltered = filteredList;
         notifyDataSetChanged();
     }
+
     public MedicineSearchAdapter(List<Medicine> medicineList) {
         this.medicineListFull = new ArrayList<>(medicineList);
         this.medicineListFiltered = new ArrayList<>(medicineList); // Ban đầu chưa gõ gì thì hiển thị tất cả
@@ -102,7 +109,6 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
             holder.txtTag2.setText(medicine.getIndications());
             holder.txtTag2.setVisibility(View.VISIBLE);
         } else {
-
             if (medicine.getTradeName() != null && !medicine.getTradeName().isEmpty()) {
                 holder.txtTag2.setText(medicine.getTradeName());
                 holder.txtTag2.setVisibility(View.VISIBLE);
@@ -111,16 +117,35 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
             }
         }
 
-        if (medicine.getImage() != null && !medicine.getImage().isEmpty()) {
-            com.bumptech.glide.Glide.with(holder.itemView.getContext())
-                    .load(medicine.getImage())
-                    .into(holder.imgMedicine);
+        // --- XỬ LÝ HIỂN THỊ ẢNH (HỖ TRỢ CẢ URL VÀ BASE64) ---
+        String imageString = medicine.getImage();
+        if (imageString != null && !imageString.isEmpty()) {
+            try {
+                if (imageString.startsWith("http")) {
+                    // Nếu dữ liệu cũ trên Firebase là link URL, dùng Glide
+                    Glide.with(holder.itemView.getContext())
+                            .load(imageString)
+                            .placeholder(android.R.drawable.ic_menu_gallery)
+                            .into(holder.imgMedicine);
+                } else {
+                    // Nếu là chuỗi Base64 mới, tự động giải mã ra Bitmap và hiển thị
+                    byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    holder.imgMedicine.setImageBitmap(decodedByte);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                holder.imgMedicine.setImageResource(android.R.drawable.ic_menu_gallery);
+            }
+        } else {
+            holder.imgMedicine.setImageResource(android.R.drawable.ic_menu_gallery);
         }
 
         holder.itemView.setOnClickListener(v -> {
-            android.content.Context context = v.getContext();
-            android.content.Intent intent = new android.content.Intent(context, hcmute.edu.vn.pharmagnosis.views.user.MedicineDetailActivity.class);
-            intent.putExtra("MEDICINE_OBJ", (java.io.Serializable) medicine);
+            Context context = v.getContext();
+            Intent intent = new Intent(context, MedicineDetailActivity.class);
+            String medicineJson = new com.google.gson.Gson().toJson(medicine);
+            intent.putExtra("medicine_json", medicineJson);
             context.startActivity(intent);
         });
     }
@@ -138,7 +163,7 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
                 List<Medicine> filteredList = new ArrayList<>();
 
                 if (constraint == null || constraint.length() == 0) {
-
+                    // Trống thì không làm gì hoặc addAll tùy logic của bạn
                 } else {
                     String filterPattern = constraint.toString().toLowerCase().trim();
 
@@ -158,7 +183,9 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 medicineListFiltered.clear();
-                medicineListFiltered.addAll((List) results.values);
+                if (results.values != null) {
+                    medicineListFiltered.addAll((List) results.values);
+                }
                 notifyDataSetChanged();
             }
         };
@@ -171,10 +198,8 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
         TextView txtTag1;
         TextView txtTag2;
 
-
         public MedicineViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Ánh xạ khớp với ID
             imgMedicine = itemView.findViewById(R.id.imgMedicine);
             txtMedicineName = itemView.findViewById(R.id.txtMedicineName);
             txttradeName = itemView.findViewById(R.id.txttradeName);

@@ -72,7 +72,7 @@ public class UserProfileFragment extends Fragment {
                 TextView tvBmiStatus = view.findViewById(R.id.tv_bmi_status);
                 ImageView icPointer = view.findViewById(R.id.ic_pointer);
 
-                if (tvName != null && user.getFullNAme() != null) tvName.setText(user.getFullNAme());
+                if (tvName != null && user.getFullName() != null) tvName.setText(user.getFullName());
                 if (tvBlood != null && user.getBloodType() != null) tvBlood.setText("Nhóm máu: " + user.getBloodType());
 
                 if (tvAgeGender != null) {

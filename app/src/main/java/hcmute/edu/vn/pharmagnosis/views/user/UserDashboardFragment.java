@@ -116,8 +116,8 @@ public class UserDashboardFragment extends Fragment {
         profileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
                 // Cập nhật tên người dùng
-                if (user.getFullNAme() != null && !user.getFullNAme().isEmpty()) {
-                    txtUserName.setText(user.getFullNAme());
+                if (user.getFullName() != null && !user.getFullName().isEmpty()) {
+                    txtUserName.setText(user.getFullName());
                 }
                 
                 // Cập nhật Avatar (nếu có)

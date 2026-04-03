@@ -1,6 +1,5 @@
 package hcmute.edu.vn.pharmagnosis.viewmodels.admin.medicines;
 
-import android.net.Uri;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -23,7 +22,8 @@ public class AddMedicineViewModel extends ViewModel {
     public LiveData<Boolean> getIsSuccess() { return isSuccess; }
     public LiveData<String> getErrorMessage() { return errorMessage; }
 
-    public void saveMedicineToFirebase(Uri imageUri, Medicine medicine) {
+    // Xóa tham số Uri, chỉ nhận vào model Medicine (đã chứa sẵn ảnh Base64)
+    public void saveMedicineToFirebase(Medicine medicine) {
         // Validate cơ bản
         if (medicine.getMedicineName() == null || medicine.getMedicineName().trim().isEmpty()) {
             errorMessage.setValue("Tên thuốc không được để trống!");
@@ -32,7 +32,9 @@ public class AddMedicineViewModel extends ViewModel {
 
         isLoading.setValue(true);
 
-        repository.uploadImageAndSaveMedicine(imageUri, medicine, task -> {
+        // Đổi tên hàm gọi xuống Repository thành saveMedicine (hoặc tên tương đương trong source của bạn)
+        // Vì lúc này ta chỉ cần lưu data vào Firestore/Realtime Database chứ không cần upload file lên Storage nữa
+        repository.saveMedicine(medicine, task -> {
             isLoading.setValue(false);
             if (task != null && task.isSuccessful()) {
                 isSuccess.setValue(true);

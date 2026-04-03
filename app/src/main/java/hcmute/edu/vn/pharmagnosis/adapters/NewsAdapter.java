@@ -36,13 +36,50 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         holder.txtNewsTitle.setText(news.getTitle());
         holder.txtNewsDate.setText("Tin tức Y tế");
-
+        String imgNews = news.getImage();
         // Load ảnh bằng Glide
-        Glide.with(holder.itemView.getContext())
-                .load(news.getImage())
-                .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh mặc định khi đang load
-                .error(android.R.drawable.stat_notify_error)      // Ảnh khi lỗi
-                .into(holder.imgNews);
+            if (imgNews != null && !imgNews.isEmpty()) {
+                // 1. Kiểm tra nếu là URL thì load bình thường
+                if (imgNews.startsWith("http://") || imgNews.startsWith("https://")) {
+                    Glide.with(holder.itemView.getContext())
+                            .load(news.getImage())
+                            .centerCrop()
+                            .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh mặc định khi đang load
+                            .error(android.R.drawable.stat_notify_error)      // Ảnh khi lỗi
+                            .into(holder.imgNews);
+                }
+                // 2. Nếu không phải URL, xử lý theo hướng Base64
+                else {
+                    try {
+                        String base64String = imgNews;
+                        // Lọc bỏ tiền tố data URI nếu có
+                        if (base64String.contains(",")) {
+                            base64String = base64String.split(",")[1];
+                        }
+
+                        // Chuyển Base64 thành mảng byte
+                        byte[] imageBytes = android.util.Base64.decode(base64String, android.util.Base64.DEFAULT);
+
+                        // BÍ QUYẾT: Dùng Glide để load mảng byte[] thay vì load String
+                        Glide.with(holder.itemView.getContext())
+                                .asBitmap() // Nói cho Glide biết đây sẽ là ảnh
+                                .load(imageBytes)
+                                .centerCrop()
+                                .placeholder(android.R.drawable.ic_menu_gallery)
+                                .error(android.R.drawable.stat_notify_error)
+                                .into(holder.imgNews);
+
+                    } catch (IllegalArgumentException e) {
+                        // Nếu chuỗi rác không thể decode
+                        e.printStackTrace();
+                        holder.imgNews.setImageResource(android.R.drawable.stat_notify_error);
+                    }
+                }
+            } else {
+                // Nếu không có chuỗi ảnh
+                holder.imgNews.setImageResource(android.R.drawable.ic_menu_gallery);
+            }
+
 
         // Bắt sự kiện Click vào thẻ tin tức
         holder.itemView.setOnClickListener(v -> {

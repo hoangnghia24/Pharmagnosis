@@ -1,5 +1,8 @@
 package hcmute.edu.vn.pharmagnosis.adapters.admin.medicines;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +26,14 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     public interface OnMedicineActionListener {
         void onEditClick(Medicine medicine);
         void onDeleteClick(Medicine medicine);
+        void onItemClick(Medicine medicine);
     }
 
     public MedicineAdapter(OnMedicineActionListener actionListener) {
         this.actionListener = actionListener;
     }
 
-    // Hàm gán dữ liệu bắt đầu bằng set [cite: 29]
+    // Hàm gán dữ liệu
     public void setMedicineList(List<Medicine> medicineList) {
         this.medicineList = medicineList;
         notifyDataSetChanged();
@@ -48,20 +52,38 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         holder.tvMedicineName.setText(medicine.getMedicineName());
         holder.tvDosageForm.setText(medicine.getDosageForm());
 
-        // --- DÙNG GLIDE ĐỂ TẢI ẢNH ---
-        String imageUrl = medicine.getImage();
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            Glide.with(holder.itemView.getContext())
-                    .load(imageUrl)
-                    .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh hiển thị tạm khi đang tải
-                    .into(holder.imgThumbnail);
+        // --- XỬ LÝ HIỂN THỊ ẢNH (HỖ TRỢ CẢ URL VÀ BASE64) ---
+        String imageString = medicine.getImage();
+        if (imageString != null && !imageString.isEmpty()) {
+            try {
+                if (imageString.startsWith("http")) {
+                    // Nếu dữ liệu cũ trên Firebase là link URL, dùng Glide
+                    Glide.with(holder.itemView.getContext())
+                            .load(imageString)
+                            .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh hiển thị tạm
+                            .into(holder.imgThumbnail);
+                } else {
+                    // Nếu là chuỗi Base64 mới, giải mã ra Bitmap và hiển thị
+                    byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    holder.imgThumbnail.setImageBitmap(decodedByte);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                holder.imgThumbnail.setImageResource(android.R.drawable.ic_menu_gallery); // Set ảnh mặc định nếu lỗi
+            }
         } else {
             holder.imgThumbnail.setImageResource(android.R.drawable.ic_menu_gallery);
         }
-        // -----------------------------
 
+        // --- XỬ LÝ SỰ KIỆN CLICK ---
         holder.imgEdit.setOnClickListener(v -> actionListener.onEditClick(medicine));
         holder.imgDelete.setOnClickListener(v -> actionListener.onDeleteClick(medicine));
+        holder.itemView.setOnClickListener(v -> {
+            if (actionListener != null) {
+                actionListener.onItemClick(medicine);
+            }
+        });
     }
 
     @Override

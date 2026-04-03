@@ -77,7 +77,7 @@ public class EditNewsFragment extends Fragment {
     private void initViews(View view) {
         etTitle = view.findViewById(R.id.et_news_title);
         etContent = view.findViewById(R.id.et_news_content);
-        btnUpdate = view.findViewById(R.id.btn_save_news); // Nút cập nhật
+        btnUpdate = view.findViewById(R.id.btn_edit_news); // Nút cập nhật
         imgMenu = view.findViewById(R.id.img_menu); // Nút quay lại (Back)
         ivImagePreview = view.findViewById(R.id.iv_news_image_preview);
     }
@@ -149,7 +149,9 @@ public class EditNewsFragment extends Fragment {
             // Giữ nguyên chuỗi Base64 của ảnh cũ
             currentNews.setImage(currentBase64Image);
         }
-
+        if (viewModel != null) {
+            viewModel.updateNews(currentNews);
+        }
     }
 
     private void observeViewModel() {

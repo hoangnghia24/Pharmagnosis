@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_location_pin"
         android:title="Chỉ đường" />
     <item
-        android:id="@+id/nav_schedule"
+        android:id="@+id/nav_admin"
         android:icon="@drawable/ic_alarm_clock"
         android:title="Lịch uống" />
     <item

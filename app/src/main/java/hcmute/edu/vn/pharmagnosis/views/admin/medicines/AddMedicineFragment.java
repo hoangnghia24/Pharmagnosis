@@ -1,7 +1,10 @@
 package hcmute.edu.vn.pharmagnosis.views.admin.medicines;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +164,25 @@ public class AddMedicineFragment extends Fragment {
         chipGroup.addView(chip);
     }
 
+    // Hàm mã hóa ảnh sang Base64
+    private String encodeImageToBase64(Uri imageUri) {
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            // Nén ảnh xuống chuẩn JPEG với chất lượng 50%
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            byte[] imageBytes = baos.toByteArray();
+
+            // Trả về chuỗi Base64
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void onSaveButtonClicked() {
         // Gán dữ liệu vào model Medicine
         Medicine medicine = new Medicine();
@@ -173,8 +197,17 @@ public class AddMedicineFragment extends Fragment {
         medicine.setContraindications(new ArrayList<>(contraindicationsList));
         medicine.setSideEffects(new ArrayList<>(sideEffectsList));
 
+        // Xử lý mã hóa ảnh sang Base64 nếu có chọn ảnh
+        if (selectedImageUri != null) {
+            String base64Image = encodeImageToBase64(selectedImageUri);
+            // Giả sử model Medicine có thuộc tính lưu ảnh dạng String là setImageBase64 hoặc tương tự
+            // BẠN CẦN ĐỔI TÊN HÀM NÀY CHO KHỚP VỚI MODEL BÊN BẠN (VD: setImage, setImageUrl, v.v.)
+            medicine.setImage(base64Image);
+        }
+
         // Gọi ViewModel xử lý
-        viewModel.saveMedicineToFirebase(selectedImageUri, medicine);
+        // BẠN CẦN CẬP NHẬT LẠI HÀM NÀY TRONG AddMedicineViewModel ĐỂ CHỈ NHẬN VÀO (medicine)
+        viewModel.saveMedicineToFirebase(medicine);
     }
 
     private void observeViewModel() {

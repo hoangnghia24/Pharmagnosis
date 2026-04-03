@@ -67,6 +67,12 @@ public class ManageMedicinesFragment extends Fragment {
             public void onDeleteClick(Medicine medicine) {
                 showDeleteConfirmDialog(medicine);
             }
+            @Override
+            public  void onItemClick(Medicine medicine) {
+                android.content.Intent intent = new android.content.Intent(getContext(), hcmute.edu.vn.pharmagnosis.views.user.MedicineDetailActivity.class);
+                intent.putExtra("medicine_json", new Gson().toJson(medicine));
+                startActivity(intent);
+            }
         });
         rvMedicines.setAdapter(adapter);
 

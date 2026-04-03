@@ -1,7 +1,10 @@
 package hcmute.edu.vn.pharmagnosis.views.admin.medicines;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +47,7 @@ public class EditMedicineFragment extends Fragment {
     private ImageView imgMenu, imgMedicinePhoto;
     private EditText etMedicineName, etCompany, etInstructions;
     private Spinner spinnerDosageForm, spinnerTargetAudience;
-    private Button btnCancel, btnSave;
+    private Button btnCancel, btnEdit;
 
     // Khai báo các Views cho ChipGroup (Hoạt chất, Chống chỉ định, Tác dụng phụ)
     private EditText etActiveIngredientInput, etContraindicationInput, etSideEffectInput;
@@ -119,7 +124,7 @@ public class EditMedicineFragment extends Fragment {
         cgSideEffects = view.findViewById(R.id.cg_side_effects);
 
         btnCancel = view.findViewById(R.id.btn_cancel);
-        btnSave = view.findViewById(R.id.btn_save);
+        btnEdit = view.findViewById(R.id.btn_edit);
     }
 
     private void setupSpinners() {
@@ -141,13 +146,25 @@ public class EditMedicineFragment extends Fragment {
         etCompany.setText(currentMedicine.getTradeName());
         etInstructions.setText(currentMedicine.getIndications());
 
-        // 2. Load ảnh bằng Glide
-        String imageUrl = currentMedicine.getImage();
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            Glide.with(this)
-                    .load(imageUrl)
-                    .placeholder(android.R.drawable.ic_menu_gallery)
-                    .into(imgMedicinePhoto);
+        // 2. Load ảnh (Hỗ trợ cả URL cũ và Base64 mới)
+        String imageString = currentMedicine.getImage();
+        if (imageString != null && !imageString.isEmpty()) {
+            try {
+                if (imageString.startsWith("http")) {
+                    // Nếu dữ liệu trên Firebase vẫn là link URL cũ, dùng Glide
+                    Glide.with(this)
+                            .load(imageString)
+                            .placeholder(android.R.drawable.ic_menu_gallery)
+                            .into(imgMedicinePhoto);
+                } else {
+                    // Nếu là dữ liệu Base64 mới, tự động giải mã ra Bitmap
+                    byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    imgMedicinePhoto.setImageBitmap(decodedByte);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // 3. Đổ dữ liệu Spinner
@@ -199,7 +216,7 @@ public class EditMedicineFragment extends Fragment {
         setupAddChipEvent(btnAddSideEffect, etSideEffectInput, cgSideEffects, sideEffectsList);
 
         // Nút Lưu (Cập nhật)
-        btnSave.setOnClickListener(v -> onSaveButtonClicked());
+        btnEdit.setOnClickListener(v -> onSaveButtonClicked());
     }
 
     private void setupAddChipEvent(Button btnAdd, EditText inputField, ChipGroup chipGroup, List<String> dataList) {
@@ -224,6 +241,25 @@ public class EditMedicineFragment extends Fragment {
         chipGroup.addView(chip);
     }
 
+    // Hàm mã hóa ảnh sang Base64
+    private String encodeImageToBase64(Uri imageUri) {
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            // Nén ảnh xuống chuẩn JPEG với chất lượng 50%
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            byte[] imageBytes = baos.toByteArray();
+
+            // Trả về chuỗi Base64
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void onSaveButtonClicked() {
         if (currentMedicine == null) return;
 
@@ -238,20 +274,28 @@ public class EditMedicineFragment extends Fragment {
         currentMedicine.setContraindications(new ArrayList<>(contraindicationsList));
         currentMedicine.setSideEffects(new ArrayList<>(sideEffectsList));
 
-        // Gọi ViewModel để lưu lên Firebase
+        // Nếu người dùng có chọn ảnh mới, thực hiện mã hóa ảnh
+        if (newImageUri != null) {
+            String base64Image = encodeImageToBase64(newImageUri);
+            if (base64Image != null) {
+                currentMedicine.setImage(base64Image); // Cập nhật chuỗi Base64 mới vào model
+            }
+        }
+
+        // Gọi ViewModel để lưu lên Firebase (Chỉ truyền Model, không cần truyền URI nữa)
         if (viewModel != null) {
-            viewModel.updateMedicineToFirebase(newImageUri, currentMedicine);
+            viewModel.updateMedicineToFirebase(currentMedicine);
         }
     }
 
-    // --- HÀM MỚI BỔ SUNG: Lắng nghe trạng thái từ ViewModel ---
+    // --- HÀM Lắng nghe trạng thái từ ViewModel ---
     private void observeViewModel() {
         if (viewModel == null) return;
 
         // Lắng nghe trạng thái loading để vô hiệu hóa nút bấm
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            btnSave.setEnabled(!isLoading);
-            btnSave.setText(isLoading ? "Đang cập nhật..." : "Cập nhật");
+            btnEdit.setEnabled(!isLoading);
+            btnEdit.setText(isLoading ? "Đang cập nhật..." : "Cập nhật");
         });
 
         // Lắng nghe trạng thái thành công
