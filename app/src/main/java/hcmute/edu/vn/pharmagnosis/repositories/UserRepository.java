@@ -99,7 +99,7 @@ public class UserRepository {
         if (uid == null) return;
 
         Map<String, Object> updates = new HashMap<>();
-        updates.put("fullNAme", fullName);
+        updates.put("fullName", fullName);
         updates.put("gender", gender);
         updates.put("bloodType", bloodType);
         if (dob != null) {
@@ -127,7 +127,7 @@ public class UserRepository {
         if (uid == null) return;
 
         java.util.Map<String, Object> updates = new java.util.HashMap<>();
-        updates.put("fullNAme", fullName);
+        updates.put("fullName", fullName);
         updates.put("gender", gender);
         updates.put("bloodType", bloodType);
         if (dob != null) {
@@ -163,7 +163,7 @@ public class UserRepository {
 
         // Cập nhật các trường thông tin cơ bản
         Map<String, Object> updates = new HashMap<>();
-        updates.put("fullNAme", fullName);
+        updates.put("fullName", fullName);
         updates.put("gender", gender);
         updates.put("bloodType", bloodType);
         if (dob != null) updates.put("dob", dob);

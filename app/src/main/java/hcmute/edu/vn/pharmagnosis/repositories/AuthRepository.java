@@ -83,7 +83,7 @@ public class AuthRepository {
                         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
                         
                         Map<String, Object> userData = new HashMap<>();
-                        userData.put("fullNAme", name); // Lưu đúng tên field trong Model User là "fullNAme"
+                        userData.put("fullName", name); // Lưu đúng tên field trong Model User là "fullName"
                         userData.put("email", email);
                         userData.put("role", "USER");
 
