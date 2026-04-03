@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@id/layoutBottomAction"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -92,27 +91,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#212121"
         android:contentDescription="Quay lại" />
-
-    <LinearLayout
-        android:id="@+id/layoutBottomAction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:elevation="16dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="16dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSearchAction"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="TRA CỨU THUỐC CỦA BẠN NGAY"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:backgroundTint="#1976D2"
-            app:cornerRadius="8dp" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

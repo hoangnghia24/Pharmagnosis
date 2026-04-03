@@ -42,18 +42,12 @@ public class NewsDetailActivity extends AppCompatActivity {
         txtNewsTitle = findViewById(R.id.txtNewsTitle);
         txtNewsDateAndSource = findViewById(R.id.txtNewsDateAndSource);
         txtNewsContent = findViewById(R.id.txtNewsContent);
-        btnSearchAction = findViewById(R.id.btnSearchAction);
     }
 
     // 3. Cài đặt sự kiện Click
     private void setupListeners() {
         // Nút mũi tên quay lại -> Đóng màn hình này
         imgBack.setOnClickListener(v -> finish());
-
-        // Bấm nút "Tra cứu thuốc" -> Tạm thời lùi về trang chủ
-        btnSearchAction.setOnClickListener(v -> {
-            finish();
-        });
     }
 
     // 4. Hàm "mở hành lý" (Lấy dữ liệu từ Trang chủ truyền sang)
