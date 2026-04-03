@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton;
 import java.util.Locale;
 
 import hcmute.edu.vn.pharmagnosis.R;
+import hcmute.edu.vn.pharmagnosis.models.BmiRecord;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
 
 public class BmiCalculatorFragment extends Fragment {
@@ -70,18 +71,28 @@ public class BmiCalculatorFragment extends Fragment {
     private void observeData() {
         profileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
             if (user != null && isInitialLoad) {
-                // Điền sẵn số liệu thật vào 2 ô nhập liệu nếu có
-                if (user.getHeight() > 0) {
-                    edtHeight.setText(String.format(Locale.getDefault(), "%.0f", user.getHeight()));
-                    tvSummaryHeight.setText(String.format(Locale.getDefault(), "%.0f cm", user.getHeight()));
-                }
-                if (user.getWeight() > 0) {
-                    edtWeight.setText(String.format(Locale.getDefault(), "%.1f", user.getWeight()));
-                }
 
-                // Hiển thị kết quả thật lên UI lần đầu tiên
-                if (user.getBmi() > 0) {
-                    updateBMIUI(user.getWeight(), user.getBmi());
+                // Lấy bản ghi BMI mới nhất từ lịch sử
+                BmiRecord latestRecord = getLatestBmiRecord(user.getBmiHistory());
+
+                if (latestRecord != null) {
+                    float latestHeight = latestRecord.getHeight();
+                    float latestWeight = latestRecord.getWeight();
+                    float latestBmi = latestRecord.getBmi();
+
+                    // Điền sẵn số liệu thật vào 2 ô nhập liệu nếu có
+                    if (latestHeight > 0) {
+                        edtHeight.setText(String.format(Locale.getDefault(), "%.0f", latestHeight));
+                        tvSummaryHeight.setText(String.format(Locale.getDefault(), "%.0f cm", latestHeight));
+                    }
+                    if (latestWeight > 0) {
+                        edtWeight.setText(String.format(Locale.getDefault(), "%.1f", latestWeight));
+                    }
+
+                    // Hiển thị kết quả thật lên UI lần đầu tiên
+                    if (latestBmi > 0) {
+                        updateBMIUI(latestWeight, latestBmi);
+                    }
                 }
 
                 isInitialLoad = false; // Đánh dấu đã load xong lần đầu
@@ -151,5 +162,18 @@ public class BmiCalculatorFragment extends Fragment {
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) icPointer.getLayoutParams();
         params.horizontalBias = bias;
         icPointer.setLayoutParams(params);
+    }
+    private BmiRecord getLatestBmiRecord(java.util.Map<String, BmiRecord> bmiHistory) {
+        if (bmiHistory == null || bmiHistory.isEmpty()) {
+            return null;
+        }
+
+        BmiRecord latestRecord = null;
+        for (BmiRecord record : bmiHistory.values()) {
+            if (latestRecord == null || record.getTimestamp() > latestRecord.getTimestamp()) {
+                latestRecord = record;
+            }
+        }
+        return latestRecord;
     }
 }

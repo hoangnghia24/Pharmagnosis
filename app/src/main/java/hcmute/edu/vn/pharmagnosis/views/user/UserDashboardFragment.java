@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.adapters.NewsAdapter;
+import hcmute.edu.vn.pharmagnosis.models.BmiRecord;
 import hcmute.edu.vn.pharmagnosis.models.HealthNews;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
 import hcmute.edu.vn.pharmagnosis.viewmodels.user.UserDashboardViewModel;
@@ -126,7 +127,11 @@ public class UserDashboardFragment extends Fragment {
                 }
 
                 // Cập nhật BMI
-                if (user.getBmi() > 0) updateBmiDisplay(user.getBmi());
+                BmiRecord latestRecord = getLatestBmiRecord(user.getBmiHistory());
+
+                if (latestRecord != null && latestRecord.getBmi() > 0) {
+                    updateBmiDisplay(latestRecord.getBmi());
+                }
             }
         });
     }
@@ -153,5 +158,15 @@ public class UserDashboardFragment extends Fragment {
                 recyclerNews.setAdapter(newsAdapter);
             }
         });
+    }
+    private BmiRecord getLatestBmiRecord(java.util.Map<String, BmiRecord> bmiHistory) {
+        if (bmiHistory == null || bmiHistory.isEmpty()) return null;
+        BmiRecord latest = null;
+        for (BmiRecord record : bmiHistory.values()) {
+            if (latest == null || record.getTimestamp() > latest.getTimestamp()) {
+                latest = record;
+            }
+        }
+        return latest;
     }
 }

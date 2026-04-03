@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import hcmute.edu.vn.pharmagnosis.R;
+import hcmute.edu.vn.pharmagnosis.models.BmiRecord;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
 import hcmute.edu.vn.pharmagnosis.views.activities.LoginActivity;
 
@@ -115,39 +116,61 @@ public class UserProfileFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                // THAY THẾ BẰNG ĐOẠN NÀY
+                BmiRecord latestRecord = getLatestBmiRecord(user.getBmiHistory());
 
-                if (tvProfileHeight != null && user.getHeight() > 0) {
-                    tvProfileHeight.setText(String.format(Locale.getDefault(), "%.0f", user.getHeight()));
-                }
+                if (latestRecord != null) {
+                    float latestHeight = latestRecord.getHeight();
+                    float latestWeight = latestRecord.getWeight();
+                    float latestBmi = latestRecord.getBmi();
 
-                if (tvProfileWeight != null && user.getWeight() > 0) {
-                    tvProfileWeight.setText(String.format(Locale.getDefault(), "%.1f", user.getWeight()));
-
-                    // --- GỌI HÀM VẼ BIỂU ĐỒ LỊCH SỬ CÂN NẶNG TỪ FIREBASE Ở ĐÂY ---
-                    loadRealWeightHistory(view);
-                }
-
-                if (tvBmiScore != null && tvBmiStatus != null && icPointer != null && user.getBmi() > 0) {
-                    float bmi = user.getBmi();
-                    tvBmiScore.setText(String.format(Locale.getDefault(), "%.1f", bmi));
-
-                    String status; int color; float bias;
-                    if (bmi < 18.5) {
-                        status = "Gầy"; color = 0xFF38BDF8; bias = 0.12f;
-                    } else if (bmi < 25) {
-                        status = "Bình thường"; color = 0xFF22C55E; bias = 0.38f;
-                    } else if (bmi < 30) {
-                        status = "Thừa cân"; color = 0xFFFACC15; bias = 0.63f;
-                    } else {
-                        status = "Béo phì"; color = 0xFFEF4444; bias = 0.88f;
+                    // 1. Hiển thị chiều cao mới nhất
+                    if (tvProfileHeight != null && latestHeight > 0) {
+                        tvProfileHeight.setText(String.format(Locale.getDefault(), "%.0f", latestHeight));
                     }
 
-                    tvBmiStatus.setText(status);
-                    tvBmiStatus.setTextColor(color);
+                    // 2. Hiển thị cân nặng mới nhất và vẽ biểu đồ
+                    if (tvProfileWeight != null && latestWeight > 0) {
+                        tvProfileWeight.setText(String.format(Locale.getDefault(), "%.1f", latestWeight));
 
-                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) icPointer.getLayoutParams();
-                    params.horizontalBias = bias;
-                    icPointer.setLayoutParams(params);
+                        // Gọi hàm vẽ biểu đồ
+                        loadRealWeightHistory(view);
+                    }
+
+                    // 3. Hiển thị điểm số và trạng thái BMI mới nhất
+                    if (tvBmiScore != null && tvBmiStatus != null && icPointer != null && latestBmi > 0) {
+                        tvBmiScore.setText(String.format(Locale.getDefault(), "%.1f", latestBmi));
+
+                        String status;
+                        int color;
+                        float bias;
+
+                        if (latestBmi < 18.5) {
+                            status = "Gầy"; color = 0xFF38BDF8; bias = 0.12f;
+                        } else if (latestBmi < 25) {
+                            status = "Bình thường"; color = 0xFF22C55E; bias = 0.38f;
+                        } else if (latestBmi < 30) {
+                            status = "Thừa cân"; color = 0xFFFACC15; bias = 0.63f;
+                        } else {
+                            status = "Béo phì"; color = 0xFFEF4444; bias = 0.88f;
+                        }
+
+                        tvBmiStatus.setText(status);
+                        tvBmiStatus.setTextColor(color);
+
+                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) icPointer.getLayoutParams();
+                        params.horizontalBias = bias;
+                        icPointer.setLayoutParams(params);
+                    }
+                } else {
+                    // Tùy chọn: Xử lý giao diện khi người dùng chưa có lịch sử đo nào
+                    if (tvProfileHeight != null) tvProfileHeight.setText("--");
+                    if (tvProfileWeight != null) tvProfileWeight.setText("--");
+                    if (tvBmiScore != null) tvBmiScore.setText("--");
+                    if (tvBmiStatus != null) {
+                        tvBmiStatus.setText("Chưa có dữ liệu");
+                        tvBmiStatus.setTextColor(0xFF64748B); // Màu xám nhạt
+                    }
                 }
             }
 
@@ -273,5 +296,19 @@ public class UserProfileFragment extends Fragment {
 
         weightChart.animateX(1000); // Hiệu ứng chạy từ trái sang phải
         weightChart.invalidate(); // Vẽ lại biểu đồ
+    }
+    // Hàm hỗ trợ lấy bản ghi BMI mới nhất từ Map
+    private BmiRecord getLatestBmiRecord(java.util.Map<String, BmiRecord> bmiHistory) {
+        if (bmiHistory == null || bmiHistory.isEmpty()) {
+            return null;
+        }
+
+        BmiRecord latestRecord = null;
+        for (BmiRecord record : bmiHistory.values()) {
+            if (latestRecord == null || record.getTimestamp() > latestRecord.getTimestamp()) {
+                latestRecord = record;
+            }
+        }
+        return latestRecord;
     }
 }

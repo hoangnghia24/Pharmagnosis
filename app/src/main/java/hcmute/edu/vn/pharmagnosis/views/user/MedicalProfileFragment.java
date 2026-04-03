@@ -35,6 +35,7 @@ import java.util.Locale;
 
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.models.Allergy;
+import hcmute.edu.vn.pharmagnosis.models.BmiRecord;
 import hcmute.edu.vn.pharmagnosis.viewmodels.ProfileViewModel;
 
 public class MedicalProfileFragment extends Fragment {
@@ -177,11 +178,15 @@ public class MedicalProfileFragment extends Fragment {
                 }
 
                 // --- ĐIỀN SẴN CHIỀU CAO VÀ CÂN NẶNG LÊN UI ---
-                if (edtHeightProfile != null && user.getHeight() > 0) {
-                    edtHeightProfile.setText(String.format(Locale.getDefault(), "%.0f", user.getHeight()));
-                }
-                if (edtWeightProfile != null && user.getWeight() > 0) {
-                    edtWeightProfile.setText(String.format(Locale.getDefault(), "%.1f", user.getWeight()));
+                BmiRecord latestRecord = getLatestBmiRecord(user.getBmiHistory());
+
+                if (latestRecord != null) {
+                    if (edtHeightProfile != null && latestRecord.getHeight() > 0) {
+                        edtHeightProfile.setText(String.format(Locale.getDefault(), "%.0f", latestRecord.getHeight()));
+                    }
+                    if (edtWeightProfile != null && latestRecord.getWeight() > 0) {
+                        edtWeightProfile.setText(String.format(Locale.getDefault(), "%.1f", latestRecord.getWeight()));
+                    }
                 }
             }
         });
@@ -318,5 +323,18 @@ public class MedicalProfileFragment extends Fragment {
                 profileViewModel.saveProfileAndHistory(fullName, selectedGenderEnum, selectedBloodType, dobDate, base64Avatar, height, weight, bmi);
             });
         }
+    }
+    private BmiRecord getLatestBmiRecord(java.util.Map<String, BmiRecord> bmiHistory) {
+        if (bmiHistory == null || bmiHistory.isEmpty()) {
+            return null;
+        }
+
+        BmiRecord latestRecord = null;
+        for (BmiRecord record : bmiHistory.values()) {
+            if (latestRecord == null || record.getTimestamp() > latestRecord.getTimestamp()) {
+                latestRecord = record;
+            }
+        }
+        return latestRecord;
     }
 }

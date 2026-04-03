@@ -14,14 +14,11 @@ public class User {
     private String fullName;
     private Date dob;
     private EGender gender;
-    private float height;
-    private float weight;
     private String bloodType;
     private String email;
     private String password;
     private ERole role;
     private String phone;
-    private float bmi;
     private String avatar;
 
     private List<Allergy> allergies;
@@ -31,33 +28,27 @@ public class User {
     public User() {
     }
 
-    public User(String id, String fullName, Date dob, EGender gender, float height, float weight, String email, String password, ERole role, String phone, float bmi) {
+    public User(String id, String fullName, Date dob, EGender gender, String email, String password, ERole role, String phone) {
         this.id = id;
         this.fullName = fullName;
         this.dob = dob;
         this.gender = gender;
-        this.height = height;
-        this.weight = weight;
         this.email = email;
         this.password = password;
         this.role = role;
         this.phone = phone;
-        this.bmi = bmi;
     }
 
-    public User(String id, String fullName, Date dob, EGender gender, float height, float weight, String bloodType, String email, String password, ERole role, String phone, float bmi, List<Allergy> allergies, List<SearchRecord> searchRecords) {
+    public User(String id, String fullName, Date dob, EGender gender, String bloodType, String email, String password, ERole role, String phone, List<Allergy> allergies, List<SearchRecord> searchRecords) {
         this.id = id;
         this.fullName = fullName;
         this.dob = dob;
         this.gender = gender;
-        this.height = height;
-        this.weight = weight;
         this.bloodType = bloodType;
         this.email = email;
         this.password = password;
         this.role = role;
         this.phone = phone;
-        this.bmi = bmi;
         this.allergies = allergies;
         this.searchRecords = searchRecords;
     }
@@ -112,22 +103,6 @@ public class User {
         this.gender = gender;
     }
 
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(float weight) {
-        this.weight = weight;
-    }
-
     public String getBloodType() {
         return bloodType;
     }
@@ -166,14 +141,6 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public float getBmi() {
-        return bmi;
-    }
-
-    public void setBmi(float bmi) {
-        this.bmi = bmi;
     }
 
     public java.util.Map<String, BmiRecord> getBmiHistory() {
