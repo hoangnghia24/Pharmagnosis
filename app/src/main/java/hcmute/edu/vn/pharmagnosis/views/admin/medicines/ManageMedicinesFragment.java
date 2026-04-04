@@ -57,10 +57,15 @@ public class ManageMedicinesFragment extends Fragment {
                 bundle.putString("medicine_json", medicineJson);
 
                 // 3. Truyền Bundle sang EditMedicineFragment
+                // ĐOẠN CODE MỚI (An toàn, không bị crash):
                 EditMedicineFragment editFragment = new EditMedicineFragment();
-                editFragment.setArguments(bundle);
+                // editFragment.setArguments(bundle); // Nếu bạn dùng cách cũ, còn dùng biến static thì bỏ dòng này đi
 
-                ((AdminDashboardFragment) requireActivity()).replaceFragment(editFragment, true);
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, editFragment) // Đổi R.id.fragment_container thành ID thực tế trong file layout Activity của bạn
+                        .addToBackStack(null) // Cho phép bấm nút Back để quay lại danh sách
+                        .commit();
             }
 
             @Override

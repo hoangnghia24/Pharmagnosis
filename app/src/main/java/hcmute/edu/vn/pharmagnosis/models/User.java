@@ -18,7 +18,6 @@ public class User {
     private String email;
     private String password;
     private ERole role;
-    private String phone;
     private String avatar;
 
     private List<Allergy> allergies;
@@ -28,7 +27,7 @@ public class User {
     public User() {
     }
 
-    public User(String id, String fullName, Date dob, EGender gender, String email, String password, ERole role, String phone) {
+    public User(String id, String fullName, Date dob, EGender gender, String email, String password, ERole role) {
         this.id = id;
         this.fullName = fullName;
         this.dob = dob;
@@ -36,10 +35,9 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.phone = phone;
     }
 
-    public User(String id, String fullName, Date dob, EGender gender, String bloodType, String email, String password, ERole role, String phone, List<Allergy> allergies, List<SearchRecord> searchRecords) {
+    public User(String id, String fullName, Date dob, EGender gender, String bloodType, String email, String password, ERole role, List<Allergy> allergies, List<SearchRecord> searchRecords) {
         this.id = id;
         this.fullName = fullName;
         this.dob = dob;
@@ -48,7 +46,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.phone = phone;
         this.allergies = allergies;
         this.searchRecords = searchRecords;
     }
@@ -133,14 +130,6 @@ public class User {
 
     public void setRole(ERole role) {
         this.role = role;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public java.util.Map<String, BmiRecord> getBmiHistory() {
