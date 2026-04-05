@@ -41,7 +41,10 @@ public class NewsAdapterAdmin extends RecyclerView.Adapter<NewsAdapterAdmin.News
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_admin, parent, false);
         return new NewsViewHolder(view);
     }
-
+    public void setNewsList(List<HealthNews> newsList) {
+        this.newsList = newsList;
+        notifyDataSetChanged(); // Yêu cầu RecyclerView vẽ lại giao diện với data mới
+    }
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         HealthNews news = newsList.get(position);

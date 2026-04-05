@@ -113,17 +113,12 @@ public class MedicineDetailActivity extends AppCompatActivity {
                                 if (txtCongDung != null) txtCongDung.setText(medicine.getIndications());
                                 break;
 
-                            case 1: // Bấm vào "Liều dùng"
-                                if (txtSectionTitle != null) txtSectionTitle.setText("Liều lượng & Cách dùng");
-                                if (txtCongDung != null) txtCongDung.setText("Dữ liệu liều dùng đang được cập nhật...");
-                                break;
-
-                            case 2: // Bấm vào "Chống chỉ định"
+                            case 1: // Bấm vào "Chống chỉ định"
                                 if (txtSectionTitle != null) txtSectionTitle.setText("Chống chỉ định");
                                 if (txtCongDung != null) txtCongDung.setText(formatListToString(medicine.getContraindications()));
                                 break;
 
-                            case 3: // Bấm vào "Tác dụng phụ"
+                            case 2: // Bấm vào "Tác dụng phụ"
                                 if (txtSectionTitle != null) txtSectionTitle.setText("Tác dụng phụ có thể gặp");
                                 if (txtCongDung != null) txtCongDung.setText(formatListToString(medicine.getSideEffects()));
                                 break;

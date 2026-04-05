@@ -2,9 +2,12 @@ package hcmute.edu.vn.pharmagnosis.views.admin.medicines;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -16,6 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import hcmute.edu.vn.pharmagnosis.R;
 import hcmute.edu.vn.pharmagnosis.adapters.admin.medicines.MedicineAdapter;
 import hcmute.edu.vn.pharmagnosis.models.Medicine;
@@ -26,6 +34,7 @@ public class ManageMedicinesFragment extends Fragment {
 
     private MedicineAdapter adapter;
     private MedicineRepository repository;
+    private List<Medicine> originalMedicineList = new ArrayList<>(); // Lưu danh sách gốc để tìm kiếm
 
     @Nullable
     @Override
@@ -42,6 +51,7 @@ public class ManageMedicinesFragment extends Fragment {
         ImageView imgMenu = view.findViewById(R.id.img_menu);
         ImageView imgAddMedicine = view.findViewById(R.id.img_add_medicine);
         RecyclerView rvMedicines = view.findViewById(R.id.rv_medicines);
+        EditText etSearchMedicine = view.findViewById(R.id.et_search_medicine); // Lấy đúng ID từ XML
 
         // Thiết lập RecyclerView
         rvMedicines.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -56,15 +66,15 @@ public class ManageMedicinesFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("medicine_json", medicineJson);
 
-                // 3. Truyền Bundle sang EditMedicineFragment
-                // ĐOẠN CODE MỚI (An toàn, không bị crash):
+                // 3. Khởi tạo Fragment và gắn Bundle chứa dữ liệu vào
                 EditMedicineFragment editFragment = new EditMedicineFragment();
-                // editFragment.setArguments(bundle); // Nếu bạn dùng cách cũ, còn dùng biến static thì bỏ dòng này đi
+                editFragment.setArguments(bundle); // DÒNG QUAN TRỌNG ĐÃ ĐƯỢC THÊM LẠI
 
+                // 4. Chuyển màn hình
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, editFragment) // Đổi R.id.fragment_container thành ID thực tế trong file layout Activity của bạn
-                        .addToBackStack(null) // Cho phép bấm nút Back để quay lại danh sách
+                        .replace(R.id.fragment_container, editFragment)
+                        .addToBackStack(null)
                         .commit();
             }
 
@@ -72,8 +82,9 @@ public class ManageMedicinesFragment extends Fragment {
             public void onDeleteClick(Medicine medicine) {
                 showDeleteConfirmDialog(medicine);
             }
+
             @Override
-            public  void onItemClick(Medicine medicine) {
+            public void onItemClick(Medicine medicine) {
                 android.content.Intent intent = new android.content.Intent(getContext(), hcmute.edu.vn.pharmagnosis.views.user.MedicineDetailActivity.class);
                 intent.putExtra("medicine_json", new Gson().toJson(medicine));
                 startActivity(intent);
@@ -81,8 +92,13 @@ public class ManageMedicinesFragment extends Fragment {
         });
         rvMedicines.setAdapter(adapter);
 
-        // Lấy dữ liệu từ Firebase
+        // Tải dữ liệu
         loadMedicines();
+
+        // Thiết lập tìm kiếm
+        if (etSearchMedicine != null) {
+            setupSearch(etSearchMedicine);
+        }
 
         // Sự kiện các nút
         if (imgMenu != null) {
@@ -98,8 +114,55 @@ public class ManageMedicinesFragment extends Fragment {
 
     private void loadMedicines() {
         repository.getAllMedicines().observe(getViewLifecycleOwner(), medicines -> {
-            adapter.setMedicineList(medicines);
+            if (medicines != null) {
+                originalMedicineList = medicines; // Lưu lại data gốc
+                adapter.setMedicineList(medicines); // Hiển thị data
+            }
         });
+    }
+
+    private void setupSearch(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterMedicines(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+    }
+
+    private void filterMedicines(String text) {
+        List<Medicine> filteredList = new ArrayList<>();
+        String searchKeyword = removeAccents(text);
+
+        for (Medicine medicine : originalMedicineList) {
+            if (medicine.getMedicineName() != null) {
+                String medicineName = removeAccents(medicine.getMedicineName());
+                if (medicineName.contains(searchKeyword)) {
+                    filteredList.add(medicine);
+                }
+            }
+        }
+        adapter.setMedicineList(filteredList);
+    }
+
+    // Hàm hỗ trợ bỏ dấu tiếng Việt
+    private String removeAccents(String str) {
+        if (str == null) return "";
+        try {
+            String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            return pattern.matcher(temp).replaceAll("")
+                    .replace('đ', 'd').replace('Đ', 'D')
+                    .toLowerCase();
+        } catch (Exception e) {
+            return str.toLowerCase();
+        }
     }
 
     private void showDeleteConfirmDialog(Medicine medicine) {
@@ -110,7 +173,7 @@ public class ManageMedicinesFragment extends Fragment {
                     repository.deleteMedicine(medicine.getMedicineId(), task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Đã xóa thành công!", Toast.LENGTH_SHORT).show();
-                            loadMedicines(); // Tải lại danh sách
+                            loadMedicines();
                         } else {
                             Toast.makeText(getContext(), "Lỗi khi xóa!", Toast.LENGTH_SHORT).show();
                         }
