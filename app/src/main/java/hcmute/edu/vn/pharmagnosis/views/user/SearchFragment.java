@@ -141,6 +141,8 @@ public class SearchFragment extends Fragment {
         if (imgClearSearch != null) {
             imgClearSearch.setOnClickListener(v -> {
                 edtSearch.setText("");
+                selectedDosage = "";
+                selectedTarget = "";
                 toggleUI(false);
             });
         }
@@ -167,7 +169,8 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = s.toString().trim();
-                if (query.isEmpty()) {
+                // Chỉ toggleUI về false khi cả query và bộ lọc đều rỗng
+                if (query.isEmpty() && selectedDosage.isEmpty() && selectedTarget.isEmpty()) {
                     toggleUI(false);
                     imgClearSearch.setVisibility(View.GONE);
                 } else {
@@ -222,6 +225,26 @@ public class SearchFragment extends Fragment {
         android.widget.Button btnApply = sheetView.findViewById(R.id.btnApplyFilter);
         android.widget.TextView txtReset = sheetView.findViewById(R.id.txtResetFilter);
 
+        // Khôi phục trạng thái Chip đã chọn trước đó (nếu có)
+        if (!selectedDosage.isEmpty()) {
+            for (int i = 0; i < chipGroupDosage.getChildCount(); i++) {
+                com.google.android.material.chip.Chip chip = (com.google.android.material.chip.Chip) chipGroupDosage.getChildAt(i);
+                if (chip.getText().toString().trim().equalsIgnoreCase(selectedDosage)) {
+                    chip.setChecked(true);
+                    break;
+                }
+            }
+        }
+        if (!selectedTarget.isEmpty()) {
+            for (int i = 0; i < chipGroupTarget.getChildCount(); i++) {
+                com.google.android.material.chip.Chip chip = (com.google.android.material.chip.Chip) chipGroupTarget.getChildAt(i);
+                if (chip.getText().toString().trim().equalsIgnoreCase(selectedTarget)) {
+                    chip.setChecked(true);
+                    break;
+                }
+            }
+        }
+
         btnApply.setOnClickListener(v -> {
             int selectedDosageId = chipGroupDosage.getCheckedChipId();
             int selectedTargetId = chipGroupTarget.getCheckedChipId();
@@ -232,11 +255,11 @@ public class SearchFragment extends Fragment {
             selectedTarget = selectedTargetId != View.NO_ID ?
                     ((com.google.android.material.chip.Chip) sheetView.findViewById(selectedTargetId)).getText().toString().trim() : "";
 
-            String currentKeyword = edtSearch.getText().toString();
-            if (!currentKeyword.isEmpty()) {
-                toggleUI(true);
-                searchAdapter.applyAdvancedFilter(currentKeyword, selectedDosage, selectedTarget);
-            }
+            String currentKeyword = edtSearch.getText().toString().trim();
+            
+            // Ép hiện RecyclerView kết quả ngay cả khi currentKeyword rỗng nhưng có bộ lọc
+            toggleUI(true);
+            searchAdapter.applyAdvancedFilter(currentKeyword, selectedDosage, selectedTarget);
 
             bottomSheetDialog.dismiss();
         });
@@ -246,6 +269,14 @@ public class SearchFragment extends Fragment {
             chipGroupTarget.clearCheck();
             selectedDosage = "";
             selectedTarget = "";
+            
+            String currentKeyword = edtSearch.getText().toString().trim();
+            if (currentKeyword.isEmpty()) {
+                toggleUI(false);
+            } else {
+                searchAdapter.applyAdvancedFilter(currentKeyword, "", "");
+            }
+            bottomSheetDialog.dismiss();
         });
 
         bottomSheetDialog.show();

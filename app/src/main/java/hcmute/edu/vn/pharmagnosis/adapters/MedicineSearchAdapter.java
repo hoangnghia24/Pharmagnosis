@@ -35,29 +35,32 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
 
     public void applyAdvancedFilter(String keyword, String dosage, String target) {
         this.currentKeyword = keyword != null ? keyword.toLowerCase().trim() : "";
-        this.currentDosageFilter = dosage != null ? dosage : "";
-        this.currentTargetFilter = target != null ? target : "";
+        this.currentDosageFilter = dosage != null ? dosage.trim() : "";
+        this.currentTargetFilter = target != null ? target.trim() : "";
 
-        List<Medicine> filteredList = new java.util.ArrayList<>();
+        List<Medicine> filteredList = new ArrayList<>();
 
-        // Nếu cả 3 đều rỗng (chưa gõ tìm kiếm, chưa chọn lọc) -> Trả về danh sách rỗng (hoặc full tùy bạn)
+        // Nếu cả 3 đều rỗng (chưa gõ tìm kiếm, chưa chọn lọc) -> Trả về danh sách rỗng
         if (currentKeyword.isEmpty() && currentDosageFilter.isEmpty() && currentTargetFilter.isEmpty()) {
-            this.medicineListFiltered = new java.util.ArrayList<>(); // Để trống màn hình
+            this.medicineListFiltered = new ArrayList<>();
             notifyDataSetChanged();
             return;
         }
 
         // Duyệt qua toàn bộ kho thuốc
         for (Medicine m : medicineListFull) {
+            if (m == null) continue;
+
             boolean matchKeyword = currentKeyword.isEmpty() ||
-                    m.getMedicineName().toLowerCase().contains(currentKeyword) ||
+                    (m.getMedicineName() != null && m.getMedicineName().toLowerCase().contains(currentKeyword)) ||
                     (m.getTradeName() != null && m.getTradeName().toLowerCase().contains(currentKeyword));
 
+            // Sử dụng equalsIgnoreCase và trim để so sánh chính xác hơn theo code mẫu bạn gửi
             boolean matchDosage = currentDosageFilter.isEmpty() ||
-                    (m.getDosageForm() != null && m.getDosageForm().equals(currentDosageFilter));
+                    (m.getDosageForm() != null && m.getDosageForm().trim().equalsIgnoreCase(currentDosageFilter));
 
             boolean matchTarget = currentTargetFilter.isEmpty() ||
-                    (m.getTargetUsers() != null && m.getTargetUsers().equals(currentTargetFilter));
+                    (m.getTargetUsers() != null && m.getTargetUsers().trim().equalsIgnoreCase(currentTargetFilter));
 
             if (matchKeyword && matchDosage && matchTarget) {
                 filteredList.add(m);
@@ -69,12 +72,13 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
     }
 
     public MedicineSearchAdapter(List<Medicine> medicineList) {
-        this.medicineListFull = new ArrayList<>(medicineList);
-        this.medicineListFiltered = new ArrayList<>(medicineList); // Ban đầu chưa gõ gì thì hiển thị tất cả
+        this.medicineListFull = new ArrayList<>(medicineList != null ? medicineList : new ArrayList<>());
+        this.medicineListFiltered = new ArrayList<>(); 
     }
 
     public void setMedicines(List<Medicine> medicines) {
-        this.medicineListFull = new ArrayList<>(medicines);
+        this.medicineListFull = new ArrayList<>(medicines != null ? medicines : new ArrayList<>());
+        // Giữ danh sách hiển thị rỗng lúc đầu để hiện lịch sử/phổ biến
         this.medicineListFiltered = new ArrayList<>();
         notifyDataSetChanged();
     }
@@ -117,24 +121,21 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
             }
         }
 
-        // --- XỬ LÝ HIỂN THỊ ẢNH (HỖ TRỢ CẢ URL VÀ BASE64) ---
+        // --- XỬ LÝ HIỂN THỊ ẢNH ---
         String imageString = medicine.getImage();
         if (imageString != null && !imageString.isEmpty()) {
             try {
                 if (imageString.startsWith("http")) {
-                    // Nếu dữ liệu cũ trên Firebase là link URL, dùng Glide
                     Glide.with(holder.itemView.getContext())
                             .load(imageString)
                             .placeholder(android.R.drawable.ic_menu_gallery)
                             .into(holder.imgMedicine);
                 } else {
-                    // Nếu là chuỗi Base64 mới, tự động giải mã ra Bitmap và hiển thị
                     byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     holder.imgMedicine.setImageBitmap(decodedByte);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 holder.imgMedicine.setImageResource(android.R.drawable.ic_menu_gallery);
             }
         } else {
@@ -161,12 +162,8 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Medicine> filteredList = new ArrayList<>();
-
-                if (constraint == null || constraint.length() == 0) {
-                    // Trống thì không làm gì hoặc addAll tùy logic của bạn
-                } else {
+                if (constraint != null && constraint.length() > 0) {
                     String filterPattern = constraint.toString().toLowerCase().trim();
-
                     for (Medicine item : medicineListFull) {
                         if (item.getMedicineName().toLowerCase().contains(filterPattern) ||
                                 (item.getTradeName() != null && item.getTradeName().toLowerCase().contains(filterPattern))) {
@@ -174,7 +171,6 @@ public class MedicineSearchAdapter extends RecyclerView.Adapter<MedicineSearchAd
                         }
                     }
                 }
-
                 FilterResults results = new FilterResults();
                 results.values = filteredList;
                 return results;
